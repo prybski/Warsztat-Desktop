@@ -4,17 +4,20 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:mysql://localhost:3306/warsztat?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
+        <property name="connection.url"><![CDATA[jdbc:mysql://localhost:3306/warsztat?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true]]></property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">mechanik</property>
-        <property name="connection.password">Mechanik1!</property>
 
         <property name="show_sql">true</property>
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="connection.pool_size">1</property>
-        <property name="hbm2ddl.auto">update</property>
+        <!--<property name="hbm2ddl.auto">update</property>-->
         <property name="current_session_context_class">thread</property>
 
-
+        <mapping class="pl.edu.pwsztar.entity.Klient"/>
+        <mapping class="pl.edu.pwsztar.entity.Pojazd"/>
+        <mapping class="pl.edu.pwsztar.entity.Zlecenie"/>
+        <mapping class="pl.edu.pwsztar.entity.Zadanie"/>
+        <mapping class="pl.edu.pwsztar.entity.Zapotrzebowanie"/>
+        <mapping class="pl.edu.pwsztar.entity.Czesc"/>
     </session-factory>
 </hibernate-configuration>
