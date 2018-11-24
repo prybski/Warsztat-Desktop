@@ -32,6 +32,17 @@ public class Pojazd {
     @OneToMany(mappedBy = "pojazd", cascade = CascadeType.ALL)
     private List<Zlecenie> zlecenia;
 
+    public Pojazd() {
+    }
+
+    public Pojazd(String marka, String model, Short rokProdukcji, String numerVin, Double pojemnoscSilnika) {
+        this.marka = marka;
+        this.model = model;
+        this.rokProdukcji = rokProdukcji;
+        this.numerVin = numerVin;
+        this.pojemnoscSilnika = pojemnoscSilnika;
+    }
+
     public int getIdPojazdu() {
         return idPojazdu;
     }

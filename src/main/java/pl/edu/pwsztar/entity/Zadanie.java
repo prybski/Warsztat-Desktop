@@ -35,6 +35,16 @@ public class Zadanie {
     @OneToMany(mappedBy = "zadanie", cascade = CascadeType.ALL)
     private List<Zapotrzebowanie> zapotrzebowanie;
 
+    public Zadanie() {
+    }
+
+    public Zadanie(String czynnosc, String przewidywanyCzas, Byte jestZakonczone, BigDecimal koszt) {
+        this.czynnosc = czynnosc;
+        this.przewidywanyCzas = przewidywanyCzas;
+        this.jestZakonczone = jestZakonczone;
+        this.koszt = koszt;
+    }
+
     public int getIdZadania() {
         return idZadania;
     }

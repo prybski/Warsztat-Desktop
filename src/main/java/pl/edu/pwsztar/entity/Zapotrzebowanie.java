@@ -29,6 +29,14 @@ public class Zapotrzebowanie {
     @JoinColumn(name = "id_czesci")
     private Czesc czesc;
 
+    public Zapotrzebowanie() {
+    }
+
+    public Zapotrzebowanie(Byte ilosc, BigDecimal cena) {
+        this.ilosc = ilosc;
+        this.cena = cena;
+    }
+
     public int getIdZapotrzebowania() {
         return idZapotrzebowania;
     }

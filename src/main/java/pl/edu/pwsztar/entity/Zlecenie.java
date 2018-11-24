@@ -44,6 +44,17 @@ public class Zlecenie {
     @OneToMany(mappedBy = "zlecenie", cascade = CascadeType.ALL)
     private List<Zadanie> zadania;
 
+    public Zlecenie() {
+    }
+
+    public Zlecenie(String opis, Timestamp dataRozpoczecia, Timestamp dataZakonczenia, BigDecimal rabat, BigDecimal cenaKoncowa) {
+        this.opis = opis;
+        this.dataRozpoczecia = dataRozpoczecia;
+        this.dataZakonczenia = dataZakonczenia;
+        this.rabat = rabat;
+        this.cenaKoncowa = cenaKoncowa;
+    }
+
     public int getIdZlecenia() {
         return idZlecenia;
     }

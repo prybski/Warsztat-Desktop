@@ -29,6 +29,16 @@ public class Klient {
     @OneToMany(mappedBy = "klient", cascade = CascadeType.ALL)
     private List<Zlecenie> zlecenia;
 
+    public Klient() {
+    }
+
+    public Klient(String imie, String nazwisko, String email, String telefon) {
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+        this.email = email;
+        this.telefon = telefon;
+    }
+
     public int getIdKlienta() {
         return idKlienta;
     }

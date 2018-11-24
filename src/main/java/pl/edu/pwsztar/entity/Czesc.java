@@ -26,6 +26,15 @@ public class Czesc {
     @OneToMany(mappedBy = "czesc", cascade = CascadeType.ALL)
     private List<Zapotrzebowanie> zapotrzebowanie;
 
+    public Czesc() {
+    }
+
+    public Czesc(String nazwa, String szczegoly, String numerKatalogowy) {
+        this.nazwa = nazwa;
+        this.szczegoly = szczegoly;
+        this.numerKatalogowy = numerKatalogowy;
+    }
+
     public int getIdCzesci() {
         return idCzesci;
     }
