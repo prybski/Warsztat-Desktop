@@ -31,7 +31,7 @@ public class Zadanie {
     @JoinColumn(name = "id_zlecenia")
     private Zlecenie zlecenie;
 
-    // definicja relacji/mapowania (jednejgo Zadania do wielu Zapotrzebowań)
+    // definicja relacji/mapowania (jednego Zadania do wielu Zapotrzebowań)
     @OneToMany(mappedBy = "zadanie", cascade = CascadeType.ALL)
     private List<Zapotrzebowanie> zapotrzebowanie;
 
