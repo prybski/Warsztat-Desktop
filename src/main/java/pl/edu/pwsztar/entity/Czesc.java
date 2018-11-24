@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,10 @@ public class Czesc {
 
     @Column(name = "numer_katalogowy", length = 18)
     private String numerKatalogowy;
+
+    // definicja relacji/mapowania (jednej Części do wielu Zapotrzebowań)
+    @OneToMany(mappedBy = "czesc", cascade = CascadeType.ALL)
+    private List<Zapotrzebowanie> zapotrzebowanie;
 
     public int getIdCzesci() {
         return idCzesci;
@@ -51,6 +56,14 @@ public class Czesc {
 
     public void setNumerKatalogowy(String numerKatalogowy) {
         this.numerKatalogowy = numerKatalogowy;
+    }
+
+    public List<Zapotrzebowanie> getZapotrzebowanie() {
+        return zapotrzebowanie;
+    }
+
+    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie) {
+        this.zapotrzebowanie = zapotrzebowanie;
     }
 
     @Override

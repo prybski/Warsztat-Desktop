@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +27,10 @@ public class Pojazd {
 
     @Column(name = "pojemnosc_silnika")
     private Double pojemnoscSilnika;
+
+    // definicja relacji/mapowania (jednego Pojazdu do wielu Zleceń)
+    @OneToMany(mappedBy = "pojazd", cascade = CascadeType.ALL)
+    private List<Zlecenie> zlecenia;
 
     public int getIdPojazdu() {
         return idPojazdu;
@@ -73,6 +78,14 @@ public class Pojazd {
 
     public void setPojemnoscSilnika(Double pojemnoscSilnika) {
         this.pojemnoscSilnika = pojemnoscSilnika;
+    }
+
+    public List<Zlecenie> getZlecenia() {
+        return zlecenia;
+    }
+
+    public void setZlecenia(List<Zlecenie> zlecenia) {
+        this.zlecenia = zlecenia;
     }
 
     @Override

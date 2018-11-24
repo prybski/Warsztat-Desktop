@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +24,10 @@ public class Klient {
 
     @Column(name = "telefon", length = 15)
     private String telefon;
+
+    // definicja relacji/mapowania (jednego Klienta do wielu Zleceń)
+    @OneToMany(mappedBy = "klient", cascade = CascadeType.ALL)
+    private List<Zlecenie> zlecenia;
 
     public int getIdKlienta() {
         return idKlienta;
@@ -62,6 +67,14 @@ public class Klient {
 
     public void setTelefon(String telefon) {
         this.telefon = telefon;
+    }
+
+    public List<Zlecenie> getZlecenia() {
+        return zlecenia;
+    }
+
+    public void setZlecenia(List<Zlecenie> zlecenia) {
+        this.zlecenia = zlecenia;
     }
 
     @Override

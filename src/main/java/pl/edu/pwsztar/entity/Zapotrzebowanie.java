@@ -19,6 +19,16 @@ public class Zapotrzebowanie {
     @Column(name = "cena", precision = 2)
     private BigDecimal cena;
 
+    // definicja relacji/mapowania (wielu Zapotrzebowań do jednego Zadania)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "id_zadania")
+    private Zadanie zadanie;
+
+    // definicja relacji/mapowania (wielu Zapotrzebowań do jednej Części)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "id_czesci")
+    private Czesc czesc;
+
     public int getIdZapotrzebowania() {
         return idZapotrzebowania;
     }
@@ -41,6 +51,22 @@ public class Zapotrzebowanie {
 
     public void setCena(BigDecimal cena) {
         this.cena = cena;
+    }
+
+    public Zadanie getZadanie() {
+        return zadanie;
+    }
+
+    public void setZadanie(Zadanie zadanie) {
+        this.zadanie = zadanie;
+    }
+
+    public Czesc getCzesc() {
+        return czesc;
+    }
+
+    public void setCzesc(Czesc czesc) {
+        this.czesc = czesc;
     }
 
     @Override

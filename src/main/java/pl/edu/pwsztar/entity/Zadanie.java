@@ -2,6 +2,7 @@ package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,15 @@ public class Zadanie {
 
     @Column(name = "koszt", precision = 2)
     private BigDecimal koszt;
+
+    // definicja relacji/mapowania (wielu Zadań do jednego Zlecenia)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "id_zlecenia")
+    private Zlecenie zlecenie;
+
+    // definicja relacji/mapowania (jednejgo Zadania do wielu Zapotrzebowań)
+    @OneToMany(mappedBy = "zadanie", cascade = CascadeType.ALL)
+    private List<Zapotrzebowanie> zapotrzebowanie;
 
     public int getIdZadania() {
         return idZadania;
@@ -63,6 +73,22 @@ public class Zadanie {
 
     public void setKoszt(BigDecimal koszt) {
         this.koszt = koszt;
+    }
+
+    public Zlecenie getZlecenie() {
+        return zlecenie;
+    }
+
+    public void setZlecenie(Zlecenie zlecenie) {
+        this.zlecenie = zlecenie;
+    }
+
+    public List<Zapotrzebowanie> getZapotrzebowanie() {
+        return zapotrzebowanie;
+    }
+
+    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie) {
+        this.zapotrzebowanie = zapotrzebowanie;
     }
 
     @Override

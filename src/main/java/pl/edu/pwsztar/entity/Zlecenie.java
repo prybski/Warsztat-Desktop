@@ -3,6 +3,7 @@ package pl.edu.pwsztar.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +29,20 @@ public class Zlecenie {
 
     @Column(name = "cena_koncowa", precision = 2)
     private BigDecimal cenaKoncowa;
+
+    // definicja relacji/mapowania (wielu Zleceń do jednego Klienta)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "id_klienta")
+    private Klient klient;
+
+    // definicja relacji/mapowania (wielu Zleceń do jednego Pojazdu)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "id_pojazdu")
+    private Pojazd pojazd;
+
+    // definicja relacji/mapowania (jednego Zlecenia do wielu Zadań)
+    @OneToMany(mappedBy = "zlecenie", cascade = CascadeType.ALL)
+    private List<Zadanie> zadania;
 
     public int getIdZlecenia() {
         return idZlecenia;
@@ -75,6 +90,30 @@ public class Zlecenie {
 
     public void setCenaKoncowa(BigDecimal cenaKoncowa) {
         this.cenaKoncowa = cenaKoncowa;
+    }
+
+    public Klient getKlient() {
+        return klient;
+    }
+
+    public void setKlient(Klient klient) {
+        this.klient = klient;
+    }
+
+    public Pojazd getPojazd() {
+        return pojazd;
+    }
+
+    public void setPojazd(Pojazd pojazd) {
+        this.pojazd = pojazd;
+    }
+
+    public List<Zadanie> getZadania() {
+        return zadania;
+    }
+
+    public void setZadania(List<Zadanie> zadania) {
+        this.zadania = zadania;
     }
 
     @Override
