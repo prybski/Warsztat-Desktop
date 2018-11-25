@@ -102,13 +102,8 @@ public class Zadanie {
         return zapotrzebowanie;
     }
 
-    // lekka modyfikacja metody ustawiającej listę Zapotrzebowania
-    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie, Czesc czesc) {
-        for (Zapotrzebowanie zapotrzebowaniePojedyncze: zapotrzebowanie) {
-            zapotrzebowaniePojedyncze.setZadanie(this);
-            zapotrzebowaniePojedyncze.setCzesc(czesc);
-            this.zapotrzebowanie.add(zapotrzebowaniePojedyncze);
-        }
+    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie) {
+        this.zapotrzebowanie = zapotrzebowanie;
     }
 
     // dodanie metody ułatwiającej przypisywanie Zapotrzebowania (Części dla Zadania) do Zadania
