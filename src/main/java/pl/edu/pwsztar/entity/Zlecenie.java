@@ -128,8 +128,12 @@ public class Zlecenie {
         return zadania;
     }
 
-    // lekka modyfikacja metody ustawiającej listę Zadań
     public void setZadania(List<Zadanie> zadania) {
+        this.zadania = zadania;
+    }
+
+    // dodanie metody ułatwiającej ustawienie listy Zadań dla Zlecenia
+    public void addZadania(List<Zadanie> zadania) {
         for (Zadanie zadanie: zadania) {
             zadanie.setZlecenie(this);
             this.zadania.add(zadanie);

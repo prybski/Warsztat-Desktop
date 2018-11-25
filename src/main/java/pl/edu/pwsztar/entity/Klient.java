@@ -23,8 +23,17 @@ public class Klient {
     @Column(name = "email", length = 50)
     private String email;
 
+    @Column(name = "haslo", length = 64)
+    private String haslo;
+
     @Column(name = "telefon", length = 15)
     private String telefon;
+
+    @Column(name = "hash", length = 64)
+    private String hash;
+
+    @Column(name = "jest_aktywowany")
+    private Byte jestAktywowany;
 
     // definicja relacji/mapowania (jednego Klienta do wielu Zleceń)
     @OneToMany(mappedBy = "klient", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -76,6 +85,14 @@ public class Klient {
         this.email = email;
     }
 
+    public String getHaslo() {
+        return haslo;
+    }
+
+    public void setHaslo(String haslo) {
+        this.haslo = haslo;
+    }
+
     public String getTelefon() {
         return telefon;
     }
@@ -84,12 +101,32 @@ public class Klient {
         this.telefon = telefon;
     }
 
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public Byte getJestAktywowany() {
+        return jestAktywowany;
+    }
+
+    public void setJestAktywowany(Byte jestAktywowany) {
+        this.jestAktywowany = jestAktywowany;
+    }
+
     public List<Zlecenie> getZlecenia() {
         return zlecenia;
     }
 
-    // lekka modyfikacja metody ustawiającej listę Zleceń
-    public void setZlecenia(List<Zlecenie> zlecenia, Pojazd pojazd) {
+    public void setZlecenia(List<Zlecenie> zlecenia) {
+        this.zlecenia = zlecenia;
+    }
+
+    // dodanie metody ułatwiającej ustawienie listy Zleceń dla Klienta i jego Pojazdu
+    public void addZlecenia(List<Zlecenie> zlecenia, Pojazd pojazd) {
         for (Zlecenie zlecenie: zlecenia) {
             zlecenie.setKlient(this);
             zlecenie.setPojazd(pojazd);
@@ -119,5 +156,19 @@ public class Klient {
     @Override
     public int hashCode() {
         return Objects.hash(idKlienta, imie, nazwisko, email, telefon);
+    }
+
+    @Override
+    public String toString() {
+        return "Klient {" +
+                "idKlienta = " + idKlienta +
+                ", imie = '" + imie + '\'' +
+                ", nazwisko = '" + nazwisko + '\'' +
+                ", email = '" + email + '\'' +
+                ", haslo = '" + haslo + '\'' +
+                ", telefon = '" + telefon + '\'' +
+                ", hash = '" + hash + '\'' +
+                ", jestAktywowany = " + jestAktywowany +
+                '}';
     }
 }

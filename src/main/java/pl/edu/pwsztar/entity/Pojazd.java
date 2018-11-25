@@ -100,8 +100,12 @@ public class Pojazd {
         return zlecenia;
     }
 
-    // lekka modyfikacja metody ustawiającej listę Zleceń
-    public void setZlecenia(List<Zlecenie> zlecenia, Klient klient) {
+    public void setZlecenia(List<Zlecenie> zlecenia) {
+        this.zlecenia = zlecenia;
+    }
+
+    // dodanie metody ułatwiającej ustawienie listy Zleceń dla Pojazdu i Klienta, do którego on należy
+    public void addZlecenia(List<Zlecenie> zlecenia, Klient klient) {
         for (Zlecenie zlecenie: zlecenia) {
             zlecenie.setPojazd(this);
             zlecenie.setKlient(klient);
