@@ -91,4 +91,13 @@ public class Zapotrzebowanie {
     public int hashCode() {
         return Objects.hash(idZapotrzebowania, ilosc, cena);
     }
+
+    @Override
+    public String toString() {
+        return "Zapotrzebowanie {" +
+                "idZapotrzebowania = " + idZapotrzebowania +
+                ", ilosc = " + ilosc +
+                ", cena = " + cena +
+                '}';
+    }
 }

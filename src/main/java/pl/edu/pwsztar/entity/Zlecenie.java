@@ -3,6 +3,7 @@ package pl.edu.pwsztar.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +44,10 @@ public class Zlecenie {
     // definicja relacji/mapowania (jednego Zlecenia do wielu Zadań)
     @OneToMany(mappedBy = "zlecenie", cascade = CascadeType.ALL)
     private List<Zadanie> zadania;
+
+    {
+        this.zadania = new ArrayList<>();
+    }
 
     public Zlecenie() {
     }
@@ -123,8 +128,18 @@ public class Zlecenie {
         return zadania;
     }
 
+    // lekka modyfikacja metody ustawiającej listę Zadań
     public void setZadania(List<Zadanie> zadania) {
-        this.zadania = zadania;
+        for (Zadanie zadanie: zadania) {
+            zadanie.setZlecenie(this);
+            this.zadania.add(zadanie);
+        }
+    }
+
+    // dodanie metody ułatwiającej przypisywanie Zadania do Zlecenia
+    public void addZadanie(Zadanie zadanie) {
+        zadanie.setZlecenie(this);
+        this.zadania.add(zadanie);
     }
 
     @Override
@@ -143,5 +158,17 @@ public class Zlecenie {
     @Override
     public int hashCode() {
         return Objects.hash(idZlecenia, opis, dataRozpoczecia, dataZakonczenia, rabat, cenaKoncowa);
+    }
+
+    @Override
+    public String toString() {
+        return "Zlecenie {" +
+                "idZlecenia = " + idZlecenia +
+                ", opis = '" + opis + '\'' +
+                ", dataRozpoczecia = " + dataRozpoczecia +
+                ", dataZakonczenia = " + dataZakonczenia +
+                ", rabat = " + rabat +
+                ", cenaKoncowa = " + cenaKoncowa +
+                '}';
     }
 }

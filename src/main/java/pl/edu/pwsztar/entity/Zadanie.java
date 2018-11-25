@@ -2,6 +2,7 @@ package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +35,10 @@ public class Zadanie {
     // definicja relacji/mapowania (jednego Zadania do wielu Zapotrzebowań)
     @OneToMany(mappedBy = "zadanie", cascade = CascadeType.ALL)
     private List<Zapotrzebowanie> zapotrzebowanie;
+
+    {
+        this.zapotrzebowanie = new ArrayList<>();
+    }
 
     public Zadanie() {
     }
@@ -97,8 +102,20 @@ public class Zadanie {
         return zapotrzebowanie;
     }
 
-    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie) {
-        this.zapotrzebowanie = zapotrzebowanie;
+    // lekka modyfikacja metody ustawiającej listę Zapotrzebowania
+    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie, Czesc czesc) {
+        for (Zapotrzebowanie zapotrzebowaniePojedyncze: zapotrzebowanie) {
+            zapotrzebowaniePojedyncze.setZadanie(this);
+            zapotrzebowaniePojedyncze.setCzesc(czesc);
+            this.zapotrzebowanie.add(zapotrzebowaniePojedyncze);
+        }
+    }
+
+    // dodanie metody ułatwiającej przypisywanie Zapotrzebowania (Części dla Zadania) do Zadania
+    public void addZapotrzebowanie(Zapotrzebowanie zapotrzebowanie, Czesc czesc) {
+        zapotrzebowanie.setZadanie(this);
+        zapotrzebowanie.setCzesc(czesc);
+        this.zapotrzebowanie.add(zapotrzebowanie);
     }
 
     @Override
@@ -116,5 +133,16 @@ public class Zadanie {
     @Override
     public int hashCode() {
         return Objects.hash(idZadania, czynnosc, przewidywanyCzas, jestZakonczone, koszt);
+    }
+
+    @Override
+    public String toString() {
+        return "Zadanie {" +
+                "idZadania = " + idZadania +
+                ", czynnosc = '" + czynnosc + '\'' +
+                ", przewidywanyCzas = '" + przewidywanyCzas + '\'' +
+                ", jestZakonczone = " + jestZakonczone +
+                ", koszt = " + koszt +
+                '}';
     }
 }

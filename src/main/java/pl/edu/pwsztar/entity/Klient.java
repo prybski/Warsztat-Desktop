@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,8 +27,12 @@ public class Klient {
     private String telefon;
 
     // definicja relacji/mapowania (jednego Klienta do wielu Zleceń)
-    @OneToMany(mappedBy = "klient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "klient", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Zlecenie> zlecenia;
+
+    {
+        zlecenia = new ArrayList<>();
+    }
 
     public Klient() {
     }
@@ -83,8 +88,20 @@ public class Klient {
         return zlecenia;
     }
 
-    public void setZlecenia(List<Zlecenie> zlecenia) {
-        this.zlecenia = zlecenia;
+    // lekka modyfikacja metody ustawiającej listę Zleceń
+    public void setZlecenia(List<Zlecenie> zlecenia, Pojazd pojazd) {
+        for (Zlecenie zlecenie: zlecenia) {
+            zlecenie.setKlient(this);
+            zlecenie.setPojazd(pojazd);
+            this.zlecenia.add(zlecenie);
+        }
+    }
+
+    // dodanie metody ułatwiającej przypisywanie Zlecenia do Klienta oraz Pojazdu
+    public void addZlecenie(Zlecenie zlecenie, Pojazd pojazd) {
+        zlecenie.setKlient(this);
+        zlecenie.setPojazd(pojazd);
+        this.zlecenia.add(zlecenie);
     }
 
     @Override

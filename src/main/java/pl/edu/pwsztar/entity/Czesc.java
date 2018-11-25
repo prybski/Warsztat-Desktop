@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +26,10 @@ public class Czesc {
     // definicja relacji/mapowania (jednej Części do wielu Zapotrzebowań)
     @OneToMany(mappedBy = "czesc", cascade = CascadeType.ALL)
     private List<Zapotrzebowanie> zapotrzebowanie;
+
+    {
+        this.zapotrzebowanie = new ArrayList<>();
+    }
 
     public Czesc() {
     }
@@ -71,8 +76,20 @@ public class Czesc {
         return zapotrzebowanie;
     }
 
-    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie) {
-        this.zapotrzebowanie = zapotrzebowanie;
+    // lekka modyfikacja metody ustawiającej listę Zapotrzebowania
+    public void setZapotrzebowanie(List<Zapotrzebowanie> zapotrzebowanie, Zadanie zadanie) {
+        for (Zapotrzebowanie zapotrzebowaniePojedyncze: zapotrzebowanie) {
+            zapotrzebowaniePojedyncze.setCzesc(this);
+            zapotrzebowaniePojedyncze.setZadanie(zadanie);
+            this.zapotrzebowanie.add(zapotrzebowaniePojedyncze);
+        }
+    }
+
+    // dodanie metody ułatwiającej przypisywanie Zapotrzebowania (Zadania dla Części) do Części
+    public void addZapotrzebowanie(Zapotrzebowanie zapotrzebowanie, Zadanie zadanie) {
+        zapotrzebowanie.setCzesc(this);
+        zapotrzebowanie.setZadanie(zadanie);
+        this.zapotrzebowanie.add(zapotrzebowanie);
     }
 
     @Override
@@ -89,5 +106,15 @@ public class Czesc {
     @Override
     public int hashCode() {
         return Objects.hash(idCzesci, nazwa, szczegoly, numerKatalogowy);
+    }
+
+    @Override
+    public String toString() {
+        return "Czesc {" +
+                "idCzesci = " + idCzesci +
+                ", nazwa = '" + nazwa + '\'' +
+                ", szczegoly = '" + szczegoly + '\'' +
+                ", numerKatalogowy = '" + numerKatalogowy + '\'' +
+                '}';
     }
 }

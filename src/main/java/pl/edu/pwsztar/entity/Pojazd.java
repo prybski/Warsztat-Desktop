@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,10 @@ public class Pojazd {
     // definicja relacji/mapowania (jednego Pojazdu do wielu Zleceń)
     @OneToMany(mappedBy = "pojazd", cascade = CascadeType.ALL)
     private List<Zlecenie> zlecenia;
+
+    {
+        zlecenia = new ArrayList<>();
+    }
 
     public Pojazd() {
     }
@@ -95,8 +100,20 @@ public class Pojazd {
         return zlecenia;
     }
 
-    public void setZlecenia(List<Zlecenie> zlecenia) {
-        this.zlecenia = zlecenia;
+    // lekka modyfikacja metody ustawiającej listę Zleceń
+    public void setZlecenia(List<Zlecenie> zlecenia, Klient klient) {
+        for (Zlecenie zlecenie: zlecenia) {
+            zlecenie.setPojazd(this);
+            zlecenie.setKlient(klient);
+            this.zlecenia.add(zlecenie);
+        }
+    }
+
+    // dodanie metody ułatwiającej przypisywanie Zlecenia do Pojazdu oraz Klienta
+    public void addZlecenie(Zlecenie zlecenie, Klient klient) {
+        zlecenie.setPojazd(this);
+        zlecenie.setKlient(klient);
+        this.zlecenia.add(zlecenie);
     }
 
     @Override
@@ -115,5 +132,17 @@ public class Pojazd {
     @Override
     public int hashCode() {
         return Objects.hash(idPojazdu, marka, model, rokProdukcji, numerVin, pojemnoscSilnika);
+    }
+
+    @Override
+    public String toString() {
+        return "Pojazd {" +
+                "idPojazdu = " + idPojazdu +
+                ", marka = '" + marka + '\'' +
+                ", model = '" + model + '\'' +
+                ", rokProdukcji = " + rokProdukcji +
+                ", numerVin = '" + numerVin + '\'' +
+                ", pojemnoscSilnika = " + pojemnoscSilnika +
+                '}';
     }
 }
