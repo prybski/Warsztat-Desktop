@@ -45,13 +45,6 @@
             <artifactId>controlsfx</artifactId>
             <version>8.40.14</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.zenjava</groupId>
-            <artifactId>javafx-maven-plugin</artifactId>
-            <version>8.8.3</version>
-            <type>maven-plugin</type>
-        </dependency>
     </dependencies>
 
     <build>
@@ -77,6 +70,13 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>pl.edu.pwsztar.App</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
@@ -85,14 +85,6 @@
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.zenjava</groupId>
-                    <artifactId>javafx-maven-plugin</artifactId>
-                    <version>8.8.3</version>
-                    <configuration>
-                        <mainClass>pl.edu.pwsztar.App</mainClass>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

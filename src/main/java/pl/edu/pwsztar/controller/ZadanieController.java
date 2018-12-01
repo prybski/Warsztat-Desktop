@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,14 +31,14 @@ public class ZadanieController implements Initializable {
 
         if (!nazwaZadania.getText().isEmpty()) {
             try {
-                Files.write(Paths.get(getClass().getResource("/BAZA_ZADAN.txt").toURI()), (nazwaZadania.getText() + "\n").getBytes(), StandardOpenOption.APPEND);
+                Files.write(Paths.get(Paths.get(Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()).getParent() + "/txt/BAZA_ZADAN.txt").toUri()), (nazwaZadania.getText() + "\n").getBytes(), StandardOpenOption.APPEND);
 
                 informationDialog.setContentText("Udało się dodać nowe zadanie!");
                 informationDialog.setTitle("Sukces!");
                 informationDialog.setHeaderText("Sukces!");
                 informationDialog.setResult(ButtonType.OK);
                 informationDialog.showAndWait();
-            } catch (IOException | URISyntaxException e) {
+            } catch (IOException e) {
                 errorDialog.setHeaderText("Błąd!");
                 errorDialog.setTitle("Błąd!");
                 errorDialog.setContentText("Nastąpił problem podczas odczytu z pliku!");
