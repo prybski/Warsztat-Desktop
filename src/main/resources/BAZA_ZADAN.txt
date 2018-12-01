@@ -1,0 +1,95 @@
+Wymiana świec zapłonowych (1 szt.)
+Wymiana świec żarowych (1 szt.)
+Wymiana rozrusznika
+Naprawa rozrusznika z demontażem
+Wymiana alternatora
+Naprawa alternatora z demontażem
+Wymiana przewodów zapłonowych
+Wymiana akumulatora
+Wymiana żarówki
+Montaż radia samochodowego
+Wymiana klocków hamulcowych - przód
+Wymiana klocków hamulcowych - tył
+Wymiana szczęk hamulcowych (jedno koło)
+Wymiana tarcz hamulcowych (jedno koło)
+Zacisk hamulcowy przód - wymiana (1 szt.)
+Zacisk hamulcowy tył - wymiana (1 szt.)
+Bęben hamulcowy - wymiana (1 szt.)
+Wymiana cylinderka hamulca
+Czujnik ABS - wymiana
+Korektor hamulcowy - wymiana (1 sztuka)
+Pompa hamulcowa - wymiana
+Pompa podciśnieniowego wspomagania - wymiana
+Przewód hamulcowy metalowy - wymiana
+Przewód hamulcowy elastyczny - wymiana
+Linka hamulca ręcznego - wymiana
+Hamulec ręczny - regulacja
+Wymiana płynu hamulcowego (wraz z płynem)
+Rozruszanie - czyszczenie tłoczków hamulcowych za jedna stronę
+Rozruszanie - czyszczenie zacisków hamulcowych za jedną stronę
+Ustawianie geometrii kół
+Tulejki stabilizatora przedniego - wymiana
+Tulejki stabilizatora tylnego - wymiana
+Łącznik stabilizatora przedniego - wymiana
+Łącznik stabilizatora tylnego - wymiana
+Wymiana wahacza - przód
+Tuleja główna wahacza tylnego - wymiana
+Sworzeo wahacza nitowany lub wciskany - wymiana
+Sworzeo wahacza przykręcany - wymianaWymiana drążka kierowniczego - za jedna stronę
+Wymiana koocówki drążka kierowniczego
+Przekładnia kierownicza mechaniczna - wymiana
+Przekładnia kierownicza wspomaganie - wymiana
+Osłona przekładni kierowniczej - wymiana
+Amortyzator przód - wymiana (sztuka)
+Amortyzator tył - wymiana (sztuka)
+Sprężyna zawieszenia przód - wymiana (sztuka)
+Sprężyna zawieszenia tył - wymiana (sztuka)
+Łożysko koła przód - wymiana (1 sztuka)
+Łożysko koła tył - wymiana (1 sztuka)
+Wymiana paska klinowego
+Regulacja naciągu paska klinowego
+Wymiana paska rozrządu(zaleznie od typu silnika)
+Wymiana rozrządu (zależnie od typu silnika)
+Regulowanie zaworów
+Wymiana sprzęgła
+Wymiana pompy paliwa
+Wymiana termostatu
+Wymiana pompy wody
+Wymiana uszczelki pod głowicą
+Wymiana uszczelki miski oleju
+Wymiana przegubu napędowego zewn.
+Wymiana przegubu napędowego wewn.
+Wymiana osłony przegubu napędowego
+Wymiana tłumika koocowego
+Wymiana tłumika środkowego
+Wymiana sondy lambda
+Wymiana filtra powietrza
+Wymiana filtra kabinowego
+Wymiana filtra paliwa
+Wymiana oleju silnikowego i filtra
+Wymiana oleju w skrzyni biegów
+Wymiana płynu w chłodnicy
+Wymiana płynu hamulcowego
+Test komputerowy odczyt kodów błędów plus ich wykasowanie
+Przegląd okresowy podstawowy
+Przegląd okresowy - duży
+Kontrola samochodu przed zakupem
+Regulacja geometrii kół, za każdy punkt regulowany
+Sprawdzenie ustawienia świateł
+Sprawdzenie skuteczności i równomierności sił hamowania obu osi
+Test amortyzatorów
+Regulacja hamulca ręcznego
+Analiza spalin
+Sprężanie benzyna 1 cylinder
+Sprężanie diesel 1 cylinder
+Naprawa i łatanie uszkodzonej opony
+Uszczelnianie opony/szt
+Pompowanie koła azotem
+Przekładanie opon - felgi stalowe (4szt.)
+Przekładanie opon - felgi aluminiowe (4szt.)
+Prostowanie felg stalowych za 1 szt.
+Prostowanie felg aluminiowych za 1 szt.
+Wyważanie komputerowo opony z felgą stalową 1 szt.
+Wyważanie komputerowo opony z felgą aluminiową 1 szt.
+Przełożenie jednego koła
+Sezonowe przechowywanie opon (4szt.)

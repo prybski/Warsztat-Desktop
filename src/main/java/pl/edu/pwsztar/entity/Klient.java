@@ -46,11 +46,12 @@ public class Klient {
     public Klient() {
     }
 
-    public Klient(String imie, String nazwisko, String email, String telefon) {
+    public Klient(String imie, String nazwisko, String email, String telefon, Byte jestAktywowany) {
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.email = email;
         this.telefon = telefon;
+        this.jestAktywowany = jestAktywowany;
     }
 
     public int getIdKlienta() {
@@ -150,12 +151,15 @@ public class Klient {
                 Objects.equals(imie, klient.imie) &&
                 Objects.equals(nazwisko, klient.nazwisko) &&
                 Objects.equals(email, klient.email) &&
-                Objects.equals(telefon, klient.telefon);
+                Objects.equals(haslo, klient.haslo) &&
+                Objects.equals(telefon, klient.telefon) &&
+                Objects.equals(hash, klient.hash) &&
+                Objects.equals(jestAktywowany, klient.jestAktywowany);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idKlienta, imie, nazwisko, email, telefon);
+        return Objects.hash(idKlienta, imie, nazwisko, email, haslo, telefon, hash, jestAktywowany);
     }
 
     @Override

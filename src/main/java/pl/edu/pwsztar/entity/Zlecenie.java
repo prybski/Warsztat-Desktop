@@ -2,6 +2,7 @@ package pl.edu.pwsztar.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ public class Zlecenie {
 
     @Column(name = "opis", length = 80)
     private String opis;
+
+    @Column(name = "data_ustalona")
+    private Date dataUstalona;
 
     @Column(name = "data_rozpoczecia")
     private Timestamp dataRozpoczecia;
@@ -52,8 +56,9 @@ public class Zlecenie {
     public Zlecenie() {
     }
 
-    public Zlecenie(String opis, Timestamp dataRozpoczecia, Timestamp dataZakonczenia, BigDecimal rabat, BigDecimal cenaKoncowa) {
+    public Zlecenie(String opis, Date dataUstalona, Timestamp dataRozpoczecia, Timestamp dataZakonczenia, BigDecimal rabat, BigDecimal cenaKoncowa) {
         this.opis = opis;
+        this.dataUstalona = dataUstalona;
         this.dataRozpoczecia = dataRozpoczecia;
         this.dataZakonczenia = dataZakonczenia;
         this.rabat = rabat;
@@ -74,6 +79,14 @@ public class Zlecenie {
 
     public void setOpis(String opis) {
         this.opis = opis;
+    }
+
+    public Date getDataUstalona() {
+        return dataUstalona;
+    }
+
+    public void setDataUstalona(Date dataUstalona) {
+        this.dataUstalona = dataUstalona;
     }
 
     public Timestamp getDataRozpoczecia() {
@@ -153,6 +166,7 @@ public class Zlecenie {
         Zlecenie zlecenie = (Zlecenie) o;
         return idZlecenia == zlecenie.idZlecenia &&
                 Objects.equals(opis, zlecenie.opis) &&
+                Objects.equals(dataUstalona, zlecenie.dataUstalona) &&
                 Objects.equals(dataRozpoczecia, zlecenie.dataRozpoczecia) &&
                 Objects.equals(dataZakonczenia, zlecenie.dataZakonczenia) &&
                 Objects.equals(rabat, zlecenie.rabat) &&
@@ -161,7 +175,7 @@ public class Zlecenie {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idZlecenia, opis, dataRozpoczecia, dataZakonczenia, rabat, cenaKoncowa);
+        return Objects.hash(idZlecenia, opis, dataUstalona, dataRozpoczecia, dataZakonczenia, rabat, cenaKoncowa);
     }
 
     @Override
@@ -169,6 +183,7 @@ public class Zlecenie {
         return "Zlecenie {" +
                 "idZlecenia = " + idZlecenia +
                 ", opis = '" + opis + '\'' +
+                ", dataUstalona = " + dataUstalona +
                 ", dataRozpoczecia = " + dataRozpoczecia +
                 ", dataZakonczenia = " + dataZakonczenia +
                 ", rabat = " + rabat +
