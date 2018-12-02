@@ -164,15 +164,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client {" +
-                "clientId = " + clientId +
-                ", firstName = '" + firstName + '\'' +
-                ", lastName = '" + lastName + '\'' +
-                ", email = '" + email + '\'' +
-                ", password = '" + password + '\'' +
-                ", phoneNumber = '" + phoneNumber + '\'' +
-                ", hash = '" + hash + '\'' +
-                ", isActivated = " + isActivated +
-                '}';
+        return clientId + ": " + firstName + " " + lastName + ", email: " + email;
     }
 }

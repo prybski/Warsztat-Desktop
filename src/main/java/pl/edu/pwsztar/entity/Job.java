@@ -56,13 +56,9 @@ public class Job {
     public Job() {
     }
 
-    public Job(String description, Date fixedDate, Timestamp startDate, Timestamp endDate, BigDecimal discount, BigDecimal finalPrice) {
+    public Job(String description, Date fixedDate) {
         this.description = description;
         this.fixedDate = fixedDate;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.discount = discount;
-        this.finalPrice = finalPrice;
     }
 
     public int getJobId() {

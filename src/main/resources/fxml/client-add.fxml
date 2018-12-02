@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="325.0" maxWidth="285.0" minHeight="325.0" minWidth="285.0" prefHeight="325.0" prefWidth="285.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.ClientAddController">
+    <TextField fx:id="firstName" layoutX="35.0" layoutY="41.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+    <Text layoutX="35.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imię" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="15.0" />
+    <Text layoutX="35.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwisko" AnchorPane.leftAnchor="20.0" />
+    <TextField fx:id="lastName" layoutX="35.0" layoutY="107.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+    <Text layoutX="35.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" AnchorPane.leftAnchor="20.0" />
+    <TextField fx:id="email" layoutX="35.0" layoutY="175.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+    <Text layoutX="35.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefon" AnchorPane.leftAnchor="20.0" />
+    <TextField fx:id="phoneNumber" layoutX="35.0" layoutY="239.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+    <Button layoutX="175.0" layoutY="285.0" mnemonicParsing="false" onAction="#addClient" text="Dodaj klienta" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0" />
+</AnchorPane>

@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import pl.edu.pwsztar.util.AlertUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,31 +27,19 @@ public class TaskAddController implements Initializable {
     }
 
     public void addTask(ActionEvent actionEvent) {
-        Alert informationDialog = new Alert(Alert.AlertType.INFORMATION);
-        Alert errorDialog = new Alert(Alert.AlertType.ERROR);
-
         if (!taskName.getText().isEmpty()) {
             try {
                 Files.write(Paths.get(Paths.get(Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()).getParent() + "/txt/BAZA_ZADAN.txt").toUri()), (taskName.getText() + "\n").getBytes(), StandardOpenOption.APPEND);
 
-                informationDialog.setContentText("Udało się dodać nowe zadanie!");
-                informationDialog.setTitle("Sukces!");
-                informationDialog.setHeaderText("Sukces!");
-                informationDialog.setResult(ButtonType.OK);
-                informationDialog.showAndWait();
+                AlertUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Sukces!", ButtonType.OK,
+                        "Udało się dodać nowe zadanie!","Sukces!");
             } catch (IOException e) {
-                errorDialog.setHeaderText("Błąd!");
-                errorDialog.setTitle("Błąd!");
-                errorDialog.setContentText("Nastąpił problem podczas odczytu z pliku!");
-                errorDialog.setResult(ButtonType.OK);
-                errorDialog.showAndWait();
+                AlertUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", ButtonType.OK,
+                        "Nastąpił problem podczas odczytu z pliku!", "Błąd!");
             }
         } else {
-            errorDialog.setHeaderText("Błąd!");
-            errorDialog.setTitle("Błąd!");
-            errorDialog.setContentText("Proszę wprowadzić nazwę zadania!");
-            errorDialog.setResult(ButtonType.OK);
-            errorDialog.showAndWait();
+            AlertUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", ButtonType.OK,
+                    "Proszę wprowadzić nazwę zadania!", "Błąd!");
         }
     }
 }
