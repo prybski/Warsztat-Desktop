@@ -20,9 +20,9 @@ public class MainController implements Initializable {
 
     }
 
-    public void showAddZadanieOnAction(ActionEvent actionEvent) {
+    public void showAddTask(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/zadanieAddView.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/task-add.fxml"));
 
         try {
             AnchorPane anchorPane = loader.load();

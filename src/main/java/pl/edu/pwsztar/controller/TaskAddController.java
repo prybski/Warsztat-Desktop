@@ -15,23 +15,23 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ResourceBundle;
 
-public class ZadanieController implements Initializable {
+public class TaskAddController implements Initializable {
 
     @FXML
-    private TextField nazwaZadania;
+    private TextField taskName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        nazwaZadania.setTooltip(new Tooltip("Wprowadź nazwę zadania"));
+        taskName.setTooltip(new Tooltip("Wprowadź nazwę zadania"));
     }
 
-    public void addZadanieOnAction(ActionEvent actionEvent) {
+    public void addTask(ActionEvent actionEvent) {
         Alert informationDialog = new Alert(Alert.AlertType.INFORMATION);
         Alert errorDialog = new Alert(Alert.AlertType.ERROR);
 
-        if (!nazwaZadania.getText().isEmpty()) {
+        if (!taskName.getText().isEmpty()) {
             try {
-                Files.write(Paths.get(Paths.get(Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()).getParent() + "/txt/BAZA_ZADAN.txt").toUri()), (nazwaZadania.getText() + "\n").getBytes(), StandardOpenOption.APPEND);
+                Files.write(Paths.get(Paths.get(Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()).getParent() + "/txt/BAZA_ZADAN.txt").toUri()), (taskName.getText() + "\n").getBytes(), StandardOpenOption.APPEND);
 
                 informationDialog.setContentText("Udało się dodać nowe zadanie!");
                 informationDialog.setTitle("Sukces!");

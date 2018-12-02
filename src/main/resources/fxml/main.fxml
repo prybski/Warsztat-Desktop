@@ -15,7 +15,7 @@
             <MenuItem mnemonicParsing="false" text="Dodaj zlecenie" />
         </Menu>
         <Menu mnemonicParsing="false" text="Edycja">
-            <MenuItem mnemonicParsing="false" onAction="#showAddZadanieOnAction" text="Dodaj zadanie" />
+            <MenuItem mnemonicParsing="false" onAction="#showAddTask" text="Dodaj zadanie" />
         </Menu>
         <Menu mnemonicParsing="false" text="Pomoc">
             <MenuItem mnemonicParsing="false" text="O aplikacji" />

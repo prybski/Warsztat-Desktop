@@ -14,11 +14,11 @@
         <!--<property name="hbm2ddl.auto">update</property>-->
         <property name="current_session_context_class">thread</property>
 
-        <mapping class="pl.edu.pwsztar.entity.Klient"/>
-        <mapping class="pl.edu.pwsztar.entity.Pojazd"/>
-        <mapping class="pl.edu.pwsztar.entity.Zlecenie"/>
-        <mapping class="pl.edu.pwsztar.entity.Zadanie"/>
-        <mapping class="pl.edu.pwsztar.entity.Zapotrzebowanie"/>
-        <mapping class="pl.edu.pwsztar.entity.Czesc"/>
+        <mapping class="pl.edu.pwsztar.entity.Client"/>
+        <mapping class="pl.edu.pwsztar.entity.Vehicle"/>
+        <mapping class="pl.edu.pwsztar.entity.Job"/>
+        <mapping class="pl.edu.pwsztar.entity.Task"/>
+        <mapping class="pl.edu.pwsztar.entity.Demand"/>
+        <mapping class="pl.edu.pwsztar.entity.Part"/>
     </session-factory>
 </hibernate-configuration>
