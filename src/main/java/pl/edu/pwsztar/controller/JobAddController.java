@@ -10,8 +10,8 @@ import org.hibernate.cfg.Configuration;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
-import pl.edu.pwsztar.repository.ClientRepository;
-import pl.edu.pwsztar.repository.VehicleRepository;
+import pl.edu.pwsztar.service.ClientService;
+import pl.edu.pwsztar.service.VehicleService;
 import pl.edu.pwsztar.util.AlertUtil;
 
 import java.net.URL;
@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class JobAddController implements Initializable {
+
+    private ClientService clientService;
+    private VehicleService vehicleService;
 
     @FXML
     private TextArea description;
@@ -33,41 +36,30 @@ public class JobAddController implements Initializable {
     @FXML
     private ChoiceBox<Vehicle> vehicles;
 
+    {
+        clientService = new ClientService();
+        vehicleService = new VehicleService();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory()) {
-            try (Session session = sessionFactory.getCurrentSession()) {
-                session.beginTransaction();
+        List<Client> clientsFromDb = clientService.findAll();
 
-                List<Client> clientsFromDb = ClientRepository.getAll(session);
+        clients.getItems().setAll(clientsFromDb);
+        clients.setValue(clientsFromDb.get(0));
 
-                clients.getItems().setAll(clientsFromDb);
-                clients.setValue(clientsFromDb.get(0));
+        List<Vehicle> vehiclesFromDb = vehicleService.findByClient(clientsFromDb.get(0));
 
-                List<Vehicle> vehiclesFromDb = VehicleRepository.getByClient(session, clientsFromDb.get(0));
-
-                vehicles.getItems().setAll(vehiclesFromDb);
-                vehicles.setValue(vehiclesFromDb.get(0));
-
-                session.getTransaction().commit();
-            }
-        }
+        vehicles.getItems().setAll(vehiclesFromDb);
+        vehicles.setValue(vehiclesFromDb.get(0));
 
         clients.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((value, oldValue, newValue) -> {
-                    try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory()) {
-                        try (Session session = sessionFactory.getCurrentSession()) {
-                            session.beginTransaction();
+                    List<Vehicle> vehiclesUpdated = vehicleService.findByClient(newValue);
 
-                            List<Vehicle> vehiclesFromDb = VehicleRepository.getByClient(session, newValue);
-
-                            vehicles.getItems().setAll(vehiclesFromDb);
-                            vehicles.setValue(vehiclesFromDb.get(0));
-
-                            session.getTransaction().commit();
-                        }
-                    }
+                    vehicles.getItems().setAll(vehiclesUpdated);
+                    vehicles.setValue(vehiclesUpdated.get(0));
                 });
     }
 
