@@ -13,8 +13,8 @@
     <Text layoutX="20.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data ustalona" AnchorPane.leftAnchor="20.0" />
     <DatePicker fx:id="fixedDate" layoutX="20.0" layoutY="189.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="200.0" />
     <Text layoutX="20.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybierz klienta" AnchorPane.leftAnchor="20.0" />
-    <ChoiceBox fx:id="clients" layoutX="20.0" layoutY="257.0" prefWidth="150.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="200.0" />
     <Text layoutX="20.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybierz pojazd" />
-    <ChoiceBox fx:id="vehicles" layoutX="21.0" layoutY="325.0" prefWidth="150.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="200.0" />
+    <ChoiceBox fx:id="vehicles" layoutX="21.0" layoutY="325.0" prefWidth="150.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="100.0" />
     <Button layoutX="289.0" layoutY="392.0" mnemonicParsing="false" onAction="#addJob" text="Dodaj zlecenie" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0" />
+   <ChoiceBox fx:id="clients" layoutX="20.0" layoutY="258.0" prefWidth="150.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="100.0" />
 </AnchorPane>

@@ -7,10 +7,11 @@ import javafx.scene.control.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
+import pl.edu.pwsztar.repository.ClientRepository;
+import pl.edu.pwsztar.repository.VehicleRepository;
 import pl.edu.pwsztar.util.AlertUtil;
 
 import java.net.URL;
@@ -38,14 +39,12 @@ public class JobAddController implements Initializable {
             try (Session session = sessionFactory.getCurrentSession()) {
                 session.beginTransaction();
 
-                Query<Client> clientQuery = session.createQuery("from Client", Client.class);
-                List<Client> clientsFromDb = clientQuery.getResultList();
+                List<Client> clientsFromDb = ClientRepository.getAll(session);
 
                 clients.getItems().setAll(clientsFromDb);
                 clients.setValue(clientsFromDb.get(0));
 
-                Query<Vehicle> vehicleQuery = session.createQuery("from Vehicle", Vehicle.class);
-                List<Vehicle> vehiclesFromDb = vehicleQuery.getResultList();
+                List<Vehicle> vehiclesFromDb = VehicleRepository.getByClient(session, clientsFromDb.get(0));
 
                 vehicles.getItems().setAll(vehiclesFromDb);
                 vehicles.setValue(vehiclesFromDb.get(0));
@@ -53,9 +52,27 @@ public class JobAddController implements Initializable {
                 session.getTransaction().commit();
             }
         }
+
+        clients.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((value, oldValue, newValue) -> {
+                    try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory()) {
+                        try (Session session = sessionFactory.getCurrentSession()) {
+                            session.beginTransaction();
+
+                            List<Vehicle> vehiclesFromDb = VehicleRepository.getByClient(session, newValue);
+
+                            vehicles.getItems().setAll(vehiclesFromDb);
+                            vehicles.setValue(vehiclesFromDb.get(0));
+
+                            session.getTransaction().commit();
+                        }
+                    }
+                });
     }
 
     public void addJob(ActionEvent actionEvent) {
+        System.out.println(Date.valueOf(fixedDate.getValue()));
         try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory()) {
             try (Session session = sessionFactory.getCurrentSession()) {
                 session.beginTransaction();

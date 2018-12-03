@@ -7,10 +7,13 @@ import javafx.scene.control.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Vehicle;
+import pl.edu.pwsztar.repository.ClientRepository;
 import pl.edu.pwsztar.util.AlertUtil;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class VehicleAddController implements Initializable {
@@ -30,6 +33,9 @@ public class VehicleAddController implements Initializable {
     @FXML
     private Spinner<Double> engineCapacity;
 
+    @FXML
+    private ChoiceBox<Client> clients;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         SpinnerValueFactory<Integer> productionYearValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2100, 2000);
@@ -37,6 +43,19 @@ public class VehicleAddController implements Initializable {
 
         SpinnerValueFactory<Double> engineCapacityValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 6.0, 0.6, 0.1);
         engineCapacity.setValueFactory(engineCapacityValueFactory);
+
+        try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory()) {
+            try (Session session = sessionFactory.getCurrentSession()) {
+                session.beginTransaction();
+
+                List<Client> clientsFromDb = ClientRepository.getAll(session);
+
+                clients.getItems().setAll(clientsFromDb);
+                clients.setValue(clientsFromDb.get(0));
+
+                session.getTransaction().commit();
+            }
+        }
     }
 
     public void addVehicle(ActionEvent actionEvent) {
@@ -45,6 +64,7 @@ public class VehicleAddController implements Initializable {
                 session.beginTransaction();
 
                 Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue());
+                vehicle.setClient(clients.getValue());
 
                 session.save(vehicle);
 

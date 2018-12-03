@@ -39,8 +39,13 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Job> jobs;
 
+    // definicja relacji/mapowania (jednego Klienta do wielu Pojazdów)
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Vehicle> vehicles;
+
     {
         jobs = new ArrayList<>();
+        vehicles = new ArrayList<>();
     }
 
     public Client() {
@@ -126,6 +131,14 @@ public class Client {
         this.jobs = jobs;
     }
 
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
     // dodanie metody ułatwiającej ustawienie listy Zleceń dla Klienta i jego Pojazdu
     public void addJobs(List<Job> jobs, Vehicle vehicle) {
         for (Job job: jobs) {
@@ -140,6 +153,20 @@ public class Client {
         job.setClient(this);
         job.setVehicle(vehicle);
         this.jobs.add(job);
+    }
+
+    // dodanie metody ułatwiającej ustawienie listy Pojazdów dla Klienta
+    public void addJobs(List<Vehicle> vehicles) {
+        for (Vehicle vehicle: vehicles) {
+            vehicle.setClient(this);
+            this.vehicles.add(vehicle);
+        }
+    }
+
+    // dodanie metody ułatwiającej przypisywanie Pojazdu do Klienta
+    public void addJob(Vehicle vehicle) {
+        vehicle.setClient(this);
+        this.vehicles.add(vehicle);
     }
 
     @Override
