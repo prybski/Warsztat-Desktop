@@ -14,18 +14,13 @@ public class ClientService implements ClientDAO {
         clientRepository = new ClientRepository();
     }
 
-    // gettery i settery
-    public static ClientRepository getClientRepository() {
-        return clientRepository;
-    }
-
     @Override
     public List<Client> findAll() {
-        clientRepository.openCurrentSession();
+        clientRepository.getSessionFactoryManager().openCurrentSession();
 
         List<Client> clients = clientRepository.findAll();
 
-        clientRepository.closeCurrentSession();
+        clientRepository.getSessionFactoryManager().closeCurrentSession();
 
         return clients;
     }

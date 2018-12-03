@@ -17,22 +17,22 @@ public class VehicleService implements VehicleDAO {
 
     @Override
     public List<Vehicle> findAll() {
-        vehicleRepository.openCurrentSession();
+        vehicleRepository.getSessionFactoryManager().openCurrentSession();
 
         List<Vehicle> vehicles = vehicleRepository.findAll();
 
-        vehicleRepository.closeCurrentSession();
+        vehicleRepository.getSessionFactoryManager().closeCurrentSession();
 
         return vehicles;
     }
 
     @Override
     public List<Vehicle> findByClient(Client client) {
-        vehicleRepository.openCurrentSession();
+        vehicleRepository.getSessionFactoryManager().openCurrentSession();
 
         List<Vehicle> vehicles = vehicleRepository.findByClient(client);
 
-        vehicleRepository.closeCurrentSession();
+        vehicleRepository.getSessionFactoryManager().closeCurrentSession();
 
         return vehicles;
     }
