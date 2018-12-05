@@ -62,7 +62,7 @@ public class VehicleAddController implements Initializable {
                 session.beginTransaction();
 
                 Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue());
-                vehicle.setClient(clients.getValue());
+                //vehicle.setClient(clients.getValue());
 
                 session.save(vehicle);
 

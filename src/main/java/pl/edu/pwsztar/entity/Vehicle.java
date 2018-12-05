@@ -33,11 +33,6 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Job> jobs;
 
-    // definicja relacji/mapowania (wielu Pojazdów do jednego Klienta)
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "client_id")
-    private Client client;
-
     {
         jobs = new ArrayList<>();
     }
@@ -107,14 +102,6 @@ public class Vehicle {
 
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     // dodanie metody ułatwiającej ustawienie listy Zleceń dla Pojazdu i Klienta, do którego on należy
