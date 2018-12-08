@@ -18,24 +18,25 @@ public class VehicleRepository implements VehicleDAO {
 
     @Override
     public List<Vehicle> findAll() {
-        Query<Vehicle> vehicleQuery = sessionFactoryManager.getCurrentSession().createQuery("from Vehicle", Vehicle.class);
+        sessionFactoryManager.openCurrentSession();
 
-        return vehicleQuery.getResultList();
+        Query<Vehicle> vehicleQuery = sessionFactoryManager.getCurrentSession().createQuery("from Vehicle", Vehicle.class);
+        List<Vehicle> vehiclesFromDb = vehicleQuery.getResultList();
+
+        sessionFactoryManager.closeCurrentSession();
+
+        return vehiclesFromDb;
     }
 
     @Override
     public List<Vehicle> findByClient(Client client) {
-        Query<Vehicle> vehicleQuery = sessionFactoryManager.getCurrentSession().createQuery("from Vehicle where client = :client", Vehicle.class);
-        vehicleQuery.setParameter("client", client);
+        sessionFactoryManager.openCurrentSession();
 
-        return vehicleQuery.getResultList();
-    }
+        Query<Vehicle> vehicleQuery = sessionFactoryManager.getCurrentSession().createQuery("from Vehicle", Vehicle.class);
+        List<Vehicle> vehiclesFromDb = vehicleQuery.getResultList();
 
-    public SessionFactoryManager getSessionFactoryManager() {
-        return sessionFactoryManager;
-    }
+        sessionFactoryManager.closeCurrentSession();
 
-    public void setSessionFactoryManager(SessionFactoryManager sessionFactoryManager) {
-        this.sessionFactoryManager = sessionFactoryManager;
+        return vehiclesFromDb;
     }
 }

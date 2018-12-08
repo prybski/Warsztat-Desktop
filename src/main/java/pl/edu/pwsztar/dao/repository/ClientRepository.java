@@ -17,16 +17,13 @@ public class ClientRepository implements ClientDAO {
 
     @Override
     public List<Client> findAll() {
+        sessionFactoryManager.openCurrentSession();
+
         Query<Client> clientQuery = sessionFactoryManager.getCurrentSession().createQuery("from Client", Client.class);
+        List<Client> clientsFromDb = clientQuery.getResultList();
 
-        return clientQuery.getResultList();
-    }
+        sessionFactoryManager.closeCurrentSession();
 
-    public SessionFactoryManager getSessionFactoryManager() {
-        return sessionFactoryManager;
-    }
-
-    public void setSessionFactoryManager(SessionFactoryManager sessionFactoryManager) {
-        this.sessionFactoryManager = sessionFactoryManager;
+        return clientsFromDb;
     }
 }

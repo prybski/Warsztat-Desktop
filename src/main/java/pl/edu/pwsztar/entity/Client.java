@@ -23,17 +23,11 @@ public class Client {
     @Column(name = "email", length = 50)
     private String email;
 
-    @Column(name = "password", length = 64)
+    @Column(name = "password", length = 60)
     private String password;
 
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
-
-    @Column(name = "hash", length = 64)
-    private String hash;
-
-    @Column(name = "is_activated")
-    private Byte isActivated;
 
     // definicja relacji/mapowania (jednego Klienta do wielu Zleceń)
     @OneToMany(mappedBy = "client", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -46,12 +40,11 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String email, String phoneNumber, Byte isActivated) {
+    public Client(String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.isActivated = isActivated;
     }
 
     public int getClientId() {
@@ -102,22 +95,6 @@ public class Client {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
-    public Byte getIsActivated() {
-        return isActivated;
-    }
-
-    public void setIsActivated(Byte isActivated) {
-        this.isActivated = isActivated;
-    }
-
     public List<Job> getJobs() {
         return jobs;
     }
@@ -152,14 +129,12 @@ public class Client {
                 Objects.equals(lastName, client.lastName) &&
                 Objects.equals(email, client.email) &&
                 Objects.equals(password, client.password) &&
-                Objects.equals(phoneNumber, client.phoneNumber) &&
-                Objects.equals(hash, client.hash) &&
-                Objects.equals(isActivated, client.isActivated);
+                Objects.equals(phoneNumber, client.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientId, firstName, lastName, email, password, phoneNumber, hash, isActivated);
+        return Objects.hash(clientId, firstName, lastName, email, password, phoneNumber);
     }
 
     @Override

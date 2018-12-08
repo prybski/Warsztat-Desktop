@@ -7,9 +7,9 @@ import javafx.scene.control.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import pl.edu.pwsztar.dao.repository.ClientRepository;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Vehicle;
-import pl.edu.pwsztar.service.ClientService;
 import pl.edu.pwsztar.util.AlertUtil;
 
 import java.net.URL;
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class VehicleAddController implements Initializable {
 
-    private ClientService clientService;
+    private ClientRepository clientRepository;
 
     @FXML
     private TextField brand;
@@ -39,7 +39,7 @@ public class VehicleAddController implements Initializable {
     private ChoiceBox<Client> clients;
 
     {
-        clientService = new ClientService();
+        clientRepository = new ClientRepository();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class VehicleAddController implements Initializable {
         SpinnerValueFactory<Double> engineCapacityValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 6.0, 0.6, 0.1);
         engineCapacity.setValueFactory(engineCapacityValueFactory);
 
-        List<Client> clientsFromDb = clientService.findAll();
+        List<Client> clientsFromDb = clientRepository.findAll();
 
         clients.getItems().setAll(clientsFromDb);
         clients.setValue(clientsFromDb.get(0));

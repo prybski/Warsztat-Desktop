@@ -39,7 +39,7 @@ public class ClientAddController implements Initializable {
             try (Session session = sessionFactory.getCurrentSession()) {
                 session.beginTransaction();
 
-                Client client = new Client(firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), (byte) 0);
+                Client client = new Client(firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText());
 
                 session.save(client);
 
