@@ -1,4 +1,4 @@
-package pl.edu.pwsztar.repository;
+package pl.edu.pwsztar.dao.repository;
 
 import org.hibernate.query.Query;
 import pl.edu.pwsztar.dao.ClientDAO;

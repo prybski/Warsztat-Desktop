@@ -3,7 +3,7 @@ package pl.edu.pwsztar.service;
 import pl.edu.pwsztar.dao.VehicleDAO;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Vehicle;
-import pl.edu.pwsztar.repository.VehicleRepository;
+import pl.edu.pwsztar.dao.repository.VehicleRepository;
 
 import java.util.List;
 

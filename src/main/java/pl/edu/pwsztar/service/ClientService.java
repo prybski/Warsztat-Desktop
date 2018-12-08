@@ -2,7 +2,7 @@ package pl.edu.pwsztar.service;
 
 import pl.edu.pwsztar.dao.ClientDAO;
 import pl.edu.pwsztar.entity.Client;
-import pl.edu.pwsztar.repository.ClientRepository;
+import pl.edu.pwsztar.dao.repository.ClientRepository;
 
 import java.util.List;
 
