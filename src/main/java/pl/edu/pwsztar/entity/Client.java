@@ -40,10 +40,11 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String email, String phoneNumber) {
+    public Client(String firstName, String lastName, String email, String password, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.phoneNumber = phoneNumber;
     }
 

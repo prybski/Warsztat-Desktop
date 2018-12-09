@@ -32,9 +32,6 @@ public class Job {
     @Column(name = "discount", precision = 2)
     private BigDecimal discount;
 
-    @Column(name = "final_price", precision = 2)
-    private BigDecimal finalPrice;
-
     // definicja relacji/mapowania (wielu Zleceń do jednego Klienta)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
@@ -109,14 +106,6 @@ public class Job {
         this.discount = discount;
     }
 
-    public BigDecimal getFinalPrice() {
-        return finalPrice;
-    }
-
-    public void setFinalPrice(BigDecimal finalPrice) {
-        this.finalPrice = finalPrice;
-    }
-
     public Client getClient() {
         return client;
     }
@@ -165,13 +154,12 @@ public class Job {
                 Objects.equals(fixedDate, job.fixedDate) &&
                 Objects.equals(startDate, job.startDate) &&
                 Objects.equals(endDate, job.endDate) &&
-                Objects.equals(discount, job.discount) &&
-                Objects.equals(finalPrice, job.finalPrice);
+                Objects.equals(discount, job.discount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobId, description, fixedDate, startDate, endDate, discount, finalPrice);
+        return Objects.hash(jobId, description, fixedDate, startDate, endDate, discount);
     }
 
     @Override
@@ -183,7 +171,6 @@ public class Job {
                 ", startDate = " + startDate +
                 ", endDate = " + endDate +
                 ", discount = " + discount +
-                ", finalPrice = " + finalPrice +
                 '}';
     }
 }
