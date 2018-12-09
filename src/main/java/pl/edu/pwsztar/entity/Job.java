@@ -33,12 +33,12 @@ public class Job {
     private BigDecimal discount;
 
     // definicja relacji/mapowania (wielu Zleceń do jednego Klienta)
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 
     // definicja relacji/mapowania (wielu Zleceń do jednego Pojazdu)
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
@@ -164,13 +164,6 @@ public class Job {
 
     @Override
     public String toString() {
-        return "Job {" +
-                "jobId = " + jobId +
-                ", description = '" + description + '\'' +
-                ", fixedDate = " + fixedDate +
-                ", startDate = " + startDate +
-                ", endDate = " + endDate +
-                ", discount = " + discount +
-                '}';
+        return jobId + ": " + description + ", " + fixedDate;
     }
 }

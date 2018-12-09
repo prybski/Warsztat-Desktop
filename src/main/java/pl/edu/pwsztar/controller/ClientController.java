@@ -11,13 +11,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.edu.pwsztar.entity.Client;
-import pl.edu.pwsztar.util.AlertUtil;
+import pl.edu.pwsztar.util.StageUtil;
 import pl.edu.pwsztar.util.RandomPasswordUtil;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ClientAddController implements Initializable {
+public class ClientController implements Initializable {
 
     @FXML
     private TextField firstName;
@@ -50,7 +50,7 @@ public class ClientAddController implements Initializable {
 
                 session.getTransaction().commit();
 
-                AlertUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Sukces!",
+                StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Sukces!",
                         ButtonType.OK, "Nie zapomnij zapisać hasła!", "Wygenerowane hasło to: " + generatedPassword);
             }
         }
