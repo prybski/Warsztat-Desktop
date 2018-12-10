@@ -1,5 +1,6 @@
 package pl.edu.pwsztar.dao.repository;
 
+import org.hibernate.Criteria;
 import org.hibernate.query.Query;
 import pl.edu.pwsztar.dao.JobDAO;
 import pl.edu.pwsztar.entity.Client;
@@ -34,40 +35,37 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Date> findJobsFixedDates() {
+    public List<Date> findFixedDates() {
         sessionFactoryManager.openCurrentSession();
 
-        Query<Job> jobQuery = sessionFactoryManager.getCurrentSession().createQuery("from Job", Job.class);
+        Query jobQuery = sessionFactoryManager.getCurrentSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null");
+        List datesFromDb = jobQuery.getResultList();
 
-        List<Job> jobsFromDb = jobQuery.getResultList();
-        List<Date> datesFromDb = new ArrayList<>();
+        List<Date> sqlDatesFromDb = new ArrayList<>();
 
-        for (Job job : jobsFromDb) {
-            datesFromDb.add(job.getFixedDate());
+        for (Object date : datesFromDb) {
+            sqlDatesFromDb.add((Date) date);
         }
 
         sessionFactoryManager.closeCurrentSession();
 
-        return datesFromDb;
+        return sqlDatesFromDb;
     }
 
     @Override
-    public void addWithNewVehicle(Job job, Vehicle vehicle, Client client) {
+    public void add(Job job, Vehicle vehicle, Client client, boolean isVehicleNew) {
         sessionFactoryManager.openCurrentSessionWithTransaction();
 
-        sessionFactoryManager.getCurrentSession().save(vehicle);
+        if (isVehicleNew) {
+            sessionFactoryManager.getCurrentSession().save(vehicle);
 
-        job.setVehicle(vehicle);
-        job.setClient(client);
+            job.setVehicle(vehicle);
+            job.setClient(client);
 
-        sessionFactoryManager.getCurrentSession().save(job);
+            sessionFactoryManager.getCurrentSession().save(job);
 
-        sessionFactoryManager.closeCurrentSessionWithTransaction();
-    }
-
-    @Override
-    public void addWithoutNewVehicle(Job job, Vehicle vehicle, Client client) {
-        sessionFactoryManager.openCurrentSessionWithTransaction();
+            sessionFactoryManager.closeCurrentSessionWithTransaction();
+        }
 
         job.setVehicle(vehicle);
         job.setClient(client);

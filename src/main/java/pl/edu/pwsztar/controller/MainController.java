@@ -4,13 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import pl.edu.pwsztar.dao.repository.JobRepository;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.util.StageUtil;
@@ -36,7 +31,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fixedDates.getItems().setAll(jobRepository.findJobsFixedDates());
+        fixedDates.getItems().setAll(jobRepository.findFixedDates());
 
         fixedDates.getSelectionModel()
                 .selectedItemProperty()

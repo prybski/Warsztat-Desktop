@@ -10,7 +10,6 @@ import java.util.List;
 public interface JobDAO {
 
     List<Job> findAllByDate(Date date);
-    List<Date> findJobsFixedDates();
-    void addWithNewVehicle(Job job, Vehicle vehicle, Client client);
-    void addWithoutNewVehicle(Job job, Vehicle vehicle, Client client);
+    List<Date> findFixedDates();
+    void add(Job job, Vehicle vehicle, Client client, boolean isVehicleNew);
 }

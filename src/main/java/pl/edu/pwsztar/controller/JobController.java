@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import pl.edu.pwsztar.dao.repository.ClientRepository;
 import pl.edu.pwsztar.dao.repository.JobRepository;
 import pl.edu.pwsztar.dao.repository.VehicleRepository;
@@ -50,7 +51,7 @@ public class JobController implements Initializable {
     private Spinner<Double> engineCapacity;
 
     @FXML
-    private Button addJobBtn;
+    private Button addJob;
 
     {
         clientRepository = new ClientRepository();
@@ -73,6 +74,14 @@ public class JobController implements Initializable {
 
         List<Vehicle> vehiclesFromDb = vehicleRepository.findAllByClient(clientsFromDb.get(0));
 
+        if (vehiclesFromDb.isEmpty()) {
+            addJob.setDisable(true);
+            vehicles.setDisable(true);
+        } else {
+            addJob.setDisable(false);
+            vehicles.setDisable(false);
+        }
+
         vehicles.getItems().setAll(vehiclesFromDb);
         vehicles.setValue(vehiclesFromDb.get(0));
 
@@ -81,14 +90,15 @@ public class JobController implements Initializable {
                 .addListener((value, oldValue, newValue) -> {
                     List<Vehicle> vehiclesUpdated = vehicleRepository.findAllByClient(newValue);
                     vehicles.getItems().setAll(vehiclesUpdated);
-                    vehicles.setDisable(true);
-                    addJobBtn.setDisable(true);
 
                     if (!vehiclesUpdated.isEmpty()) {
                         vehicles.setDisable(false);
-                        addJobBtn.setDisable(false);
+                        addJob.setDisable(false);
 
                         vehicles.setValue(vehiclesUpdated.get(0));
+                    } else {
+                        vehicles.setDisable(true);
+                        addJob.setDisable(true);
                     }
                 });
     }
@@ -96,13 +106,13 @@ public class JobController implements Initializable {
     public void addJob(ActionEvent actionEvent) {
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        jobRepository.addWithoutNewVehicle(job, vehicles.getValue(), clients.getValue());
+        jobRepository.add(job, vehicles.getValue(), clients.getValue(), false);
     }
 
     public void addJobAndVehicle(ActionEvent actionEvent) {
         Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue());
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        jobRepository.addWithNewVehicle(job, vehicle, clients.getValue());
+        jobRepository.add(job, vehicle, clients.getValue(), false);
     }
 }
