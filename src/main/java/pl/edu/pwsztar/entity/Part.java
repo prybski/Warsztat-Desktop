@@ -17,7 +17,7 @@ public class Part {
     @Column(name = "name", nullable = false, length = 80)
     private String name;
 
-    @Column(name = "details", nullable = false, length = 150)
+    @Column(name = "details", length = 150)
     private String details;
 
     @Column(name = "development_code", nullable = false, length = 18)

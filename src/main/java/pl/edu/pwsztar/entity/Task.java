@@ -18,9 +18,6 @@ public class Task {
     @Column(name = "activity", nullable = false, length = 150)
     private String activity;
 
-    @Column(name = "expected_time", length = 12)
-    private String expectedTime;
-
     @Column(name = "is_finished")
     private Byte isFinished;
 
@@ -43,9 +40,8 @@ public class Task {
     public Task() {
     }
 
-    public Task(String activity, String expectedTime, Byte isFinished, BigDecimal cost) {
+    public Task(String activity, Byte isFinished, BigDecimal cost) {
         this.activity = activity;
-        this.expectedTime = expectedTime;
         this.isFinished = isFinished;
         this.cost = cost;
     }
@@ -64,14 +60,6 @@ public class Task {
 
     public void setActivity(String activity) {
         this.activity = activity;
-    }
-
-    public String getExpectedTime() {
-        return expectedTime;
-    }
-
-    public void setExpectedTime(String expectedTime) {
-        this.expectedTime = expectedTime;
     }
 
     public Byte getIsFinished() {
@@ -120,14 +108,13 @@ public class Task {
         Task task = (Task) o;
         return taskId == task.taskId &&
                 Objects.equals(activity, task.activity) &&
-                Objects.equals(expectedTime, task.expectedTime) &&
                 Objects.equals(isFinished, task.isFinished) &&
                 Objects.equals(cost, task.cost);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, activity, expectedTime, isFinished, cost);
+        return Objects.hash(taskId, activity, isFinished, cost);
     }
 
     @Override
@@ -135,7 +122,6 @@ public class Task {
         return "Task {" +
                 "taskId = " + taskId +
                 ", activity = '" + activity + '\'' +
-                ", expectedTime = '" + expectedTime + '\'' +
                 ", isFinished = " + isFinished +
                 ", cost = " + cost +
                 '}';

@@ -20,10 +20,10 @@ public class Vehicle {
     @Column(name = "model", nullable = false, length = 20)
     private String model;
 
-    @Column(name = "production_year")
+    @Column(name = "production_year", nullable = false)
     private Short productionYear;
 
-    @Column(name = "vin_number", nullable = false, length = 17)
+    @Column(name = "vin_number", length = 17)
     private String vinNumber;
 
     @Column(name = "engine_capacity")
