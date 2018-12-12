@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "demand")
+@Table(name = "demand", schema = "garage")
 public class Demand {
 
     @Id
@@ -13,10 +13,10 @@ public class Demand {
     @Column(name = "demand_id", nullable = false)
     private int demandId;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Byte quantity;
 
-    @Column(name = "price", precision = 2)
+    @Column(name = "price", nullable = false, precision = 2)
     private BigDecimal price;
 
     // definicja relacji/mapowania (wielu Zapotrzebowań do jednego Zadania)
@@ -45,7 +45,7 @@ public class Demand {
         this.demandId = demandId;
     }
 
-    public Byte getQuantity() {
+    public byte getQuantity() {
         return quantity;
     }
 

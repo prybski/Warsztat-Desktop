@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "vehicle")
+@Table(name = "vehicle", schema = "garage")
 public class Vehicle {
 
     @Id
@@ -14,16 +14,16 @@ public class Vehicle {
     @Column(name = "vehicle_id", nullable = false)
     private int vehicleId;
 
-    @Column(name = "brand", length = 30)
+    @Column(name = "brand", nullable = false, length = 30)
     private String brand;
 
-    @Column(name = "model", length = 20)
+    @Column(name = "model", nullable = false, length = 20)
     private String model;
 
     @Column(name = "production_year")
     private Short productionYear;
 
-    @Column(name = "vin_number", length = 17)
+    @Column(name = "vin_number", nullable = false, length = 17)
     private String vinNumber;
 
     @Column(name = "engine_capacity")

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "client")
+@Table(name = "client", schema = "garage")
 public class Client {
 
     @Id
@@ -14,23 +14,23 @@ public class Client {
     @Column(name = "client_id", nullable = false)
     private int clientId;
 
-    @Column(name = "first_name", length = 30)
+    @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
 
-    @Column(name = "last_name", length = 40)
+    @Column(name = "last_name", nullable = false, length = 40)
     private String lastName;
 
-    @Column(name = "email", length = 50)
+    @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "password", length = 60)
+    @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "phone_number", length = 15)
+    @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
 
     // definicja relacji/mapowania (jednego Klienta do wielu Zleceń)
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Job> jobs;
 
     {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "job")
+@Table(name = "job", schema = "garage")
 public class Job {
 
     @Id
@@ -17,10 +17,10 @@ public class Job {
     @Column(name = "job_id", nullable = false)
     private int jobId;
 
-    @Column(name = "description", length = 80)
+    @Column(name = "description", nullable = false, length = 200)
     private String description;
 
-    @Column(name = "fixed_date")
+    @Column(name = "fixed_date", nullable = false)
     private Date fixedDate;
 
     @Column(name = "start_date")
@@ -33,12 +33,12 @@ public class Job {
     private BigDecimal discount;
 
     // definicja relacji/mapowania (wielu Zleceń do jednego Klienta)
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
     private Client client;
 
     // definicja relacji/mapowania (wielu Zleceń do jednego Pojazdu)
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 

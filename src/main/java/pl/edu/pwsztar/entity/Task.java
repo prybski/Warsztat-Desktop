@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "task")
+@Table(name = "task", schema = "garage")
 public class Task {
 
     @Id
@@ -15,7 +15,7 @@ public class Task {
     @Column(name = "task_id", nullable = false)
     private int taskId;
 
-    @Column(name = "activity", length = 100)
+    @Column(name = "activity", nullable = false, length = 150)
     private String activity;
 
     @Column(name = "expected_time", length = 12)

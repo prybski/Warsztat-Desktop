@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "part")
+@Table(name = "part", schema = "garage")
 public class Part {
 
     @Id
@@ -14,13 +14,13 @@ public class Part {
     @Column(name = "part_id", nullable = false)
     private int partId;
 
-    @Column(name = "name", length = 80)
+    @Column(name = "name", nullable = false, length = 80)
     private String name;
 
-    @Column(name = "details", length = 100)
+    @Column(name = "details", nullable = false, length = 150)
     private String details;
 
-    @Column(name = "development_code", length = 18)
+    @Column(name = "development_code", nullable = false, length = 18)
     private String developmentCode;
 
     // definicja relacji/mapowania (jednej Części do wielu Zapotrzebowań)
