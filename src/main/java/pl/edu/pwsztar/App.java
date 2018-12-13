@@ -3,7 +3,7 @@ package pl.edu.pwsztar;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -17,8 +17,8 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/main.fxml"));
 
-        AnchorPane anchorPane = loader.load();
-        Scene scene = new Scene(anchorPane);
+        BorderPane borderPane = loader.load();
+        Scene scene = new Scene(borderPane);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aplikacja warsztatowa");

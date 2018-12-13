@@ -7,58 +7,120 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.MainController">
-    <MenuBar prefHeight="29.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <Menu mnemonicParsing="false" text="Klienci">
-            <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj" />
-        </Menu>
-        <Menu mnemonicParsing="false" text="Pojazdy">
-        </Menu>
-        <Menu mnemonicParsing="false" text="Zadania">
-            <MenuItem mnemonicParsing="false" onAction="#showAddTask" text="Dodaj" />
-        </Menu>
-        <Menu mnemonicParsing="false" text="Pomoc">
-            <MenuItem mnemonicParsing="false" text="O aplikacji" />
-        </Menu>
-    </MenuBar>
-    <GridPane alignment="CENTER" layoutX="143.0" layoutY="38.0" prefHeight="645.0" prefWidth="994.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="175.0" minHeight="0.0" prefHeight="49.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="49.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="469.0" minHeight="10.0" prefHeight="388.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="315.0" minHeight="10.0" prefHeight="78.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-        <padding>
-            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-        </padding>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyszukaj nieukończone zlecenia z dnia" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-        <ListView fx:id="jobs" prefHeight="387.0" prefWidth="460.0" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="40.0" right="40.0" />
-         </GridPane.margin></ListView>
-        <Button mnemonicParsing="false" onAction="#manageSelectedJob" text="Zarządzaj wybranym" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-         <GridPane.margin>
-            <Insets right="40.0" />
-         </GridPane.margin></Button>
-        <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="55.0" prefWidth="192.0" text="Dodaj nowe" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-            <font>
-                <Font size="18.0" />
-            </font>
-         <GridPane.margin>
-            <Insets right="40.0" />
-         </GridPane.margin>
-        </Button>
-        <ChoiceBox fx:id="fixedDates" prefHeight="25.0" prefWidth="250.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-    </GridPane>
-</AnchorPane>
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.MainController">
+    <top>
+        <MenuBar prefHeight="29.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <Menu mnemonicParsing="false" text="Klienci">
+                <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Pojazdy"/>
+            <Menu mnemonicParsing="false" text="Zadania">
+                <MenuItem mnemonicParsing="false" onAction="#showAddTask" text="Dodaj"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Pomoc">
+                <MenuItem mnemonicParsing="false" text="O aplikacji"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <left>
+        <VBox alignment="CENTER_LEFT" prefHeight="691.0" prefWidth="320.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zarządzanie">
+                <font>
+                    <Font name="Caladea Bold" size="20.0"/>
+                </font>
+            </Text>
+            <Separator prefWidth="200.0"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyszukaj nieukończone zlecenia z dnia"/>
+            <ChoiceBox fx:id="fixedDates" prefWidth="250.0"/>
+            <ListView fx:id="jobs" prefHeight="387.0" prefWidth="460.0" VBox.vgrow="ALWAYS"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Po kliknięciu w zlecenie ukaże się okno zarządzania)">
+                <font>
+                    <Font name="System Italic" size="12.0"/>
+                </font>
+            </Text>
+        </VBox>
+    </left>
+    <right>
+        <VBox prefHeight="691.0" prefWidth="370.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Akcje">
+                <font>
+                    <Font name="Caladea Bold" size="20.0"/>
+                </font>
+            </Text>
+            <Separator prefWidth="200.0"/>
+            <VBox alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="20.0" prefWidth="200.0"
+                        text="Dodaj zlecenie">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Button>
+            </VBox>
+        </VBox>
+    </right>
+    <center>
+        <VBox prefHeight="691.0" prefWidth="676.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Historia i wyszukiwanie danych">
+                <font>
+                    <Font name="Caladea Bold" size="20.0"/>
+                </font>
+            </Text>
+            <Separator prefWidth="200.0"/>
+            <HBox prefHeight="302.0" prefWidth="699.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                <VBox prefHeight="538.0" prefWidth="250.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                          text="Wyświetl historie zleceń dla wybranego klienta"/>
+                    <ChoiceBox prefWidth="250.0"/>
+                    <ListView prefHeight="477.0" prefWidth="232.0" VBox.vgrow="ALWAYS"/>
+                </VBox>
+                <VBox prefHeight="538.0" prefWidth="300.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets left="10.0" right="10.0"/>
+                    </padding>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                          text="Wyświetl historie zleceń dla pojazdu z poniższym VIN"/>
+                    <HBox prefWidth="285.0">
+                        <TextField prefHeight="25.0" prefWidth="285.0"/>
+                    </HBox>
+                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                </VBox>
+                <VBox prefHeight="538.0" prefWidth="250.0" spacing="10.0">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wpisz imie i nazwisko klienta"/>
+                    <TextField/>
+                    <HBox alignment="TOP_RIGHT">
+                        <Button mnemonicParsing="false" text="Wyświetl dane"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                  text="(Po kliknięciu w zlecenie ukażą się szczegóły na jego temat)">
+                <font>
+                    <Font name="System Italic" size="12.0"/>
+                </font>
+            </Text>
+        </VBox>
+    </center>
+   <bottom>
+       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <Button mnemonicParsing="false" text="Wyjdź"/>
+       </ToolBar>
+   </bottom>
+</BorderPane>
