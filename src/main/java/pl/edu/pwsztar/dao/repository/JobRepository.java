@@ -1,6 +1,5 @@
 package pl.edu.pwsztar.dao.repository;
 
-import org.hibernate.Criteria;
 import org.hibernate.query.Query;
 import pl.edu.pwsztar.dao.JobDAO;
 import pl.edu.pwsztar.entity.Client;
@@ -21,6 +20,48 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
+    public List<Job> findHistoryByClient(Client client) {
+        sessionFactoryManager.openCurrentSession();
+
+        Query<Job> jobQuery = sessionFactoryManager.getCurrentSession().createQuery("from Job where client = :client and endDate is not null", Job.class);
+        jobQuery.setParameter("client", client);
+
+        List<Job> jobsFromDb = jobQuery.getResultList();
+
+        sessionFactoryManager.closeCurrentSession();
+
+        return jobsFromDb;
+    }
+
+    @Override
+    public List<Job> findHistoryByVehicle(Vehicle vehicle) {
+        sessionFactoryManager.openCurrentSession();
+
+        Query<Job> jobQuery = sessionFactoryManager.getCurrentSession().createQuery("from Job where vehicle = :vehicle and endDate is not null", Job.class);
+        jobQuery.setParameter("vehicle", vehicle);
+
+        List<Job> jobsFromDb = jobQuery.getResultList();
+
+        sessionFactoryManager.closeCurrentSession();
+
+        return jobsFromDb;
+    }
+
+    @Override
+    public List<Job> findHistoryByVinNumber(String vinNumber) {
+        sessionFactoryManager.openCurrentSession();
+
+        Query<Job> jobQuery = sessionFactoryManager.getCurrentSession().createQuery("from Job where vehicle.vinNumber = :vinNumber and endDate is not null", Job.class);
+        jobQuery.setParameter("vinNumber", vinNumber);
+
+        List<Job> jobsFromDb = jobQuery.getResultList();
+
+        sessionFactoryManager.closeCurrentSession();
+
+        return jobsFromDb;
+    }
+
+    @Override
     public List<Job> findAllByDate(Date date) {
         sessionFactoryManager.openCurrentSession();
 
@@ -35,21 +76,27 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Date> findFixedDates() {
+    public List<Date> findFixedDatesForNotStartedOnes() {
         sessionFactoryManager.openCurrentSession();
 
-        Query jobQuery = sessionFactoryManager.getCurrentSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null");
+        Query jobQuery = sessionFactoryManager.getCurrentSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is null");
         List datesFromDb = jobQuery.getResultList();
-
-        List<Date> sqlDatesFromDb = new ArrayList<>();
-
-        for (Object date : datesFromDb) {
-            sqlDatesFromDb.add((Date) date);
-        }
 
         sessionFactoryManager.closeCurrentSession();
 
-        return sqlDatesFromDb;
+        return convertToSqlDates(datesFromDb);
+    }
+
+    @Override
+    public List<Date> findFixedDatesWithStartDate() {
+        sessionFactoryManager.openCurrentSession();
+
+        Query jobQuery = sessionFactoryManager.getCurrentSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is not null");
+        List datesFromDb = jobQuery.getResultList();
+
+        sessionFactoryManager.closeCurrentSession();
+
+        return convertToSqlDates(datesFromDb);
     }
 
     @Override
@@ -73,5 +120,15 @@ public class JobRepository implements JobDAO {
         sessionFactoryManager.getCurrentSession().save(job);
 
         sessionFactoryManager.closeCurrentSessionWithTransaction();
+    }
+
+    private List<Date> convertToSqlDates(List dates) {
+        List<Date> sqlDatesFromDb = new ArrayList<>();
+
+        for (Object date : dates) {
+            sqlDatesFromDb.add((Date) date);
+        }
+
+        return sqlDatesFromDb;
     }
 }

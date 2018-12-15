@@ -17,7 +17,7 @@ import pl.edu.pwsztar.util.RandomPasswordUtil;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ClientController implements Initializable {
+public class ClientAddController implements Initializable {
 
     @FXML
     private TextField firstName;

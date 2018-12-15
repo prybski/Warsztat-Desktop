@@ -17,7 +17,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class JobController implements Initializable {
+public class JobAddController implements Initializable {
 
     private ClientRepository clientRepository;
     private VehicleRepository vehicleRepository;

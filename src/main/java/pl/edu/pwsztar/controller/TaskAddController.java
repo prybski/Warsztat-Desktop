@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ResourceBundle;
 
-public class TaskController implements Initializable {
+public class TaskAddController implements Initializable {
 
     @FXML
     private TextField taskName;

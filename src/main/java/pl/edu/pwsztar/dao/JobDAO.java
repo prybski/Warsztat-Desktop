@@ -9,7 +9,11 @@ import java.util.List;
 
 public interface JobDAO {
 
+    List<Job> findHistoryByClient(Client client);
+    List<Job> findHistoryByVehicle(Vehicle vehicle);
+    List<Job> findHistoryByVinNumber(String vinNumber);
     List<Job> findAllByDate(Date date);
-    List<Date> findFixedDates();
+    List<Date> findFixedDatesForNotStartedOnes();
+    List<Date> findFixedDatesWithStartDate();
     void add(Job job, Vehicle vehicle, Client client, boolean isVehicleNew);
 }

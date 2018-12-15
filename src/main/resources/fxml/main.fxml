@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -14,7 +15,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.MainController">
     <top>
@@ -36,20 +36,23 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zarządzanie">
-                <font>
-                    <Font name="Caladea Bold" size="20.0" />
-                </font>
-            </Text>
+         <Label text="Zarządzanie">
+            <font>
+               <Font name="Caladea Bold" size="20.0" />
+            </font>
+         </Label>
             <Separator prefWidth="200.0" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyszukaj nieukończone zlecenia z dnia" />
-            <ChoiceBox fx:id="fixedDates" prefWidth="250.0" />
-            <ListView fx:id="jobs" prefHeight="387.0" prefWidth="460.0" VBox.vgrow="ALWAYS" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Kliknij w zlecenie, aby zarządzać)">
-                <font>
-                    <Font name="System Italic" size="12.0" />
-                </font>
-            </Text>
+         <Label text="Wyszukaj nierozpoczęte zlecenia z dnia" />
+            <ChoiceBox fx:id="fixedDates" prefHeight="25.0" prefWidth="210.0" />
+            <ListView fx:id="jobs" VBox.vgrow="ALWAYS" />
+         <Label text="Wyszukaj rozpoczęte zlecenia z dnia" />
+         <ChoiceBox fx:id="fixedDatesWithStartDate" prefHeight="25.0" prefWidth="210.0" />
+         <ListView fx:id="startedJobs" />
+         <Label text="(Kliknij w zlecenie, aby zarządzać)">
+            <font>
+               <Font name="System Italic" size="12.0" />
+            </font>
+         </Label>
         </VBox>
     </left>
     <right>
@@ -57,11 +60,11 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Akcje">
-                <font>
-                    <Font name="Caladea Bold" size="20.0" />
-                </font>
-            </Text>
+         <Label text="Akcje">
+            <font>
+               <Font name="Caladea Bold" size="20.0" />
+            </font>
+         </Label>
             <Separator prefWidth="200.0" />
             <VBox alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">
                 <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="20.0" prefWidth="200.0" text="Dodaj zlecenie">
@@ -77,41 +80,44 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Historia i wyszukiwanie danych">
-                <font>
-                    <Font name="Caladea Bold" size="20.0" />
-                </font>
-            </Text>
+         <Label text="Historia zleceń i wyszukiwanie danych">
+            <font>
+               <Font name="Caladea Bold" size="20.0" />
+            </font>
+         </Label>
             <Separator prefWidth="200.0" />
             <HBox prefHeight="302.0" prefWidth="699.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                <VBox prefHeight="538.0" prefWidth="250.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyświetl historie zleceń dla wybranego klienta" />
-                    <ChoiceBox prefWidth="250.0" />
-                    <ListView prefHeight="477.0" prefWidth="232.0" VBox.vgrow="ALWAYS" />
-                </VBox>
-                <VBox prefHeight="538.0" prefWidth="300.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                    <padding>
-                        <Insets left="10.0" right="10.0" />
-                    </padding>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyświetl historie zleceń dla pojazdu z poniższym VIN" />
-                    <HBox prefWidth="285.0">
-                        <TextField prefHeight="25.0" prefWidth="285.0" />
-                    </HBox>
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                </VBox>
-                <VBox prefHeight="538.0" prefWidth="250.0" spacing="10.0">
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wpisz imie i nazwisko klienta" />
-                    <TextField />
+                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+               <Label text="Wyświetl dla wybranego klienta" />
+                    <ChoiceBox fx:id="clients" prefHeight="25.0" prefWidth="200.0" />
+                    <ListView fx:id="clientHistory" VBox.vgrow="ALWAYS" />
+               <Label text="Wpisz imie i nazwisko klienta" />
+                    <TextField fx:id="firstAndLastName" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Wyświetl dane" />
+                        <Button mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
                     </HBox>
+                </VBox>
+                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+               <Label text="Wyświetl szukając po VIN" />
+                    <HBox prefWidth="285.0">
+                        <TextField fx:id="vinNumber" prefHeight="25.0" prefWidth="200.0" />
+                    </HBox>
+                    <ListView fx:id="vehicleHistoryByVinNumber" VBox.vgrow="ALWAYS" />
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+                </VBox>
+                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+               <Label text="Wyświetl dla wybranego pojazdu" />
+                    <ChoiceBox fx:id="vehicles" prefHeight="25.0" prefWidth="200.0" />
+                    <ListView fx:id="vehicleHistory" VBox.vgrow="ALWAYS" />
                 </VBox>
             </HBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Kliknij w zlecenie, aby ukazać jego szczegóły)">
-                <font>
-                    <Font name="System Italic" size="12.0" />
-                </font>
-            </Text>
+         <Label text="(Kliknij w zlecenie, aby ukazać jego szczegóły)">
+            <font>
+               <Font name="System Italic" size="12.0" />
+            </font>
+         </Label>
         </VBox>
     </center>
    <bottom>

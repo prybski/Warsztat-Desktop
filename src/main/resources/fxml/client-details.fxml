@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="180.0" maxWidth="250.0" minHeight="180.0" minWidth="250.0" prefHeight="180.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.ClientDetailsController">
+    <VBox layoutX="34.0" layoutY="34.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label text="Imie i nazwisko" />
+        <Text fx:id="firstAndLastName" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Label text="Email" />
+        <Text fx:id="email" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Label text="Numer telefonu" />
+        <Text fx:id="phoneNumber" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+      <padding>
+         <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+      </padding>
+    </VBox>
+</AnchorPane>

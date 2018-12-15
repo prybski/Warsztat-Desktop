@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.util;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -20,19 +21,18 @@ public class StageUtil {
         alert.setResult(resultButton);
         alert.setContentText(contextText);
         alert.setHeaderText(headerText);
-
         alert.showAndWait();
     }
 
-    public static void stageConfiguration(FXMLLoader loader, String title) throws IOException {
-        AnchorPane anchorPane = loader.load();
+    public static void stageConfiguration(Parent parent, String title) {
+        Scene scene = new Scene(parent);
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle(title);
         stage.setResizable(false);
-        stage.setScene(new Scene(anchorPane));
+        stage.setScene(scene);
         stage.show();
     }
 }
