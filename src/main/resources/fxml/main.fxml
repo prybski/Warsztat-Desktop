@@ -20,54 +20,53 @@
     <top>
         <MenuBar prefHeight="29.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Klienci">
-                <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj"/>
+                <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj" />
             </Menu>
-            <Menu mnemonicParsing="false" text="Pojazdy"/>
+            <Menu mnemonicParsing="false" text="Pojazdy" />
             <Menu mnemonicParsing="false" text="Zadania">
-                <MenuItem mnemonicParsing="false" onAction="#showAddTask" text="Dodaj"/>
+                <MenuItem mnemonicParsing="false" onAction="#showAddTask" text="Dodaj" />
             </Menu>
             <Menu mnemonicParsing="false" text="Pomoc">
-                <MenuItem mnemonicParsing="false" text="O aplikacji"/>
+                <MenuItem mnemonicParsing="false" text="O aplikacji" />
             </Menu>
         </MenuBar>
     </top>
     <left>
-        <VBox alignment="CENTER_LEFT" prefHeight="691.0" prefWidth="320.0" spacing="10.0" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER_LEFT" prefHeight="691.0" prefWidth="250.0" spacing="10.0" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zarządzanie">
                 <font>
-                    <Font name="Caladea Bold" size="20.0"/>
+                    <Font name="Caladea Bold" size="20.0" />
                 </font>
             </Text>
-            <Separator prefWidth="200.0"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyszukaj nieukończone zlecenia z dnia"/>
-            <ChoiceBox fx:id="fixedDates" prefWidth="250.0"/>
-            <ListView fx:id="jobs" prefHeight="387.0" prefWidth="460.0" VBox.vgrow="ALWAYS"/>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Po kliknięciu w zlecenie ukaże się okno zarządzania)">
+            <Separator prefWidth="200.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyszukaj nieukończone zlecenia z dnia" />
+            <ChoiceBox fx:id="fixedDates" prefWidth="250.0" />
+            <ListView fx:id="jobs" prefHeight="387.0" prefWidth="460.0" VBox.vgrow="ALWAYS" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Kliknij w zlecenie, aby zarządzać)">
                 <font>
-                    <Font name="System Italic" size="12.0"/>
+                    <Font name="System Italic" size="12.0" />
                 </font>
             </Text>
         </VBox>
     </left>
     <right>
-        <VBox prefHeight="691.0" prefWidth="370.0" spacing="10.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="691.0" prefWidth="250.0" spacing="10.0" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Akcje">
                 <font>
-                    <Font name="Caladea Bold" size="20.0"/>
+                    <Font name="Caladea Bold" size="20.0" />
                 </font>
             </Text>
-            <Separator prefWidth="200.0"/>
+            <Separator prefWidth="200.0" />
             <VBox alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="20.0" prefWidth="200.0"
-                        text="Dodaj zlecenie">
+                <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="20.0" prefWidth="200.0" text="Dodaj zlecenie">
                     <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                     </font>
                 </Button>
             </VBox>
@@ -76,51 +75,48 @@
     <center>
         <VBox prefHeight="691.0" prefWidth="676.0" spacing="10.0" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Historia i wyszukiwanie danych">
                 <font>
-                    <Font name="Caladea Bold" size="20.0"/>
+                    <Font name="Caladea Bold" size="20.0" />
                 </font>
             </Text>
-            <Separator prefWidth="200.0"/>
+            <Separator prefWidth="200.0" />
             <HBox prefHeight="302.0" prefWidth="699.0" spacing="10.0" VBox.vgrow="ALWAYS">
                 <VBox prefHeight="538.0" prefWidth="250.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="Wyświetl historie zleceń dla wybranego klienta"/>
-                    <ChoiceBox prefWidth="250.0"/>
-                    <ListView prefHeight="477.0" prefWidth="232.0" VBox.vgrow="ALWAYS"/>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyświetl historie zleceń dla wybranego klienta" />
+                    <ChoiceBox prefWidth="250.0" />
+                    <ListView prefHeight="477.0" prefWidth="232.0" VBox.vgrow="ALWAYS" />
                 </VBox>
                 <VBox prefHeight="538.0" prefWidth="300.0" spacing="10.0" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets left="10.0" right="10.0"/>
+                        <Insets left="10.0" right="10.0" />
                     </padding>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="Wyświetl historie zleceń dla pojazdu z poniższym VIN"/>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wyświetl historie zleceń dla pojazdu z poniższym VIN" />
                     <HBox prefWidth="285.0">
-                        <TextField prefHeight="25.0" prefWidth="285.0"/>
+                        <TextField prefHeight="25.0" prefWidth="285.0" />
                     </HBox>
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                 </VBox>
                 <VBox prefHeight="538.0" prefWidth="250.0" spacing="10.0">
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wpisz imie i nazwisko klienta"/>
-                    <TextField/>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wpisz imie i nazwisko klienta" />
+                    <TextField />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Wyświetl dane"/>
+                        <Button mnemonicParsing="false" text="Wyświetl dane" />
                     </HBox>
                 </VBox>
             </HBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0"
-                  text="(Po kliknięciu w zlecenie ukażą się szczegóły na jego temat)">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Kliknij w zlecenie, aby ukazać jego szczegóły)">
                 <font>
-                    <Font name="System Italic" size="12.0"/>
+                    <Font name="System Italic" size="12.0" />
                 </font>
             </Text>
         </VBox>
     </center>
    <bottom>
        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <Button mnemonicParsing="false" text="Wyjdź"/>
+           <Button mnemonicParsing="false" text="Wyjdź" />
        </ToolBar>
    </bottom>
 </BorderPane>
