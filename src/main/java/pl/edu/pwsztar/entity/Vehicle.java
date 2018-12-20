@@ -11,8 +11,8 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "vehicle_id", nullable = false)
-    private int vehicleId;
+    @Column(name = "id", nullable = false)
+    private int id;
 
     @Column(name = "brand", nullable = false, length = 30)
     private String brand;
@@ -21,13 +21,13 @@ public class Vehicle {
     private String model;
 
     @Column(name = "production_year", nullable = false)
-    private Short productionYear;
+    private short productionYear;
 
     @Column(name = "vin_number", length = 17)
     private String vinNumber;
 
     @Column(name = "engine_capacity")
-    private Double engineCapacity;
+    private float engineCapacity;
 
     // definicja relacji/mapowania (jednego Pojazdu do wielu Zleceń)
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
@@ -40,7 +40,7 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(String brand, String model, Short productionYear, String vinNumber, Double engineCapacity) {
+    public Vehicle(String brand, String model, short productionYear, String vinNumber, float engineCapacity) {
         this.brand = brand;
         this.model = model;
         this.productionYear = productionYear;
@@ -48,12 +48,12 @@ public class Vehicle {
         this.engineCapacity = engineCapacity;
     }
 
-    public int getVehicleId() {
-        return vehicleId;
+    public int getId() {
+        return id;
     }
 
-    public void setVehicleId(int vehicleId) {
-        this.vehicleId = vehicleId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getBrand() {
@@ -72,11 +72,11 @@ public class Vehicle {
         this.model = model;
     }
 
-    public Short getProductionYear() {
+    public short getProductionYear() {
         return productionYear;
     }
 
-    public void setProductionYear(Short productionYear) {
+    public void setProductionYear(short productionYear) {
         this.productionYear = productionYear;
     }
 
@@ -88,11 +88,11 @@ public class Vehicle {
         this.vinNumber = vinNumber;
     }
 
-    public Double getEngineCapacity() {
+    public float getEngineCapacity() {
         return engineCapacity;
     }
 
-    public void setEngineCapacity(Double engineCapacity) {
+    public void setEngineCapacity(float engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
 
@@ -125,7 +125,7 @@ public class Vehicle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return vehicleId == vehicle.vehicleId &&
+        return id == vehicle.id &&
                 Objects.equals(brand, vehicle.brand) &&
                 Objects.equals(model, vehicle.model) &&
                 Objects.equals(productionYear, vehicle.productionYear) &&
@@ -135,11 +135,11 @@ public class Vehicle {
 
     @Override
     public int hashCode() {
-        return Objects.hash(vehicleId, brand, model, productionYear, vinNumber, engineCapacity);
+        return Objects.hash(id, brand, model, productionYear, vinNumber, engineCapacity);
     }
 
     @Override
     public String toString() {
-        return vehicleId + ": " + brand + " " + model + ", numer VIN: " + vinNumber;
+        return id + ": " + brand + " " + model + ", numer VIN: " + vinNumber;
     }
 }

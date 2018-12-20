@@ -11,8 +11,8 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id", nullable = false)
-    private int clientId;
+    @Column(name = "id", nullable = false)
+    private int id;
 
     @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
@@ -48,12 +48,12 @@ public class Client {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getClientId() {
-        return clientId;
+    public int getId() {
+        return id;
     }
 
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -125,7 +125,7 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return clientId == client.clientId &&
+        return id == client.id &&
                 Objects.equals(firstName, client.firstName) &&
                 Objects.equals(lastName, client.lastName) &&
                 Objects.equals(email, client.email) &&
@@ -135,11 +135,11 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientId, firstName, lastName, email, password, phoneNumber);
+        return Objects.hash(id, firstName, lastName, email, password, phoneNumber);
     }
 
     @Override
     public String toString() {
-        return clientId + ": " + firstName + " " + lastName + ", email: " + email;
+        return id + ": " + firstName + " " + lastName + ", email: " + email;
     }
 }

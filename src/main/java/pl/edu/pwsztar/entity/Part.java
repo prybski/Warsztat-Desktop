@@ -11,8 +11,8 @@ public class Part {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "part_id", nullable = false)
-    private int partId;
+    @Column(name = "id", nullable = false)
+    private int id;
 
     @Column(name = "name", nullable = false, length = 80)
     private String name;
@@ -40,12 +40,12 @@ public class Part {
         this.developmentCode = developmentCode;
     }
 
-    public int getPartId() {
-        return partId;
+    public int getId() {
+        return id;
     }
 
-    public void setPartId(int partId) {
-        this.partId = partId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -92,7 +92,7 @@ public class Part {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Part part = (Part) o;
-        return partId == part.partId &&
+        return id == part.id &&
                 Objects.equals(name, part.name) &&
                 Objects.equals(details, part.details) &&
                 Objects.equals(developmentCode, part.developmentCode);
@@ -100,13 +100,13 @@ public class Part {
 
     @Override
     public int hashCode() {
-        return Objects.hash(partId, name, details, developmentCode);
+        return Objects.hash(id, name, details, developmentCode);
     }
 
     @Override
     public String toString() {
         return "Part {" +
-                "partId = " + partId +
+                "partId = " + id +
                 ", name = '" + name + '\'' +
                 ", details = '" + details + '\'' +
                 ", developmentCode = '" + developmentCode + '\'' +

@@ -14,8 +14,8 @@ public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "job_id", nullable = false)
-    private int jobId;
+    @Column(name = "id", nullable = false)
+    private int id;
 
     @Column(name = "description", nullable = false, length = 200)
     private String description;
@@ -58,12 +58,12 @@ public class Job {
         this.fixedDate = fixedDate;
     }
 
-    public int getJobId() {
-        return jobId;
+    public int getId() {
+        return id;
     }
 
-    public void setJobId(int jobId) {
-        this.jobId = jobId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -149,7 +149,7 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Job job = (Job) o;
-        return jobId == job.jobId &&
+        return id == job.id &&
                 Objects.equals(description, job.description) &&
                 Objects.equals(fixedDate, job.fixedDate) &&
                 Objects.equals(startDate, job.startDate) &&
@@ -159,11 +159,11 @@ public class Job {
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobId, description, fixedDate, startDate, endDate, discount);
+        return Objects.hash(id, description, fixedDate, startDate, endDate, discount);
     }
 
     @Override
     public String toString() {
-        return jobId + ": " + description + ", " + fixedDate;
+        return id + ": " + description + ", " + fixedDate;
     }
 }

@@ -110,7 +110,7 @@ public class JobAddController implements Initializable {
     }
 
     public void addJobAndVehicle(ActionEvent actionEvent) {
-        Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue());
+        Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
         jobRepository.add(job, vehicle, clients.getValue(), false);

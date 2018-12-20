@@ -12,14 +12,14 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "task_id", nullable = false)
-    private int taskId;
+    @Column(name = "id", nullable = false)
+    private int id;
 
     @Column(name = "activity", nullable = false, length = 150)
     private String activity;
 
     @Column(name = "is_finished")
-    private Byte isFinished;
+    private boolean isFinished;
 
     @Column(name = "cost", precision = 2)
     private BigDecimal cost;
@@ -40,18 +40,18 @@ public class Task {
     public Task() {
     }
 
-    public Task(String activity, Byte isFinished, BigDecimal cost) {
+    public Task(String activity, boolean isFinished, BigDecimal cost) {
         this.activity = activity;
         this.isFinished = isFinished;
         this.cost = cost;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public int getId() {
+        return id;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getActivity() {
@@ -62,11 +62,11 @@ public class Task {
         this.activity = activity;
     }
 
-    public Byte getIsFinished() {
+    public boolean getIsFinished() {
         return isFinished;
     }
 
-    public void setIsFinished(Byte isFinished) {
+    public void setIsFinished(boolean isFinished) {
         this.isFinished = isFinished;
     }
 
@@ -106,7 +106,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return taskId == task.taskId &&
+        return id == task.id &&
                 Objects.equals(activity, task.activity) &&
                 Objects.equals(isFinished, task.isFinished) &&
                 Objects.equals(cost, task.cost);
@@ -114,13 +114,13 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, activity, isFinished, cost);
+        return Objects.hash(id, activity, isFinished, cost);
     }
 
     @Override
     public String toString() {
         return "Task {" +
-                "taskId = " + taskId +
+                "taskId = " + id +
                 ", activity = '" + activity + '\'' +
                 ", isFinished = " + isFinished +
                 ", cost = " + cost +

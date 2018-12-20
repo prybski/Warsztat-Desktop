@@ -10,11 +10,11 @@ public class Demand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "demand_id", nullable = false)
-    private int demandId;
+    @Column(name = "id", nullable = false)
+    private int id;
 
     @Column(name = "quantity", nullable = false)
-    private Byte quantity;
+    private byte quantity;
 
     @Column(name = "price", nullable = false, precision = 2)
     private BigDecimal price;
@@ -32,24 +32,24 @@ public class Demand {
     public Demand() {
     }
 
-    public Demand(Byte quantity, BigDecimal price) {
+    public Demand(byte quantity, BigDecimal price) {
         this.quantity = quantity;
         this.price = price;
     }
 
-    public int getDemandId() {
-        return demandId;
+    public int getId() {
+        return id;
     }
 
-    public void setDemandId(int demandId) {
-        this.demandId = demandId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public byte getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Byte quantity) {
+    public void setQuantity(byte quantity) {
         this.quantity = quantity;
     }
 
@@ -82,20 +82,20 @@ public class Demand {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Demand demand = (Demand) o;
-        return demandId == demand.demandId &&
+        return id == demand.id &&
                 Objects.equals(quantity, demand.quantity) &&
                 Objects.equals(price, demand.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(demandId, quantity, price);
+        return Objects.hash(id, quantity, price);
     }
 
     @Override
     public String toString() {
         return "Demand {" +
-                "demandId = " + demandId +
+                "demandId = " + id +
                 ", quantity = " + quantity +
                 ", price = " + price +
                 '}';
