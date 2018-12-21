@@ -26,7 +26,7 @@ public class Task {
 
     // definicja relacji/mapowania (wielu Zadań do jednego Zlecenia)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "job_id")
+    @JoinColumn(name = "job_id", referencedColumnName = "id")
     private Job job;
 
     // definicja relacji/mapowania (jednego Zadania do wielu Zapotrzebowań)

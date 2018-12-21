@@ -34,12 +34,12 @@ public class Job {
 
     // definicja relacji/mapowania (wielu Zleceń do jednego Klienta)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
     // definicja relacji/mapowania (wielu Zleceń do jednego Pojazdu)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "vehicle_id")
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
     // definicja relacji/mapowania (jednego Zlecenia do wielu Zadań)

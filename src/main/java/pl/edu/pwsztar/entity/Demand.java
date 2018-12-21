@@ -21,12 +21,12 @@ public class Demand {
 
     // definicja relacji/mapowania (wielu Zapotrzebowań do jednego Zadania)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
     // definicja relacji/mapowania (wielu Zapotrzebowań do jednej Części)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "part_id")
+    @JoinColumn(name = "part_id", referencedColumnName = "id")
     private Part part;
 
     public Demand() {

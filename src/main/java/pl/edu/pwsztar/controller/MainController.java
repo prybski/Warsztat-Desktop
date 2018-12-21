@@ -148,10 +148,6 @@ public class MainController implements Initializable {
 
             Client clientFoundInDb = clientRepository.findByFirstAndLastName(firstAndLastName.getText());
 
-            if (clientFoundInDb == null) {
-                throw new NoResultException("Nie udało się odnaleźć klienta o podanym imieniu i nazwisku!");
-            }
-
             clientDetailsController.setClient(clientFoundInDb);
 
             StageUtil.stageConfiguration(anchorPane, "Dane klienta");

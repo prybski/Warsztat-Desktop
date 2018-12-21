@@ -83,7 +83,9 @@ public class JobAddController implements Initializable {
         }
 
         vehicles.getItems().setAll(vehiclesFromDb);
-        vehicles.setValue(vehiclesFromDb.get(0));
+        if (!vehicles.getItems().isEmpty()) {
+            vehicles.setValue(vehiclesFromDb.get(0));
+        }
 
         clients.getSelectionModel()
                 .selectedItemProperty()
@@ -113,6 +115,6 @@ public class JobAddController implements Initializable {
         Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        jobRepository.add(job, vehicle, clients.getValue(), false);
+        jobRepository.add(job, vehicle, clients.getValue(), true);
     }
 }
