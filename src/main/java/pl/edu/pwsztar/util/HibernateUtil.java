@@ -19,7 +19,7 @@ public class HibernateUtil {
                 .buildSessionFactory();
     }
 
-    public static Session getSession() {
+    public static Session getOrOpenSession() {
         Session session;
 
         if (sessionThreadLocal.get() == null) {

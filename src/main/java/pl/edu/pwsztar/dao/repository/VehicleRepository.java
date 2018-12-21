@@ -12,7 +12,7 @@ public class VehicleRepository implements VehicleDAO {
 
     @Override
     public List<Vehicle> findAll() {
-        Query<Vehicle> vehicleQuery = HibernateUtil.getSession().createQuery("from Vehicle", Vehicle.class);
+        Query<Vehicle> vehicleQuery = HibernateUtil.getOrOpenSession().createQuery("from Vehicle", Vehicle.class);
         List<Vehicle> vehiclesFromDb = vehicleQuery.getResultList();
 
         HibernateUtil.closeSession();
@@ -22,7 +22,7 @@ public class VehicleRepository implements VehicleDAO {
 
     @Override
     public List<Vehicle> findAllByClient(Client client) {
-        Query<Vehicle> vehicleQuery = HibernateUtil.getSession().createQuery("select distinct j.vehicle from Job j where j.client = :client", Vehicle.class);
+        Query<Vehicle> vehicleQuery = HibernateUtil.getOrOpenSession().createQuery("select distinct j.vehicle from Job j where j.client = :client", Vehicle.class);
         vehicleQuery.setParameter("client", client);
 
         List<Vehicle> vehiclesFromDb = vehicleQuery.getResultList();
@@ -34,10 +34,10 @@ public class VehicleRepository implements VehicleDAO {
 
     @Override
     public void add(Vehicle vehicle) {
-//        HibernateUtil.getSession();
+//        HibernateUtil.getOrOpenSession();
 //
 //        HibernateUtil.withinTransaction(() -> {
-//            HibernateUtil.getSession().save(vehicle);
+//            HibernateUtil.getOrOpenSession().save(vehicle);
 //        });
 //
 //        HibernateUtil.closeSession();

@@ -15,7 +15,7 @@ public class JobRepository implements JobDAO {
 
     @Override
     public List<Job> findHistoryByClient(Client client) {
-        Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where client = :client and endDate is not null", Job.class);
+        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where client = :client and endDate is not null", Job.class);
         jobQuery.setParameter("client", client);
 
         List<Job> jobsFromDb = jobQuery.getResultList();
@@ -27,7 +27,7 @@ public class JobRepository implements JobDAO {
 
     @Override
     public List<Job> findHistoryByVehicle(Vehicle vehicle) {
-        Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle = :vehicle and endDate is not null", Job.class);
+        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where vehicle = :vehicle and endDate is not null", Job.class);
         jobQuery.setParameter("vehicle", vehicle);
 
         List<Job> jobsFromDb = jobQuery.getResultList();
@@ -39,7 +39,7 @@ public class JobRepository implements JobDAO {
 
     @Override
     public List<Job> findHistoryByVinNumber(String vinNumber) {
-        Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle.vinNumber = :vinNumber and endDate is not null", Job.class);
+        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where vehicle.vinNumber = :vinNumber and endDate is not null", Job.class);
         jobQuery.setParameter("vinNumber", vinNumber);
 
         List<Job> jobsFromDb = jobQuery.getResultList();
@@ -51,7 +51,7 @@ public class JobRepository implements JobDAO {
 
     @Override
     public List<Job> findAllByDate(Date date) {
-        Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where fixedDate = :date", Job.class);
+        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where fixedDate = :date", Job.class);
         jobQuery.setParameter("date", date);
 
         List<Job> jobsFromDb = jobQuery.getResultList();
@@ -63,7 +63,7 @@ public class JobRepository implements JobDAO {
 
     @Override
     public List<Date> findFixedDatesForNotStartedOnes() {
-        Query jobQuery = HibernateUtil.getSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is null");
+        Query jobQuery = HibernateUtil.getOrOpenSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is null");
         List datesFromDb = jobQuery.getResultList();
 
         HibernateUtil.closeSession();
@@ -73,7 +73,7 @@ public class JobRepository implements JobDAO {
 
     @Override
     public List<Date> findFixedDatesWithStartDate() {
-        Query jobQuery = HibernateUtil.getSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is not null");
+        Query jobQuery = HibernateUtil.getOrOpenSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is not null");
         List datesFromDb = jobQuery.getResultList();
 
         HibernateUtil.closeSession();
@@ -83,12 +83,12 @@ public class JobRepository implements JobDAO {
 
     @Override
     public void add(Job job, Vehicle vehicle, Client client, boolean isVehicleNew) {
-        HibernateUtil.getSession();
+        HibernateUtil.getOrOpenSession();
 
         if (isVehicleNew) {
             HibernateUtil.withinTransaction(() -> {
                 vehicle.addJob(job, client);
-                HibernateUtil.getSession().save(vehicle);
+                HibernateUtil.getOrOpenSession().save(vehicle);
             });
 
             HibernateUtil.closeSession();
@@ -98,7 +98,7 @@ public class JobRepository implements JobDAO {
             job.setVehicle(vehicle);
             job.setClient(client);
 
-            HibernateUtil.getSession().save(job);
+            HibernateUtil.getOrOpenSession().save(job);
         });
 
         HibernateUtil.closeSession();
