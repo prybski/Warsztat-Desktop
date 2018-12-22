@@ -36,14 +36,16 @@ public class HibernateUtil {
     }
 
     public static void withinSession(SessionCallback sessionCallback) {
-        getSession();
+        Session session = getSession();
 
         try {
             sessionCallback.doInSession();
         } catch (HibernateException e) {
             e.printStackTrace();
         } finally {
-            closeSession();
+            if (session.isOpen()) {
+                closeSession();
+            }
         }
     }
 
@@ -62,7 +64,9 @@ public class HibernateUtil {
 
             e.printStackTrace();
         } finally {
-            closeSession();
+            if (session.isOpen()) {
+                closeSession();
+            }
         }
     }
 
