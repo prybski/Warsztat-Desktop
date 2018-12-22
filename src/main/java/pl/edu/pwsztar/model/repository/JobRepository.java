@@ -57,7 +57,7 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Job> findAllByDate(Date date) {
+    public List<Job> findByFixedDate(Date date) {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
@@ -71,7 +71,7 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Date> findFixedDatesForNotStartedOnes() {
+    public List<Date> findNotStartedFixedDates() {
         AtomicReference<List> datesFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
@@ -85,7 +85,7 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Date> findFixedDatesWithStartDate() {
+    public List<Date> findStartedFixedDates() {
         AtomicReference<List> datesFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
@@ -98,20 +98,22 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public void add(Job job, Vehicle vehicle, Client client, boolean isVehicleNew) {
-        if (isVehicleNew) {
-            HibernateUtil.withinTransaction(() -> {
-                vehicle.addJob(job, client);
-                HibernateUtil.getSession().save(vehicle);
-            });
-        } else {
-            HibernateUtil.withinTransaction(() -> {
-                job.setVehicle(vehicle);
-                job.setClient(client);
+    public void addWithNewVehicle(Job job, Vehicle vehicle, Client client) {
+        HibernateUtil.withinTransaction(() -> {
+            vehicle.addJob(job, client);
 
-                HibernateUtil.getSession().save(job);
-            });
-        }
+            HibernateUtil.getSession().save(vehicle);
+        });
+    }
+
+    @Override
+    public void addWithExistingVehicle(Job job, Vehicle vehicle, Client client) {
+        HibernateUtil.withinTransaction(() -> {
+            job.setVehicle(vehicle);
+            job.setClient(client);
+
+            HibernateUtil.getSession().save(job);
+        });
     }
 
     private List<Date> convertToSqlDates(List dates) {

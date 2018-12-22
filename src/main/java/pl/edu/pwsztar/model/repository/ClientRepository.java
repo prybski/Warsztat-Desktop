@@ -24,7 +24,7 @@ public class ClientRepository implements ClientDAO {
     }
 
     @Override
-    public Client findByFirstAndLastName(String firstAndLastName) {
+    public Client findOneByFirstAndLastName(String firstAndLastName) {
         AtomicReference<Client> clientFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {

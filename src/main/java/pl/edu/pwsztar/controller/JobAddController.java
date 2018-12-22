@@ -4,9 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import pl.edu.pwsztar.model.repository.ClientRepository;
-import pl.edu.pwsztar.model.repository.JobRepository;
-import pl.edu.pwsztar.model.repository.VehicleRepository;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
@@ -68,7 +65,7 @@ public class JobAddController implements Initializable {
         clients.getItems().setAll(clientsFromDb);
         clients.setValue(clientsFromDb.get(0));
 
-        List<Vehicle> vehiclesFromDb = singleton.getVehicleRepository().findAllByClient(clientsFromDb.get(0));
+        List<Vehicle> vehiclesFromDb = singleton.getVehicleRepository().findByClient(clientsFromDb.get(0));
 
         if (vehiclesFromDb.isEmpty()) {
             addJob.setDisable(true);
@@ -86,7 +83,7 @@ public class JobAddController implements Initializable {
         clients.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((value, oldValue, newValue) -> {
-                    List<Vehicle> vehiclesUpdated = singleton.getVehicleRepository().findAllByClient(newValue);
+                    List<Vehicle> vehiclesUpdated = singleton.getVehicleRepository().findByClient(newValue);
                     vehicles.getItems().setAll(vehiclesUpdated);
 
                     if (!vehiclesUpdated.isEmpty()) {
@@ -104,13 +101,13 @@ public class JobAddController implements Initializable {
     public void addJob(ActionEvent actionEvent) {
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        singleton.getJobRepository().add(job, vehicles.getValue(), clients.getValue(), false);
+        singleton.getJobRepository().addWithExistingVehicle(job, vehicles.getValue(), clients.getValue());
     }
 
     public void addJobAndVehicle(ActionEvent actionEvent) {
         Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        singleton.getJobRepository().add(job, vehicle, clients.getValue(), true);
+        singleton.getJobRepository().addWithNewVehicle(job, vehicle, clients.getValue());
     }
 }

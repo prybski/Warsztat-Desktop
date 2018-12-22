@@ -6,9 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import pl.edu.pwsztar.model.repository.ClientRepository;
-import pl.edu.pwsztar.model.repository.JobRepository;
-import pl.edu.pwsztar.model.repository.VehicleRepository;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
@@ -64,19 +61,19 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fixedDates.getItems().setAll(singleton.getJobRepository().findFixedDatesForNotStartedOnes());
+        fixedDates.getItems().setAll(singleton.getJobRepository().findNotStartedFixedDates());
 
         fixedDates.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue)
-                        -> jobs.getItems().setAll(singleton.getJobRepository().findAllByDate(newValue)));
+                        -> jobs.getItems().setAll(singleton.getJobRepository().findByFixedDate(newValue)));
 
-        fixedDatesWithStartDate.getItems().setAll(singleton.getJobRepository().findFixedDatesWithStartDate());
+        fixedDatesWithStartDate.getItems().setAll(singleton.getJobRepository().findStartedFixedDates());
 
         fixedDatesWithStartDate.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue)
-                        -> startedJobs.getItems().setAll(singleton.getJobRepository().findAllByDate(newValue)));
+                        -> startedJobs.getItems().setAll(singleton.getJobRepository().findByFixedDate(newValue)));
 
         clients.getItems().setAll(singleton.getClientRepository().findAll());
 
@@ -145,7 +142,7 @@ public class MainController implements Initializable {
 
             ClientDetailsController clientDetailsController = loader.getController();
 
-            Client clientFoundInDb = singleton.getClientRepository().findByFirstAndLastName(firstAndLastName.getText());
+            Client clientFoundInDb = singleton.getClientRepository().findOneByFirstAndLastName(firstAndLastName.getText());
 
             clientDetailsController.setClient(clientFoundInDb);
 

@@ -25,7 +25,7 @@ public class VehicleRepository implements VehicleDAO {
     }
 
     @Override
-    public List<Vehicle> findAllByClient(Client client) {
+    public List<Vehicle> findByClient(Client client) {
         AtomicReference<List<Vehicle>> vehiclesFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {

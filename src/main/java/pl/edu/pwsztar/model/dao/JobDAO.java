@@ -12,8 +12,9 @@ public interface JobDAO {
     List<Job> findHistoryByClient(Client client);
     List<Job> findHistoryByVehicle(Vehicle vehicle);
     List<Job> findHistoryByVinNumber(String vinNumber);
-    List<Job> findAllByDate(Date date);
-    List<Date> findFixedDatesForNotStartedOnes();
-    List<Date> findFixedDatesWithStartDate();
-    void add(Job job, Vehicle vehicle, Client client, boolean isVehicleNew);
+    List<Job> findByFixedDate(Date date);
+    List<Date> findNotStartedFixedDates();
+    List<Date> findStartedFixedDates();
+    void addWithNewVehicle(Job job, Vehicle vehicle, Client client);
+    void addWithExistingVehicle(Job job, Vehicle vehicle, Client client);
 }

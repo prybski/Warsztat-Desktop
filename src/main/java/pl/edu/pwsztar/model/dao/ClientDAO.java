@@ -7,5 +7,5 @@ import java.util.List;
 public interface ClientDAO {
 
     List<Client> findAll();
-    Client findByFirstAndLastName(String firstAndLastName);
+    Client findOneByFirstAndLastName(String firstAndLastName);
 }

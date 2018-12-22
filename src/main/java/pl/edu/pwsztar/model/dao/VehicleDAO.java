@@ -8,6 +8,6 @@ import java.util.List;
 public interface VehicleDAO {
 
     List<Vehicle> findAll();
-    List<Vehicle> findAllByClient(Client client);
+    List<Vehicle> findByClient(Client client);
     void add(Vehicle vehicle);
 }
