@@ -1,7 +1,7 @@
-package pl.edu.pwsztar.dao.repository;
+package pl.edu.pwsztar.model.repository;
 
 import org.hibernate.query.Query;
-import pl.edu.pwsztar.dao.JobDAO;
+import pl.edu.pwsztar.model.dao.JobDAO;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;

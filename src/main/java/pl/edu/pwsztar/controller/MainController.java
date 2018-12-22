@@ -6,12 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import pl.edu.pwsztar.dao.repository.ClientRepository;
-import pl.edu.pwsztar.dao.repository.JobRepository;
-import pl.edu.pwsztar.dao.repository.VehicleRepository;
+import pl.edu.pwsztar.model.repository.ClientRepository;
+import pl.edu.pwsztar.model.repository.JobRepository;
+import pl.edu.pwsztar.model.repository.VehicleRepository;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
+import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.StageUtil;
 
 import javax.persistence.NoResultException;
@@ -22,9 +23,7 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
-    private JobRepository jobRepository;
-    private ClientRepository clientRepository;
-    private VehicleRepository vehicleRepository;
+    private Singleton singleton;
 
     @FXML
     private ChoiceBox<Date> fixedDates;
@@ -60,48 +59,48 @@ public class MainController implements Initializable {
     private ListView<Job> vehicleHistory;
 
     {
-        jobRepository = new JobRepository();
-        clientRepository = new ClientRepository();
-        vehicleRepository = new VehicleRepository();
+        singleton = Singleton.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fixedDates.getItems().setAll(jobRepository.findFixedDatesForNotStartedOnes());
+        fixedDates.getItems().setAll(singleton.getJobRepository().findFixedDatesForNotStartedOnes());
 
         fixedDates.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> jobs.getItems().setAll(jobRepository.findAllByDate(newValue)));
+                .addListener((observable, oldValue, newValue)
+                        -> jobs.getItems().setAll(singleton.getJobRepository().findAllByDate(newValue)));
 
-        fixedDatesWithStartDate.getItems().setAll(jobRepository.findFixedDatesWithStartDate());
+        fixedDatesWithStartDate.getItems().setAll(singleton.getJobRepository().findFixedDatesWithStartDate());
 
         fixedDatesWithStartDate.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> startedJobs.getItems().setAll(jobRepository.findAllByDate(newValue)));
+                .addListener((observable, oldValue, newValue)
+                        -> startedJobs.getItems().setAll(singleton.getJobRepository().findAllByDate(newValue)));
 
-        clients.getItems().setAll(clientRepository.findAll());
+        clients.getItems().setAll(singleton.getClientRepository().findAll());
 
         clients.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> clientHistory.getItems().setAll(jobRepository.findHistoryByClient(clients.getSelectionModel().getSelectedItem())));
+                .addListener((observable, oldValue, newValue) -> clientHistory.getItems().setAll(singleton.getJobRepository().findHistoryByClient(clients.getSelectionModel().getSelectedItem())));
 
         vinNumber.focusedProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (!newValue) {
-                        vehicleHistoryByVinNumber.getItems().setAll(jobRepository.findHistoryByVinNumber(vinNumber.getText()));
+                        vehicleHistoryByVinNumber.getItems().setAll(singleton.getJobRepository().findHistoryByVinNumber(vinNumber.getText()));
                     }
                 });
 
-        vehicles.getItems().setAll(vehicleRepository.findAll());
+        vehicles.getItems().setAll(singleton.getVehicleRepository().findAll());
 
         vehicles.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> vehicleHistory.getItems().setAll(jobRepository.findHistoryByVehicle(vehicles.getSelectionModel().getSelectedItem())));
+                .addListener((observable, oldValue, newValue) -> vehicleHistory.getItems().setAll(singleton.getJobRepository().findHistoryByVehicle(vehicles.getSelectionModel().getSelectedItem())));
     }
 
     public void showAddTask(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/task-add.fxml"));
+        loader.setLocation(getClass().getResource("/view/task-add.fxml"));
 
         try {
             AnchorPane anchorPane = loader.load();
@@ -114,7 +113,7 @@ public class MainController implements Initializable {
 
     public void showAddClient(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/client-add.fxml"));
+        loader.setLocation(getClass().getResource("/view/client-add.fxml"));
 
         try {
             AnchorPane anchorPane = loader.load();
@@ -127,7 +126,7 @@ public class MainController implements Initializable {
 
     public void showAddJob(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/job-add.fxml"));
+        loader.setLocation(getClass().getResource("/view/job-add.fxml"));
 
         try {
             AnchorPane anchorPane = loader.load();
@@ -141,12 +140,12 @@ public class MainController implements Initializable {
     public void showClientData(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/fxml/client-details.fxml"));
+            loader.setLocation(getClass().getResource("/view/client-details.fxml"));
             AnchorPane anchorPane = loader.load();
 
             ClientDetailsController clientDetailsController = loader.getController();
 
-            Client clientFoundInDb = clientRepository.findByFirstAndLastName(firstAndLastName.getText());
+            Client clientFoundInDb = singleton.getClientRepository().findByFirstAndLastName(firstAndLastName.getText());
 
             clientDetailsController.setClient(clientFoundInDb);
 

@@ -4,13 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import pl.edu.pwsztar.dao.repository.ClientRepository;
-import pl.edu.pwsztar.dao.repository.JobRepository;
-import pl.edu.pwsztar.dao.repository.VehicleRepository;
+import pl.edu.pwsztar.model.repository.ClientRepository;
+import pl.edu.pwsztar.model.repository.JobRepository;
+import pl.edu.pwsztar.model.repository.VehicleRepository;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
+import pl.edu.pwsztar.singleton.Singleton;
 
 import java.net.URL;
 import java.sql.Date;
@@ -19,9 +19,7 @@ import java.util.ResourceBundle;
 
 public class JobAddController implements Initializable {
 
-    private ClientRepository clientRepository;
-    private VehicleRepository vehicleRepository;
-    private JobRepository jobRepository;
+    private Singleton singleton;
 
     @FXML
     private TextArea description;
@@ -54,9 +52,7 @@ public class JobAddController implements Initializable {
     private Button addJob;
 
     {
-        clientRepository = new ClientRepository();
-        vehicleRepository = new VehicleRepository();
-        jobRepository = new JobRepository();
+        singleton = Singleton.getInstance();
     }
 
     @Override
@@ -67,12 +63,12 @@ public class JobAddController implements Initializable {
         SpinnerValueFactory<Double> engineCapacityValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 6.0, 0.6, 0.1);
         engineCapacity.setValueFactory(engineCapacityValueFactory);
 
-        List<Client> clientsFromDb = clientRepository.findAll();
+        List<Client> clientsFromDb = singleton.getClientRepository().findAll();
 
         clients.getItems().setAll(clientsFromDb);
         clients.setValue(clientsFromDb.get(0));
 
-        List<Vehicle> vehiclesFromDb = vehicleRepository.findAllByClient(clientsFromDb.get(0));
+        List<Vehicle> vehiclesFromDb = singleton.getVehicleRepository().findAllByClient(clientsFromDb.get(0));
 
         if (vehiclesFromDb.isEmpty()) {
             addJob.setDisable(true);
@@ -90,7 +86,7 @@ public class JobAddController implements Initializable {
         clients.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((value, oldValue, newValue) -> {
-                    List<Vehicle> vehiclesUpdated = vehicleRepository.findAllByClient(newValue);
+                    List<Vehicle> vehiclesUpdated = singleton.getVehicleRepository().findAllByClient(newValue);
                     vehicles.getItems().setAll(vehiclesUpdated);
 
                     if (!vehiclesUpdated.isEmpty()) {
@@ -108,13 +104,13 @@ public class JobAddController implements Initializable {
     public void addJob(ActionEvent actionEvent) {
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        jobRepository.add(job, vehicles.getValue(), clients.getValue(), false);
+        singleton.getJobRepository().add(job, vehicles.getValue(), clients.getValue(), false);
     }
 
     public void addJobAndVehicle(ActionEvent actionEvent) {
         Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        jobRepository.add(job, vehicle, clients.getValue(), true);
+        singleton.getJobRepository().add(job, vehicle, clients.getValue(), true);
     }
 }

@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import pl.edu.pwsztar.util.HibernateUtil;
 
 public class App extends Application {
 
@@ -16,7 +15,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/main.fxml"));
+        loader.setLocation(getClass().getResource("/view/main.fxml"));
 
         BorderPane borderPane = loader.load();
         Scene scene = new Scene(borderPane);
