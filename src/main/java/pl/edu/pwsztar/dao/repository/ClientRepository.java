@@ -6,28 +6,34 @@ import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.util.HibernateUtil;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientRepository implements ClientDAO {
 
     @Override
     public List<Client> findAll() {
-        Query<Client> clientQuery = HibernateUtil.getOrOpenSession().createQuery("from Client", Client.class);
-        List<Client> clientsFromDb = clientQuery.getResultList();
+        AtomicReference<List<Client>> clientsFromDb = new AtomicReference<>();
 
-        HibernateUtil.closeSession();
+        HibernateUtil.withinSession(() -> {
+            Query<Client> clientQuery = HibernateUtil.getSession().createQuery("from Client", Client.class);
 
-        return clientsFromDb;
+            clientsFromDb.set(clientQuery.getResultList());
+        });
+
+        return clientsFromDb.get();
     }
 
     @Override
     public Client findByFirstAndLastName(String firstAndLastName) {
-        Query<Client> clientQuery = HibernateUtil.getOrOpenSession().createQuery("select c from Client c where concat(firstName, ' ', lastName) in (:firstAndLastName)", Client.class);
-        clientQuery.setParameter("firstAndLastName", firstAndLastName);
+        AtomicReference<Client> clientFromDb = new AtomicReference<>();
 
-        Client clientFromDb = clientQuery.getSingleResult();
+        HibernateUtil.withinSession(() -> {
+            Query<Client> clientQuery = HibernateUtil.getSession().createQuery("select c from Client c where concat(firstName, ' ', lastName) in (:firstAndLastName)", Client.class);
+            clientQuery.setParameter("firstAndLastName", firstAndLastName);
 
-        HibernateUtil.closeSession();
+            clientFromDb.set(clientQuery.getSingleResult());
+        });
 
-        return clientFromDb;
+        return clientFromDb.get();
     }
 }

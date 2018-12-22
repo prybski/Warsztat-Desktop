@@ -10,98 +10,108 @@ import pl.edu.pwsztar.util.HibernateUtil;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class JobRepository implements JobDAO {
 
     @Override
     public List<Job> findHistoryByClient(Client client) {
-        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where client = :client and endDate is not null", Job.class);
-        jobQuery.setParameter("client", client);
+        AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
-        List<Job> jobsFromDb = jobQuery.getResultList();
+        HibernateUtil.withinSession(() -> {
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where client = :client and endDate is not null", Job.class);
+            jobQuery.setParameter("client", client);
 
-        HibernateUtil.closeSession();
+            jobsFromDb.set(jobQuery.getResultList());
+        });
 
-        return jobsFromDb;
+        return jobsFromDb.get();
     }
 
     @Override
     public List<Job> findHistoryByVehicle(Vehicle vehicle) {
-        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where vehicle = :vehicle and endDate is not null", Job.class);
-        jobQuery.setParameter("vehicle", vehicle);
+        AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
-        List<Job> jobsFromDb = jobQuery.getResultList();
+        HibernateUtil.withinSession(() -> {
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle = :vehicle and endDate is not null", Job.class);
+            jobQuery.setParameter("vehicle", vehicle);
 
-        HibernateUtil.closeSession();
+            jobsFromDb.set(jobQuery.getResultList());
+        });
 
-        return jobsFromDb;
+        return jobsFromDb.get();
     }
 
     @Override
     public List<Job> findHistoryByVinNumber(String vinNumber) {
-        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where vehicle.vinNumber = :vinNumber and endDate is not null", Job.class);
-        jobQuery.setParameter("vinNumber", vinNumber);
+        AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
-        List<Job> jobsFromDb = jobQuery.getResultList();
+        HibernateUtil.withinSession(() -> {
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle.vinNumber = :vinNumber and endDate is not null", Job.class);
+            jobQuery.setParameter("vinNumber", vinNumber);
 
-        HibernateUtil.closeSession();
+            jobsFromDb.set(jobQuery.getResultList());
+        });
 
-        return jobsFromDb;
+        return jobsFromDb.get();
     }
 
     @Override
     public List<Job> findAllByDate(Date date) {
-        Query<Job> jobQuery = HibernateUtil.getOrOpenSession().createQuery("from Job where fixedDate = :date", Job.class);
-        jobQuery.setParameter("date", date);
+        AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
-        List<Job> jobsFromDb = jobQuery.getResultList();
+        HibernateUtil.withinSession(() -> {
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where fixedDate = :date", Job.class);
+            jobQuery.setParameter("date", date);
 
-        HibernateUtil.closeSession();
+            jobsFromDb.set(jobQuery.getResultList());
+        });
 
-        return jobsFromDb;
+        return jobsFromDb.get();
     }
 
     @Override
     public List<Date> findFixedDatesForNotStartedOnes() {
-        Query jobQuery = HibernateUtil.getOrOpenSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is null");
-        List datesFromDb = jobQuery.getResultList();
+        AtomicReference<List> datesFromDb = new AtomicReference<>();
 
-        HibernateUtil.closeSession();
+        HibernateUtil.withinSession(() -> {
+            Query jobQuery = HibernateUtil.getSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is null");
 
-        return convertToSqlDates(datesFromDb);
+            datesFromDb.set(jobQuery.getResultList());
+        });
+
+
+        return convertToSqlDates(datesFromDb.get());
     }
 
     @Override
     public List<Date> findFixedDatesWithStartDate() {
-        Query jobQuery = HibernateUtil.getOrOpenSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is not null");
-        List datesFromDb = jobQuery.getResultList();
+        AtomicReference<List> datesFromDb = new AtomicReference<>();
 
-        HibernateUtil.closeSession();
+        HibernateUtil.withinSession(() -> {
+            Query jobQuery = HibernateUtil.getSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is not null");
 
-        return convertToSqlDates(datesFromDb);
+            datesFromDb.set(jobQuery.getResultList());
+        });
+
+        return convertToSqlDates(datesFromDb.get());
     }
 
     @Override
     public void add(Job job, Vehicle vehicle, Client client, boolean isVehicleNew) {
-        HibernateUtil.getOrOpenSession();
-
         if (isVehicleNew) {
             HibernateUtil.withinTransaction(() -> {
                 vehicle.addJob(job, client);
-                HibernateUtil.getOrOpenSession().save(vehicle);
+                HibernateUtil.getSession().save(vehicle);
             });
+        } else {
+            HibernateUtil.withinTransaction(() -> {
+                job.setVehicle(vehicle);
+                job.setClient(client);
 
-            HibernateUtil.closeSession();
+                HibernateUtil.getSession().save(job);
+            });
         }
-
-        HibernateUtil.withinTransaction(() -> {
-            job.setVehicle(vehicle);
-            job.setClient(client);
-
-            HibernateUtil.getOrOpenSession().save(job);
-        });
-
-        HibernateUtil.closeSession();
     }
 
     private List<Date> convertToSqlDates(List dates) {

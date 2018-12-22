@@ -7,39 +7,39 @@ import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.util.HibernateUtil;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class VehicleRepository implements VehicleDAO {
 
     @Override
     public List<Vehicle> findAll() {
-        Query<Vehicle> vehicleQuery = HibernateUtil.getOrOpenSession().createQuery("from Vehicle", Vehicle.class);
-        List<Vehicle> vehiclesFromDb = vehicleQuery.getResultList();
+        AtomicReference<List<Vehicle>> vehiclesFromDb = new AtomicReference<>();
 
-        HibernateUtil.closeSession();
+        HibernateUtil.withinSession(() -> {
+            Query<Vehicle> vehicleQuery = HibernateUtil.getSession().createQuery("from Vehicle", Vehicle.class);
 
-        return vehiclesFromDb;
+            vehiclesFromDb.set(vehicleQuery.getResultList());
+        });
+
+        return vehiclesFromDb.get();
     }
 
     @Override
     public List<Vehicle> findAllByClient(Client client) {
-        Query<Vehicle> vehicleQuery = HibernateUtil.getOrOpenSession().createQuery("select distinct j.vehicle from Job j where j.client = :client", Vehicle.class);
-        vehicleQuery.setParameter("client", client);
+        AtomicReference<List<Vehicle>> vehiclesFromDb = new AtomicReference<>();
 
-        List<Vehicle> vehiclesFromDb = vehicleQuery.getResultList();
+        HibernateUtil.withinSession(() -> {
+            Query<Vehicle> vehicleQuery = HibernateUtil.getSession().createQuery("select distinct j.vehicle from Job j where j.client = :client", Vehicle.class);
+            vehicleQuery.setParameter("client", client);
 
-        HibernateUtil.closeSession();
+            vehiclesFromDb.set(vehicleQuery.getResultList());
+        });
 
-        return vehiclesFromDb;
+        return vehiclesFromDb.get();
     }
 
     @Override
     public void add(Vehicle vehicle) {
-//        HibernateUtil.getOrOpenSession();
-//
-//        HibernateUtil.withinTransaction(() -> {
-//            HibernateUtil.getOrOpenSession().save(vehicle);
-//        });
-//
-//        HibernateUtil.closeSession();
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(vehicle));
     }
 }

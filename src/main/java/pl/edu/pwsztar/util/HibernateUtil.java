@@ -1,9 +1,11 @@
 package pl.edu.pwsztar.util;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import pl.edu.pwsztar.util.callback.SessionCallback;
 import pl.edu.pwsztar.util.callback.TransactionCallback;
 
 public class HibernateUtil {
@@ -19,7 +21,7 @@ public class HibernateUtil {
                 .buildSessionFactory();
     }
 
-    public static Session getOrOpenSession() {
+    public static Session getSession() {
         Session session;
 
         if (sessionThreadLocal.get() == null) {
@@ -33,29 +35,38 @@ public class HibernateUtil {
         return session;
     }
 
-    public static void withinTransaction(TransactionCallback transactionCallback) {
-        Session session;
-        Transaction transaction;
+    public static void withinSession(SessionCallback sessionCallback) {
+        getSession();
 
-        if (sessionThreadLocal.get() != null) {
-            session = sessionThreadLocal.get();
-            transaction = session.getTransaction();
-
-            if (!transaction.isActive()) {
-                transaction.begin();
-
-                try {
-                    transactionCallback.execute();
-
-                    transaction.commit();
-                } catch (Exception e) {
-                    transaction.rollback();
-                }
-            }
+        try {
+            sessionCallback.doInSession();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            closeSession();
         }
     }
 
-    public static void closeSession() {
+    public static void withinTransaction(TransactionCallback transactionCallback) {
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            transactionCallback.doInTransaction();
+
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+
+            e.printStackTrace();
+        } finally {
+            closeSession();
+        }
+    }
+
+    private static void closeSession() {
         Session session;
 
         if (sessionThreadLocal.get() != null) {
