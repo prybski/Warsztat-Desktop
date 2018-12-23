@@ -18,13 +18,13 @@
         <Label text="Email" />
         <Text fx:id="email" strokeType="OUTSIDE" strokeWidth="0.0">
             <font>
-                <Font size="18.0" />
+                <Font name="System Italic" size="18.0" />
             </font>
         </Text>
         <Label text="Numer telefonu" />
         <Text fx:id="phoneNumber" strokeType="OUTSIDE" strokeWidth="0.0">
             <font>
-                <Font size="18.0" />
+                <Font name="System Italic" size="18.0" />
             </font>
         </Text>
       <padding>
