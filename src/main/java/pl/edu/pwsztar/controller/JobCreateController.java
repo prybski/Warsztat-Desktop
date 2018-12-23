@@ -14,7 +14,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class JobAddController implements Initializable {
+public class JobCreateController implements Initializable {
 
     private Singleton singleton;
 

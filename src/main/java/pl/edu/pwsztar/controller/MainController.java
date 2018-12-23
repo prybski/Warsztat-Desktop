@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
@@ -21,6 +23,9 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     private Singleton singleton;
+
+    @FXML
+    private BorderPane borderPane;
 
     @FXML
     private ChoiceBox<Date> fixedDates;
@@ -97,7 +102,7 @@ public class MainController implements Initializable {
 
     public void showAddTask(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/task-add.fxml"));
+        loader.setLocation(getClass().getResource("/view/task-create.fxml"));
 
         try {
             AnchorPane anchorPane = loader.load();
@@ -110,7 +115,7 @@ public class MainController implements Initializable {
 
     public void showAddClient(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/client-add.fxml"));
+        loader.setLocation(getClass().getResource("/view/client-create.fxml"));
 
         try {
             AnchorPane anchorPane = loader.load();
@@ -123,7 +128,7 @@ public class MainController implements Initializable {
 
     public void showAddJob(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/job-add.fxml"));
+        loader.setLocation(getClass().getResource("/view/job-create.fxml"));
 
         try {
             AnchorPane anchorPane = loader.load();
@@ -152,6 +157,25 @@ public class MainController implements Initializable {
                     "Nie udało się odnaleźć klienta o podanym imieniu i nazwisku!", "Błąd!");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void startManaging(MouseEvent mouseEvent) {
+        if (!jobs.getSelectionModel().isEmpty()) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/job-management.fxml"));
+
+            try {
+                BorderPane tempBorderPane = loader.load();
+                tempBorderPane.setTop(borderPane.getTop());
+
+                JobManagementController jobManagementController = loader.getController();
+                jobManagementController.setJob(jobs.getSelectionModel().getSelectedItem());
+
+                borderPane.getScene().setRoot(tempBorderPane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
