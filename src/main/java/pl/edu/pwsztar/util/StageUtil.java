@@ -20,10 +20,9 @@ public class StageUtil {
         alert.showAndWait();
     }
 
-    public static void stageConfiguration(Parent parent, String title) {
+    public static void stageConfiguration(Parent parent, String title, Stage stage) {
         Scene scene = new Scene(parent);
 
-        Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle(title);

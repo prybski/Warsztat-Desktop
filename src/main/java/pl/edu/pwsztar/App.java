@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import pl.edu.pwsztar.controller.MainController;
 
 public class App extends Application {
 
@@ -18,6 +19,10 @@ public class App extends Application {
         loader.setLocation(getClass().getResource("/view/main.fxml"));
 
         BorderPane borderPane = loader.load();
+
+        MainController mainController = loader.getController();
+        mainController.setParentStage(primaryStage);
+
         Scene scene = new Scene(borderPane);
 
         primaryStage.setScene(scene);

@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
@@ -23,6 +24,7 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     private Singleton singleton;
+    private Stage parentStage;
 
     @FXML
     private BorderPane borderPane;
@@ -106,8 +108,9 @@ public class MainController implements Initializable {
 
         try {
             AnchorPane anchorPane = loader.load();
+            Stage stage = new Stage();
 
-            StageUtil.stageConfiguration(anchorPane, "Dodaj zadanie");
+            StageUtil.stageConfiguration(anchorPane, "Dodaj zadanie", stage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,8 +122,13 @@ public class MainController implements Initializable {
 
         try {
             AnchorPane anchorPane = loader.load();
+            Stage childStage = new Stage();
 
-            StageUtil.stageConfiguration(anchorPane, "Dodaj klienta");
+            ClientCreateController clientCreateController = loader.getController();
+            clientCreateController.setChildStage(childStage);
+            clientCreateController.setParentStage(parentStage);
+
+            StageUtil.stageConfiguration(anchorPane, "Dodaj klienta", childStage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,8 +140,9 @@ public class MainController implements Initializable {
 
         try {
             AnchorPane anchorPane = loader.load();
+            Stage stage = new Stage();
 
-            StageUtil.stageConfiguration(anchorPane, "Dodaj zlecenie");
+            StageUtil.stageConfiguration(anchorPane, "Dodaj zlecenie", stage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,6 +153,7 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/client-details.fxml"));
             AnchorPane anchorPane = loader.load();
+            Stage stage = new Stage();
 
             ClientDetailsController clientDetailsController = loader.getController();
 
@@ -151,7 +161,7 @@ public class MainController implements Initializable {
 
             clientDetailsController.setClient(clientFoundInDb);
 
-            StageUtil.stageConfiguration(anchorPane, "Dane klienta");
+            StageUtil.stageConfiguration(anchorPane, "Dane klienta", stage);
         } catch (NoResultException ex) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", ButtonType.OK,
                     "Nie udało się odnaleźć klienta o podanym imieniu i nazwisku!", "Błąd!");
@@ -177,5 +187,9 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setParentStage(Stage parentStage) {
+        this.parentStage = parentStage;
     }
 }
