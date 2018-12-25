@@ -23,9 +23,6 @@
                 <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj" />
             </Menu>
             <Menu mnemonicParsing="false" text="Pojazdy" />
-            <Menu mnemonicParsing="false" text="Zadania">
-                <MenuItem mnemonicParsing="false" onAction="#showAddTask" text="Dodaj" />
-            </Menu>
             <Menu mnemonicParsing="false" text="Pomoc">
                 <MenuItem mnemonicParsing="false" text="O aplikacji" />
             </Menu>
@@ -44,10 +41,9 @@
             <Separator prefWidth="200.0" />
          <Label text="Wyszukaj nierozpoczęte zlecenia z dnia" />
             <ChoiceBox fx:id="fixedDates" prefHeight="25.0" prefWidth="210.0" />
-            <ListView fx:id="jobs" onMouseClicked="#startManaging" VBox.vgrow="ALWAYS" />
-         <Label text="Wyszukaj rozpoczęte zlecenia z dnia" />
-         <ChoiceBox fx:id="fixedDatesWithStartDate" prefHeight="25.0" prefWidth="210.0" />
-         <ListView fx:id="startedJobs" />
+            <ListView fx:id="jobs" onMouseClicked="#startManagingNotStartedJobs" VBox.vgrow="ALWAYS" />
+         <Label text="Rozpoczęte zlecenia" />
+         <ListView fx:id="startedJobs" onMouseClicked="#startManagingStartedJobs" />
          <Label text="(Kliknij w zlecenie, aby zarządzać)">
             <font>
                <Font name="System Italic" size="12.0" />

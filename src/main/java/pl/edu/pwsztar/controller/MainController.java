@@ -36,9 +36,6 @@ public class MainController implements Initializable {
     private ListView<Job> jobs;
 
     @FXML
-    private ChoiceBox<Date> fixedDatesWithStartDate;
-
-    @FXML
     private ListView<Job> startedJobs;
 
     @FXML
@@ -75,12 +72,7 @@ public class MainController implements Initializable {
                 .addListener((observable, oldValue, newValue)
                         -> jobs.getItems().setAll(singleton.getJobRepository().findByFixedDate(newValue)));
 
-        fixedDatesWithStartDate.getItems().setAll(singleton.getJobRepository().findStartedFixedDates());
-
-        fixedDatesWithStartDate.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((observable, oldValue, newValue)
-                        -> startedJobs.getItems().setAll(singleton.getJobRepository().findByFixedDate(newValue)));
+        startedJobs.getItems().setAll(singleton.getJobRepository().findAllStarted());
 
         clients.getItems().setAll(singleton.getClientRepository().findAll());
 
@@ -100,20 +92,6 @@ public class MainController implements Initializable {
         vehicles.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> vehicleHistory.getItems().setAll(singleton.getJobRepository().findHistoryByVehicle(vehicles.getSelectionModel().getSelectedItem())));
-    }
-
-    public void showAddTask(ActionEvent actionEvent) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/task-create.fxml"));
-
-        try {
-            AnchorPane anchorPane = loader.load();
-            Stage stage = new Stage();
-
-            StageUtil.stageConfiguration(anchorPane, "Dodaj zadanie", stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void showAddClient(ActionEvent actionEvent) {
@@ -170,8 +148,16 @@ public class MainController implements Initializable {
         }
     }
 
-    public void startManaging(MouseEvent mouseEvent) {
-        if (!jobs.getSelectionModel().isEmpty()) {
+    public void startManagingNotStartedJobs(MouseEvent mouseEvent) {
+        loadJobsManagingScene(jobs);
+    }
+
+    public void startManagingStartedJobs(MouseEvent mouseEvent) {
+        loadJobsManagingScene(startedJobs);
+    }
+
+    private void loadJobsManagingScene(ListView<Job> jobsListView) {
+        if (!jobsListView.getSelectionModel().isEmpty()) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/job-management.fxml"));
 
@@ -180,7 +166,7 @@ public class MainController implements Initializable {
                 tempBorderPane.setTop(borderPane.getTop());
 
                 JobManagementController jobManagementController = loader.getController();
-                jobManagementController.setJob(jobs.getSelectionModel().getSelectedItem());
+                jobManagementController.setJob(jobsListView.getSelectionModel().getSelectedItem());
 
                 borderPane.getScene().setRoot(tempBorderPane);
             } catch (IOException e) {

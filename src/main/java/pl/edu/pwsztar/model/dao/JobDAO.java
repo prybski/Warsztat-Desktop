@@ -5,6 +5,7 @@ import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface JobDAO {
@@ -14,7 +15,8 @@ public interface JobDAO {
     List<Job> findHistoryByVinNumber(String vinNumber);
     List<Job> findByFixedDate(Date date);
     List<Date> findNotStartedFixedDates();
-    List<Date> findStartedFixedDates();
+    List<Job> findAllStarted();
     void addWithNewVehicle(Job job, Vehicle vehicle, Client client);
     void addWithExistingVehicle(Job job, Vehicle vehicle, Client client);
+    void updateStartDate(Job job, Timestamp timestamp);
 }

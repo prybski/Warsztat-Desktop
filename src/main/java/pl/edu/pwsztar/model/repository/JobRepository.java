@@ -8,6 +8,7 @@ import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.util.HibernateUtil;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -85,16 +86,16 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Date> findStartedFixedDates() {
-        AtomicReference<List> datesFromDb = new AtomicReference<>();
+    public List<Job> findAllStarted() {
+        AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query jobQuery = HibernateUtil.getSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is not null");
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job j where j.startDate is not null and j.endDate is null", Job.class);
 
-            datesFromDb.set(jobQuery.getResultList());
+            jobsFromDb.set(jobQuery.getResultList());
         });
 
-        return convertToSqlDates(datesFromDb.get());
+        return jobsFromDb.get();
     }
 
     @Override
@@ -113,6 +114,15 @@ public class JobRepository implements JobDAO {
             job.setClient(client);
 
             HibernateUtil.getSession().save(job);
+        });
+    }
+
+    @Override
+    public void updateStartDate(Job job, Timestamp timestamp) {
+        HibernateUtil.withinTransaction(() -> {
+            job.setStartDate(timestamp);
+
+            HibernateUtil.getSession().update(job);
         });
     }
 

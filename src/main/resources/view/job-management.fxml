@@ -32,7 +32,7 @@
                 <padding>
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>
-                <Button mnemonicParsing="false" prefWidth="160.0" text="Rozpocznij">
+                <Button fx:id="start" mnemonicParsing="false" onAction="#startJob" prefWidth="160.0" text="Rozpocznij">
                     <font>
                         <Font size="24.0" />
                     </font>
@@ -54,63 +54,63 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                     <padding>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                     </padding>
-                    <Label text="Wprowadź nazwę zadania"/>
-                    <TextField/>
+                    <Label text="Wprowadź nazwę zadania" />
+                    <TextField fx:id="taskName" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Dodaj do listy"/>
+                        <Button mnemonicParsing="false" onAction="#addTaskToJob" text="Dodaj do listy" />
                     </HBox>
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Usuń wybrane zadanie"/>
+                        <Button mnemonicParsing="false" text="Usuń wybrane zadanie" />
                     </HBox>
-                    <CheckBox mnemonicParsing="false" text="Czy któreś zadania wymagają części?"/>
+                    <CheckBox mnemonicParsing="false" text="Czy któreś zadania wymagają części?" />
                     <Label text="(Powyżej widać nieukończone zadania)">
                         <font>
-                            <Font name="System Italic" size="12.0"/>
+                            <Font name="System Italic" size="12.0" />
                         </font>
                     </Label>
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets left="10.0" right="10.0"/>
+                        <Insets left="10.0" right="10.0" />
                     </padding>
-                    <Label text="Wybierz wymaganą część"/>
-                    <ChoiceBox prefWidth="200.0"/>
-                    <Label text="Wybierz zadanie, do którego ją przypisać"/>
-                    <ChoiceBox prefWidth="200.0"/>
-                    <Label text="Określ ilość"/>
-                    <Spinner/>
-                    <Label text="Podaj cenę"/>
-                    <Spinner editable="true"/>
+                    <Label text="Wybierz wymaganą część" />
+                    <ChoiceBox prefWidth="200.0" />
+                    <Label text="Wybierz zadanie, do którego ją przypisać" />
+                    <ChoiceBox prefWidth="200.0" />
+                    <Label text="Określ ilość" />
+                    <Spinner />
+                    <Label text="Podaj cenę" />
+                    <Spinner editable="true" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Dodaj zapotrzebowanie"/>
+                        <Button mnemonicParsing="false" text="Dodaj zapotrzebowanie" />
                     </HBox>
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Usuń wybrane zapotrzebowanie"/>
+                        <Button mnemonicParsing="false" text="Usuń wybrane zapotrzebowanie" />
                     </HBox>
                     <Label text="(Kolumna aktywna, gdy potrzeba części)">
                         <font>
-                            <Font name="System Italic" size="12.0"/>
+                            <Font name="System Italic" size="12.0" />
                         </font>
                     </Label>
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets left="10.0" right="10.0"/>
+                        <Insets left="10.0" right="10.0" />
                     </padding>
-                    <Label text="Wybierz zadanie z listy"/>
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
-                    <Label text="Wprowadź jego cenę i je odznacz"/>
-                    <Spinner/>
+                    <Label text="Wybierz zadanie z listy" />
+                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                    <Label text="Wprowadź jego cenę i je odznacz" />
+                    <Spinner />
                     <Label text="(Odznacz, aby zakończyć zadanie)">
                         <font>
-                            <Font name="System Italic" size="12.0"/>
+                            <Font name="System Italic" size="12.0" />
                         </font>
                     </Label>
                 </VBox>
@@ -132,19 +132,19 @@
          <Spinner />
             <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
-                    <Button mnemonicParsing="false" prefWidth="160.0" text="Zakończ">
+                    <Button fx:id="end" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0" text="Zakończ">
                         <font>
-                            <Font size="24.0"/>
+                            <Font size="24.0" />
                         </font>
                     </Button>
                     <Label text="Do zapłaty:">
                         <font>
-                            <Font size="20.0"/>
+                            <Font size="20.0" />
                         </font>
                     </Label>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" underline="true">
                         <font>
-                            <Font size="24.0"/>
+                            <Font size="24.0" />
                         </font>
                     </Text>
                 </VBox>
