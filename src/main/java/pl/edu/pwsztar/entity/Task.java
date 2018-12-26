@@ -40,10 +40,8 @@ public class Task {
     public Task() {
     }
 
-    public Task(String activity, boolean isFinished, BigDecimal cost) {
+    public Task(String activity) {
         this.activity = activity;
-        this.isFinished = isFinished;
-        this.cost = cost;
     }
 
     public int getId() {
@@ -119,11 +117,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task {" +
-                "taskId = " + id +
-                ", activity = '" + activity + '\'' +
-                ", isFinished = " + isFinished +
-                ", cost = " + cost +
-                '}';
+        return activity;
     }
 }

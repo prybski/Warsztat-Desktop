@@ -64,35 +64,37 @@
                     <HBox alignment="TOP_RIGHT">
                         <Button mnemonicParsing="false" onAction="#addTaskToJob" text="Dodaj do listy" />
                     </HBox>
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                    <ListView fx:id="unfinishedTasks" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Usuń wybrane zadanie" />
+                        <Button mnemonicParsing="false" onAction="#deleteChoosenTask" text="Usuń wybrane zadanie" />
                     </HBox>
-                    <CheckBox mnemonicParsing="false" text="Czy któreś zadania wymagają części?" />
+                    <CheckBox fx:id="arePartsRequired" mnemonicParsing="false" text="Czy któreś zadania wymagają części?" />
                     <Label text="(Powyżej widać nieukończone zadania)">
                         <font>
                             <Font name="System Italic" size="12.0" />
                         </font>
                     </Label>
                 </VBox>
-                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                <VBox fx:id="demandVBox" disable="true" spacing="10.0" HBox.hgrow="ALWAYS">
                     <padding>
                         <Insets left="10.0" right="10.0" />
                     </padding>
                     <Label text="Wybierz wymaganą część" />
-                    <ChoiceBox prefWidth="200.0" />
+                    <ChoiceBox fx:id="parts" prefWidth="200.0" />
                     <Label text="Wybierz zadanie, do którego ją przypisać" />
-                    <ChoiceBox prefWidth="200.0" />
+                    <ChoiceBox fx:id="tasks" prefWidth="200.0" />
                     <Label text="Określ ilość" />
-                    <Spinner />
+                    <Spinner fx:id="quantity" editable="true" />
                     <Label text="Podaj cenę" />
-                    <Spinner editable="true" />
-                    <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Dodaj zapotrzebowanie" />
+                    <HBox>
+                        <TextField fx:id="demandPrice"/>
                     </HBox>
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" text="Usuń wybrane zapotrzebowanie" />
+                        <Button mnemonicParsing="false" onAction="#addDemandToTask" text="Dodaj zapotrzebowanie" />
+                    </HBox>
+                    <ListView fx:id="demands" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                    <HBox alignment="TOP_RIGHT">
+                        <Button mnemonicParsing="false" onAction="#deleteChoosenDemand" text="Usuń wybrane zapotrzebowanie" />
                     </HBox>
                     <Label text="(Kolumna aktywna, gdy potrzeba części)">
                         <font>
@@ -105,9 +107,11 @@
                         <Insets left="10.0" right="10.0" />
                     </padding>
                     <Label text="Wybierz zadanie z listy" />
-                    <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                    <ListView fx:id="finishedTasks" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <Label text="Wprowadź jego cenę i je odznacz" />
-                    <Spinner />
+                    <HBox>
+                        <TextField fx:id="taskCost"/>
+                    </HBox>
                     <Label text="(Odznacz, aby zakończyć zadanie)">
                         <font>
                             <Font name="System Italic" size="12.0" />
@@ -128,8 +132,10 @@
                 </font>
             </Label>
             <Separator prefWidth="200.0" />
-         <CheckBox mnemonicParsing="false" text="Czy chcesz uwzględnić rabat?" />
-         <Spinner />
+         <CheckBox fx:id="isDiscountIncluded" mnemonicParsing="false" text="Czy chcesz uwzględnić rabat?" />
+            <HBox>
+                <TextField fx:id="discount" disable="true"/>
+            </HBox>
             <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
                     <Button fx:id="end" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0" text="Zakończ">
@@ -142,7 +148,7 @@
                             <Font size="20.0" />
                         </font>
                     </Label>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" underline="true">
+                    <Text fx:id="finalJobCost" strokeType="OUTSIDE" strokeWidth="0.0" underline="true">
                         <font>
                             <Font size="24.0" />
                         </font>

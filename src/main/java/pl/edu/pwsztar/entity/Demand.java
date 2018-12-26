@@ -94,10 +94,6 @@ public class Demand {
 
     @Override
     public String toString() {
-        return "Demand {" +
-                "demandId = " + id +
-                ", quantity = " + quantity +
-                ", price = " + price +
-                '}';
+        return task.getActivity() + ", " + part.getName() + ", " + quantity;
     }
 }

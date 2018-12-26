@@ -126,6 +126,11 @@ public class JobRepository implements JobDAO {
         });
     }
 
+    @Override
+    public void update(Job job) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().update(job));
+    }
+
     private List<Date> convertToSqlDates(List dates) {
         List<Date> sqlDatesFromDb = new ArrayList<>();
 

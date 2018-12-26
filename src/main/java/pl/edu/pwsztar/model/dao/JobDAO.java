@@ -19,4 +19,5 @@ public interface JobDAO {
     void addWithNewVehicle(Job job, Vehicle vehicle, Client client);
     void addWithExistingVehicle(Job job, Vehicle vehicle, Client client);
     void updateStartDate(Job job, Timestamp timestamp);
+    void update(Job job);
 }

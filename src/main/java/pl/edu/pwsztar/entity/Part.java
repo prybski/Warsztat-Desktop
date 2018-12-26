@@ -105,11 +105,6 @@ public class Part {
 
     @Override
     public String toString() {
-        return "Part {" +
-                "partId = " + id +
-                ", name = '" + name + '\'' +
-                ", details = '" + details + '\'' +
-                ", developmentCode = '" + developmentCode + '\'' +
-                '}';
+        return details + ", " + developmentCode;
     }
 }
