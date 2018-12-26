@@ -1,6 +1,8 @@
 package pl.edu.pwsztar.controller;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -18,6 +20,7 @@ import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.entity.Task;
 import pl.edu.pwsztar.singleton.Singleton;
+import pl.edu.pwsztar.util.StageUtil;
 import pl.edu.pwsztar.util.scene.control.NoSelectionModel;
 
 import java.io.BufferedReader;
@@ -147,13 +150,21 @@ public class JobManagementController implements Initializable {
         SpinnerValueFactory<Integer> quantityValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 255, 1, 1);
         quantity.setValueFactory(quantityValueFactory);
 
+        BooleanBinding taskCostValid = Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty(), taskCost.textProperty());
+
+        finishedTasks.disableProperty().bind(taskCostValid.not());
         finishedTasks.setCellFactory(CheckBoxListCell.forListView(task -> {
-            BooleanProperty property = new SimpleBooleanProperty();
+            BooleanProperty property = new SimpleBooleanProperty(task.getIsFinished());
 
             property.addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     task.setIsFinished(true);
                     task.setCost(new BigDecimal(taskCost.getText()));
+
+                    singleton.getTaskRepository().update(task);
+                } else {
+                    task.setIsFinished(false);
+                    task.setCost(null);
 
                     singleton.getTaskRepository().update(task);
                 }
@@ -165,7 +176,22 @@ public class JobManagementController implements Initializable {
         isDiscountIncluded.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 discount.setDisable(false);
+
+                BooleanBinding discountValid = Bindings.createBooleanBinding(() -> {
+                    try {
+                        Double.parseDouble(discount.getText().trim());
+
+                        return true;
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }, discount.textProperty());
+
+                end.disableProperty().bind(discountValid.not());
             } else {
+                end.disableProperty().unbind();
+                end.setDisable(false);
+
                 discount.setDisable(true);
             }
         });
@@ -175,6 +201,7 @@ public class JobManagementController implements Initializable {
         singleton.getJobRepository().updateStartDate(job, Timestamp.valueOf(LocalDateTime.now()));
 
         start.setDisable(true);
+        end.setDisable(false);
     }
 
     public void backToMain(ActionEvent actionEvent) {
@@ -188,21 +215,31 @@ public class JobManagementController implements Initializable {
     public void endJob(ActionEvent actionEvent) {
         BigDecimal finalCost = new BigDecimal(0);
 
-        job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
-        job.setDiscount(new BigDecimal(discount.getText()));
-        singleton.getJobRepository().update(job);
+        try {
+            if (finishedTasks.getItems().isEmpty()) {
+                throw new NullPointerException();
+            }
 
-        for (Task task : finishedTasks.getItems()) {
-            finalCost = finalCost.add(task.getCost());
+            if (isDiscountIncluded.isSelected()) {
+                job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
+                job.setDiscount(new BigDecimal(discount.getText()));
+                singleton.getJobRepository().update(job);
+
+                finalCost = calculateFinalCost(finalCost);
+
+                finalCost = finalCost.subtract(job.getDiscount());
+            } else {
+                job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
+                job.setDiscount(null);
+                singleton.getJobRepository().update(job);
+
+                finalCost = calculateFinalCost(finalCost);
+            }
+
+            finalJobCost.setText(finalCost.toString() + " zł");
+        } catch (NullPointerException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", ButtonType.OK, "Musisz zakończyć wszystkie zadania przed podsumowaniem zlecenia!", "Błąd!");
         }
-
-        for (Demand demand : demands.getItems()) {
-            finalCost = finalCost.add(demand.getPrice());
-        }
-
-        finalCost = finalCost.subtract(job.getDiscount());
-
-        finalJobCost.setText(finalCost.toString());
     }
 
     public void addTaskToJob(ActionEvent actionEvent) {
@@ -211,13 +248,17 @@ public class JobManagementController implements Initializable {
 
         singleton.getTaskRepository().add(task);
 
-        unfinishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+        refreshOrLoadTasks();
+        refreshOrLoadFinishedTasks();
+        refreshOrLoadUnfinishedTasks();
     }
 
     public void deleteChoosenTask(ActionEvent actionEvent) {
         singleton.getTaskRepository().delete(unfinishedTasks.getSelectionModel().getSelectedItem());
 
-        unfinishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+        refreshOrLoadTasks();
+        refreshOrLoadFinishedTasks();
+        refreshOrLoadUnfinishedTasks();
     }
 
     public void addDemandToTask(ActionEvent actionEvent) {
@@ -234,6 +275,36 @@ public class JobManagementController implements Initializable {
         singleton.getDemandRepository().delete(demands.getSelectionModel().getSelectedItem());
 
         demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository().findAllByJob(job)));
+
+        refreshOrLoadTasks();
+        refreshOrLoadFinishedTasks();
+        refreshOrLoadUnfinishedTasks();
+    }
+
+    private BigDecimal calculateFinalCost(BigDecimal costHolder) {
+        for (Task task : finishedTasks.getItems()) {
+            costHolder = costHolder.add(task.getCost());
+        }
+
+        if (arePartsRequired.isSelected()) {
+            for (Demand demand : demands.getItems()) {
+                costHolder = costHolder.add(demand.getPrice());
+            }
+        }
+
+        return costHolder;
+    }
+
+    private void refreshOrLoadUnfinishedTasks() {
+        unfinishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+    }
+
+    private void refreshOrLoadFinishedTasks() {
+        finishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+    }
+
+    private void refreshOrLoadTasks() {
+        tasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
     }
 
     public void setJob(Job job) {

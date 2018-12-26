@@ -90,13 +90,14 @@
                <Label text="Wpisz imie i nazwisko klienta" />
                     <TextField fx:id="firstAndLastName" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
+                        <Button fx:id="showClient" mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
                     </HBox>
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <Label text="Wyświetl szukając po VIN" />
-                    <HBox prefWidth="285.0">
-                        <TextField fx:id="vinNumber" prefHeight="25.0" prefWidth="200.0" />
+                    <HBox prefWidth="285.0" spacing="10.0">
+                        <TextField fx:id="vinNumber" prefHeight="25.0" prefWidth="180.0" />
+                  <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj" />
                     </HBox>
                     <ListView fx:id="vehicleHistoryByVinNumber" VBox.vgrow="ALWAYS" />
                <padding>
@@ -118,7 +119,7 @@
     </center>
    <bottom>
        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <Button mnemonicParsing="false" text="Wyjdź" />
+           <Button mnemonicParsing="false" onAction="#exit" text="Wyjdź" />
        </ToolBar>
    </bottom>
 </BorderPane>

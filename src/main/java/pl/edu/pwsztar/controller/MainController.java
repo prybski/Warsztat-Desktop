@@ -1,11 +1,11 @@
 package pl.edu.pwsztar.controller;
 
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     private Singleton singleton;
-    private Stage parentStage;
 
     @FXML
     private BorderPane borderPane;
@@ -59,42 +58,32 @@ public class MainController implements Initializable {
     @FXML
     private ListView<Job> vehicleHistory;
 
+    @FXML
+    private Button searchVehicle;
+
+    @FXML
+    private Button showClient;
+
     {
         singleton = Singleton.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fixedDates.getItems().setAll(singleton.getJobRepository().findNotStartedFixedDates());
+        // sekcja ładowania danych w kontrolkach FXML
+        refreshOrLoadFixedDates();
+        refreshOrLoadClients();
+        refreshOrLoadStartedJobs();
+        refreshOrLoadVehicles();
 
-        fixedDates.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((observable, oldValue, newValue)
-                        -> jobs.getItems().setAll(singleton.getJobRepository().findByFixedDate(newValue)));
+        // sekcja wiązania ze sobą dynamicznych walidatorów
+        propertyBindingsConfiguration();
 
-        startedJobs.getItems().setAll(singleton.getJobRepository().findAllStarted());
-
-        clients.getItems().setAll(singleton.getClientRepository().findAll());
-
-        clients.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> clientHistory.getItems().setAll(singleton.getJobRepository().findHistoryByClient(clients.getSelectionModel().getSelectedItem())));
-
-        vinNumber.focusedProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (!newValue) {
-                        vehicleHistoryByVinNumber.getItems().setAll(singleton.getJobRepository().findHistoryByVinNumber(vinNumber.getText()));
-                    }
-                });
-
-        vehicles.getItems().setAll(singleton.getVehicleRepository().findAll());
-
-        vehicles.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> vehicleHistory.getItems().setAll(singleton.getJobRepository().findHistoryByVehicle(vehicles.getSelectionModel().getSelectedItem())));
+        // sekcja ładowania konfiguracji niestandardowych nasłuchiwaczy
+        customListenersConfiguration();
     }
 
-    public void showAddClient(ActionEvent actionEvent) {
+    public void showAddClient() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/client-create.fxml"));
 
@@ -102,17 +91,15 @@ public class MainController implements Initializable {
             AnchorPane anchorPane = loader.load();
             Stage childStage = new Stage();
 
-            ClientCreateController clientCreateController = loader.getController();
-            clientCreateController.setChildStage(childStage);
-            clientCreateController.setParentStage(parentStage);
-
             StageUtil.stageConfiguration(anchorPane, "Dodaj klienta", childStage);
+
+            refreshOrLoadClients();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void showAddJob(ActionEvent actionEvent) {
+    public void showAddJob() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/job-create.fxml"));
 
@@ -121,12 +108,14 @@ public class MainController implements Initializable {
             Stage stage = new Stage();
 
             StageUtil.stageConfiguration(anchorPane, "Dodaj zlecenie", stage);
+
+            refreshOrLoadFixedDates();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void showClientData(ActionEvent actionEvent) {
+    public void showClientData() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/client-details.fxml"));
@@ -135,7 +124,8 @@ public class MainController implements Initializable {
 
             ClientDetailsController clientDetailsController = loader.getController();
 
-            Client clientFoundInDb = singleton.getClientRepository().findOneByFirstAndLastName(firstAndLastName.getText());
+            Client clientFoundInDb = singleton.getClientRepository().findOneByFirstAndLastName(firstAndLastName
+                    .getText());
 
             clientDetailsController.setClient(clientFoundInDb);
 
@@ -148,14 +138,24 @@ public class MainController implements Initializable {
         }
     }
 
-    public void startManagingNotStartedJobs(MouseEvent mouseEvent) {
+    public void searchHistoryByVin() {
+        vehicleHistoryByVinNumber.getItems().setAll(singleton.getJobRepository().findHistoryByVinNumber(vinNumber
+                .getText()));
+    }
+
+    public void startManagingNotStartedJobs() {
         loadJobsManagingScene(jobs);
     }
 
-    public void startManagingStartedJobs(MouseEvent mouseEvent) {
+    public void startManagingStartedJobs() {
         loadJobsManagingScene(startedJobs);
     }
 
+    public void exit() {
+        Platform.exit();
+    }
+
+    // prywatne metody pomocnicze
     private void loadJobsManagingScene(ListView<Job> jobsListView) {
         if (!jobsListView.getSelectionModel().isEmpty()) {
             FXMLLoader loader = new FXMLLoader();
@@ -175,7 +175,44 @@ public class MainController implements Initializable {
         }
     }
 
-    public void setParentStage(Stage parentStage) {
-        this.parentStage = parentStage;
+    private void refreshOrLoadClients() {
+        clients.getItems().setAll(singleton.getClientRepository().findAll());
+    }
+
+    private void refreshOrLoadFixedDates() {
+        fixedDates.getItems().setAll(singleton.getJobRepository().findNotStartedFixedDates());
+    }
+
+    private void refreshOrLoadStartedJobs() {
+        startedJobs.getItems().setAll(singleton.getJobRepository().findAllStarted());
+    }
+
+    private void refreshOrLoadVehicles() {
+        vehicles.getItems().setAll(singleton.getVehicleRepository().findAll());
+    }
+
+    private void propertyBindingsConfiguration() {
+        searchVehicle.disableProperty().bind(Bindings.createBooleanBinding(() ->
+                !vinNumber.getText().isEmpty() && vinNumber.getText().length() == 17, vinNumber.textProperty()).not());
+
+        showClient.disableProperty().bind(Bindings.createBooleanBinding(() -> !firstAndLastName.getText().isEmpty()
+                && firstAndLastName.getText().contains(" "), firstAndLastName.textProperty()).not());
+    }
+
+    private void customListenersConfiguration() {
+        fixedDates.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue)
+                        -> jobs.getItems().setAll(singleton.getJobRepository().findByFixedDate(newValue)));
+
+        clients.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> clientHistory.getItems().setAll(singleton.
+                        getJobRepository().findHistoryByClient(clients.getSelectionModel().getSelectedItem())));
+
+        vehicles.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> vehicleHistory.getItems().setAll(singleton.
+                        getJobRepository().findHistoryByVehicle(vehicles.getSelectionModel().getSelectedItem())));
     }
 }

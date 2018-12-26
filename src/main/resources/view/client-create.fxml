@@ -22,7 +22,7 @@
         <Label text="Telefon" />
         <TextField fx:id="phoneNumber" />
         <HBox alignment="TOP_RIGHT">
-            <Button mnemonicParsing="false" onAction="#addClient" text="Dodaj klienta" />
+            <Button fx:id="add" mnemonicParsing="false" onAction="#addClient" text="Dodaj klienta" />
          <padding>
             <Insets top="10.0" />
          </padding>

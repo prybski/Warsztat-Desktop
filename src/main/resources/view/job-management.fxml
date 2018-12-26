@@ -87,7 +87,7 @@
                     <Spinner fx:id="quantity" editable="true" />
                     <Label text="Podaj cenę" />
                     <HBox>
-                        <TextField fx:id="demandPrice"/>
+                        <TextField fx:id="demandPrice" />
                     </HBox>
                     <HBox alignment="TOP_RIGHT">
                         <Button mnemonicParsing="false" onAction="#addDemandToTask" text="Dodaj zapotrzebowanie" />
@@ -106,12 +106,11 @@
                     <padding>
                         <Insets left="10.0" right="10.0" />
                     </padding>
-                    <Label text="Wybierz zadanie z listy" />
-                    <ListView fx:id="finishedTasks" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                    <Label text="Wprowadź jego cenę i je odznacz" />
+                    <Label text="Wprowadź cenę zadania i je odznacz" />
                     <HBox>
-                        <TextField fx:id="taskCost"/>
+                        <TextField fx:id="taskCost" />
                     </HBox>
+                    <ListView fx:id="finishedTasks" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <Label text="(Odznacz, aby zakończyć zadanie)">
                         <font>
                             <Font name="System Italic" size="12.0" />
@@ -134,7 +133,7 @@
             <Separator prefWidth="200.0" />
          <CheckBox fx:id="isDiscountIncluded" mnemonicParsing="false" text="Czy chcesz uwzględnić rabat?" />
             <HBox>
-                <TextField fx:id="discount" disable="true"/>
+                <TextField fx:id="discount" disable="true" />
             </HBox>
             <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">

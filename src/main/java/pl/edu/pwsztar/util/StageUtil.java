@@ -28,6 +28,6 @@ public class StageUtil {
         stage.setTitle(title);
         stage.setResizable(false);
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
     }
 }

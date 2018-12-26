@@ -19,19 +19,19 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
+         <Label text="Wybierz klienta" />
+            <ChoiceBox fx:id="clients" prefHeight="25.0" prefWidth="250.0" />
          <Label text="Wybierz pojazd" />
             <ChoiceBox fx:id="vehicles" prefHeight="25.0" prefWidth="250.0" />
          <Label text="Opis" />
             <TextArea fx:id="description" prefHeight="110.0" prefWidth="340.0" />
          <Label text="Data ustalona" />
             <DatePicker fx:id="fixedDate" prefHeight="25.0" prefWidth="175.0" />
-         <Label text="Wybierz klienta" />
-            <ChoiceBox fx:id="clients" prefHeight="25.0" prefWidth="150.0" />
             <HBox alignment="TOP_RIGHT">
                 <padding>
                     <Insets top="10.0" />
                 </padding>
-                <Button fx:id="addJob" mnemonicParsing="false" onAction="#addJob" text="Dodaj zlecenie z istniejącym pojazdem" />
+                <Button fx:id="add" disable="true" mnemonicParsing="false" onAction="#addJob" text="Dodaj zlecenie z istniejącym pojazdem" />
             </HBox>
         </VBox>
         <Separator orientation="VERTICAL" prefHeight="200.0" />
@@ -53,7 +53,7 @@
                 <padding>
                     <Insets top="10.0" />
                 </padding>
-                <Button mnemonicParsing="false" onAction="#addJobAndVehicle" text="Dodaj zlecenie z nowym pojazdem" />
+                <Button fx:id="addWithVehicle" disable="true" mnemonicParsing="false" onAction="#addJobAndVehicle" text="Dodaj zlecenie z nowym pojazdem" />
             </HBox>
         </VBox>
     </HBox>

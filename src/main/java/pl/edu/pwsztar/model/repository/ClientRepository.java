@@ -36,4 +36,9 @@ public class ClientRepository implements ClientDAO {
 
         return clientFromDb.get();
     }
+
+    @Override
+    public void add(Client client) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(client));
+    }
 }

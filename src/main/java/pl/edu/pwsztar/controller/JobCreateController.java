@@ -1,6 +1,6 @@
 package pl.edu.pwsztar.controller;
 
-import javafx.event.ActionEvent;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -46,7 +46,10 @@ public class JobCreateController implements Initializable {
     private Spinner<Double> engineCapacity;
 
     @FXML
-    private Button addJob;
+    private Button add;
+
+    @FXML
+    private Button addWithVehicle;
 
     {
         singleton = Singleton.getInstance();
@@ -54,6 +57,40 @@ public class JobCreateController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // sekcja ładowania konfiguracji niestandardowych nasłuchiwaczy
+        customListenersConfiguration();
+    }
+
+    public void addJob() {
+        Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
+
+        singleton.getJobRepository().addWithExistingVehicle(job, vehicles.getValue(), clients.getValue());
+    }
+
+    public void addJobAndVehicle() {
+        Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
+        Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
+
+        singleton.getJobRepository().addWithNewVehicle(job, vehicle, clients.getValue());
+
+        refreshOrLoadVehicles();
+    }
+
+    private void propertyBindingsConfiguration(List<Vehicle> clientVehicles) {
+        add.disableProperty().bind(Bindings.createBooleanBinding(() -> !fixedDate.getEditor().getText().isEmpty()
+                        && !description.getText().isEmpty() && !clientVehicles.isEmpty(), fixedDate.getEditor()
+                .textProperty(), description.textProperty()).not());
+
+        addWithVehicle.disableProperty().bind(Bindings.createBooleanBinding(() -> !brand.getText().isEmpty()
+                        && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty()
+                        && (!vinNumber.getText().isEmpty() && vinNumber.getText().length() == 17)
+                        && !engineCapacity.getEditor().getText().isEmpty() && !fixedDate.getEditor().getText().isEmpty()
+                        && !description.getText().isEmpty(), brand.textProperty(), model.textProperty(), productionYear
+                        .getEditor().textProperty(), vinNumber.textProperty(), engineCapacity.getEditor().textProperty()
+                , fixedDate.getEditor().textProperty(), description.textProperty()).not());
+    }
+
+    private void customListenersConfiguration() {
         SpinnerValueFactory<Integer> productionYearValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2100, 2000);
         productionYear.setValueFactory(productionYearValueFactory);
 
@@ -61,24 +98,7 @@ public class JobCreateController implements Initializable {
         engineCapacity.setValueFactory(engineCapacityValueFactory);
 
         List<Client> clientsFromDb = singleton.getClientRepository().findAll();
-
         clients.getItems().setAll(clientsFromDb);
-        clients.setValue(clientsFromDb.get(0));
-
-        List<Vehicle> vehiclesFromDb = singleton.getVehicleRepository().findByClient(clientsFromDb.get(0));
-
-        if (vehiclesFromDb.isEmpty()) {
-            addJob.setDisable(true);
-            vehicles.setDisable(true);
-        } else {
-            addJob.setDisable(false);
-            vehicles.setDisable(false);
-        }
-
-        vehicles.getItems().setAll(vehiclesFromDb);
-        if (!vehicles.getItems().isEmpty()) {
-            vehicles.setValue(vehiclesFromDb.get(0));
-        }
 
         clients.getSelectionModel()
                 .selectedItemProperty()
@@ -86,28 +106,17 @@ public class JobCreateController implements Initializable {
                     List<Vehicle> vehiclesUpdated = singleton.getVehicleRepository().findByClient(newValue);
                     vehicles.getItems().setAll(vehiclesUpdated);
 
+                    propertyBindingsConfiguration(vehiclesUpdated);
+
                     if (!vehiclesUpdated.isEmpty()) {
                         vehicles.setDisable(false);
-                        addJob.setDisable(false);
-
-                        vehicles.setValue(vehiclesUpdated.get(0));
                     } else {
                         vehicles.setDisable(true);
-                        addJob.setDisable(true);
                     }
                 });
     }
 
-    public void addJob(ActionEvent actionEvent) {
-        Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
-
-        singleton.getJobRepository().addWithExistingVehicle(job, vehicles.getValue(), clients.getValue());
-    }
-
-    public void addJobAndVehicle(ActionEvent actionEvent) {
-        Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
-        Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
-
-        singleton.getJobRepository().addWithNewVehicle(job, vehicle, clients.getValue());
+    private void refreshOrLoadVehicles() {
+        vehicles.getItems().setAll(singleton.getVehicleRepository().findByClient(clients.getSelectionModel().getSelectedItem()));
     }
 }
