@@ -3,6 +3,7 @@ package pl.edu.pwsztar.controller;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -135,15 +136,7 @@ public class JobManagementController implements Initializable {
                 demandVBox.setDisable(false);
             }
 
-//            end.disableProperty().bind(Bindings.createBooleanBinding(() -> {
-//                for (Task task : singleton.getTaskRepository().findAllByJob(job)) {
-//                    if (!task.getIsFinished()) {
-//                        return false;
-//                    }
-//                }
-//
-//                return true;
-//            }, tasksToFinish.itemsProperty()).not());
+            end.disableProperty().bind(Bindings.createBooleanBinding(() -> tasksToFinish.getCheckModel().getCheckedIndices().size() == tasksToFinish.getItems().size(), tasksToFinish.getCheckModel().getCheckedIndices()).not());
         });
 
         arePartsRequired.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -160,25 +153,29 @@ public class JobManagementController implements Initializable {
         BooleanBinding taskCostValid = Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty(), taskCost.textProperty());
 
         tasksToFinish.disableProperty().bind(taskCostValid.not());
-//        tasksToFinish.setCellFactory(CheckBoxListCell.forListView(task -> {
-//            BooleanProperty property = new SimpleBooleanProperty(task.getIsFinished());
-//
-//            property.addListener((observable, oldValue, newValue) -> {
-//                if (newValue) {
-//                    task.setIsFinished(true);
-//                    task.setCost(new BigDecimal(taskCost.getText()));
-//
-//                    singleton.getTaskRepository().update(task);
-//                } else {
-//                    task.setIsFinished(false);
-//                    task.setCost(null);
-//
-//                    singleton.getTaskRepository().update(task);
-//                }
-//            });
-//
-//            return property;
-//        }));
+
+        tasksToFinish.getCheckModel().getCheckedIndices().addListener((ListChangeListener<? super Integer>) changed -> {
+            while (changed.next()) {
+                if (changed.wasAdded()) {
+                    for (int i : changed.getAddedSubList()) {
+                        Task task = tasksToFinish.getItems().get(i);
+                        task.setIsFinished(true);
+                        task.setCost(new BigDecimal(taskCost.getText()));
+
+                        singleton.getTaskRepository().update(task);
+                    }
+                }
+                if (changed.wasRemoved()) {
+                    for (int i : changed.getRemoved()) {
+                        Task task = tasksToFinish.getItems().get(i);
+                        task.setIsFinished(false);
+                        task.setCost(null);
+
+                        singleton.getTaskRepository().update(task);
+                    }
+                }
+            }
+        });
 
         isDiscountIncluded.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -208,7 +205,6 @@ public class JobManagementController implements Initializable {
         singleton.getJobRepository().updateStartDate(job, Timestamp.valueOf(LocalDateTime.now()));
 
         start.setDisable(true);
-        end.setDisable(false);
     }
 
     public void backToMain(ActionEvent actionEvent) {
@@ -244,6 +240,8 @@ public class JobManagementController implements Initializable {
             }
 
             finalJobCost.setText(finalCost.toString() + " zł");
+
+            end.disableProperty().unbind();
             end.setDisable(true);
         } catch (NullPointerException e) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", ButtonType.OK, "Musisz zakończyć wszystkie zadania przed podsumowaniem zlecenia!", "Błąd!");

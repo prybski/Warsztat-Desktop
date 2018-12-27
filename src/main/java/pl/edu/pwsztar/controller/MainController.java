@@ -203,7 +203,7 @@ public class MainController implements Initializable {
         fixedDates.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue)
-                        -> jobs.getItems().setAll(singleton.getJobRepository().findByFixedDate(newValue)));
+                        -> jobs.getItems().setAll(singleton.getJobRepository().findNotStartedByFixedDate(newValue)));
 
         clients.getSelectionModel()
                 .selectedItemProperty()

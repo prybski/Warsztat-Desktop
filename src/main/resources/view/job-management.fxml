@@ -138,7 +138,7 @@
             </HBox>
             <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
-                    <Button fx:id="end" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0" text="Zakończ">
+                    <Button fx:id="end" disable="true" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0" text="Zakończ">
                         <font>
                             <Font size="24.0" />
                         </font>

@@ -58,11 +58,11 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Job> findByFixedDate(Date date) {
+    public List<Job> findNotStartedByFixedDate(Date date) {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where fixedDate = :date", Job.class);
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where fixedDate = :date and startDate is null and endDate is null", Job.class);
             jobQuery.setParameter("date", date);
 
             jobsFromDb.set(jobQuery.getResultList());
