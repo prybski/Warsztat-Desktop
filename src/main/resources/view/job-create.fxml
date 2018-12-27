@@ -44,11 +44,11 @@
          <Label text="Model" />
             <TextField fx:id="model" />
          <Label text="Rok produkcji" />
-            <Spinner fx:id="productionYear" editable="true" />
+            <Spinner fx:id="productionYear" />
          <Label text="Numer VIN" />
             <TextField fx:id="vinNumber" />
          <Label text="Pojemność silnika" />
-            <Spinner fx:id="engineCapacity" editable="true" />
+            <Spinner fx:id="engineCapacity" />
             <HBox alignment="TOP_RIGHT">
                 <padding>
                     <Insets top="10.0" />

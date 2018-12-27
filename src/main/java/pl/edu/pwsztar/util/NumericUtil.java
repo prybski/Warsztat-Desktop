@@ -1,10 +1,12 @@
 package pl.edu.pwsztar.util;
 
+import java.math.BigDecimal;
+
 public class NumericUtil {
 
-    public static boolean isDouble(String text) {
+    public static boolean isBigDecimal(String text) {
         try {
-            Double.parseDouble(text);
+            new BigDecimal(text);
 
             return true;
         } catch (NumberFormatException e) {

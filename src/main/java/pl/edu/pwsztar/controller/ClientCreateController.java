@@ -3,19 +3,23 @@ package pl.edu.pwsztar.controller;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.RandomPasswordUtil;
+import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ClientCreateController implements Initializable {
 
     private Singleton singleton;
+    private List<Client> clients;
 
     @FXML
     private TextField firstName;
@@ -34,6 +38,7 @@ public class ClientCreateController implements Initializable {
 
     {
         singleton = Singleton.getInstance();
+        clients = singleton.getClientRepository().findAll();
     }
 
     @Override
@@ -50,15 +55,31 @@ public class ClientCreateController implements Initializable {
         Client client = new Client(firstName.getText(), lastName.getText(),
                 email.getText(), encodedPassword, phoneNumber.getText());
 
-        singleton.getClientRepository().add(client);
+        if (checkForDuplicateEmail(clients)) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasady intergralności dla kolumny 'email'.");
+        } else {
+            singleton.getClientRepository().add(client);
+
+            StageUtil.generateTextInputDialog("Informacja!", null, "Proszę zapisać hasło", generatedPassword);
+        }
     }
 
     // prywatne metody pomocnicze
     private void propertyBindingsConfiguration() {
         add.disableProperty().bind(Bindings.createBooleanBinding(() -> (!firstName.getText().isEmpty()
                 && !lastName.getText().isEmpty() && !email.getText().isEmpty() && !phoneNumber.getText().isEmpty())
-                && (email.getText().contains("@") && email.getText().contains("."))
-                && phoneNumber.getText().matches("^[0-9]*$"), firstName.textProperty(),
+                && email.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+                && phoneNumber.getText().matches("\\d{9,15}"), firstName.textProperty(),
                 lastName.textProperty(), email.textProperty(), phoneNumber.textProperty()).not());
+    }
+
+    private boolean checkForDuplicateEmail(List<Client> clients) {
+        for (Client client : clients) {
+            if (email.getText().equals(client.getEmail())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

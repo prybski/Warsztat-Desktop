@@ -48,6 +48,12 @@ public class JobManagementController implements Initializable {
     private Button end;
 
     @FXML
+    private Button addOneTask;
+
+    @FXML
+    private Button addOneDemand;
+
+    @FXML
     private TextField taskName;
 
     @FXML
@@ -154,6 +160,8 @@ public class JobManagementController implements Initializable {
 
         singleton.getTaskRepository().add(task);
 
+        taskName.clear();
+
         refreshOrLoadTasks();
         refreshOrLoadFinishedTasks();
         refreshOrLoadUnfinishedTasks();
@@ -259,6 +267,14 @@ public class JobManagementController implements Initializable {
 
         refreshOrLoadFinishedTasks();
 
+        addOneTask.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskName.getText().isEmpty(),
+                taskName.textProperty()).not());
+
+        addOneDemand.disableProperty().bind(Bindings.createBooleanBinding(() -> parts.getSelectionModel()
+                .getSelectedItem() != null && tasks.getSelectionModel().getSelectedItem() != null &&
+                (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
+                parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty()).not());
+
         demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
                 .findAllByJob(job)));
 
@@ -272,8 +288,9 @@ public class JobManagementController implements Initializable {
                 == tasksToFinish.getItems().size()) && !isDiscountIncluded.isSelected()) || (!tasksToFinish
                 .getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices()
                 .size() == tasksToFinish.getItems().size()) && (isDiscountIncluded.isSelected() && (!discount.getText()
-                .isEmpty() && NumericUtil.isDouble(discount.getText())))), tasksToFinish.getCheckModel().getCheckedIndices(),
-                discount.textProperty(), isDiscountIncluded.selectedProperty()).not());
+                .isEmpty() && NumericUtil.isBigDecimal(discount.getText())))),
+                tasksToFinish.getCheckModel().getCheckedIndices(), discount.textProperty(),
+                isDiscountIncluded.selectedProperty()).not());
     }
 
     private void customListenersConfiguration() {
@@ -289,7 +306,8 @@ public class JobManagementController implements Initializable {
                 (1, 255, 1, 1);
         quantity.setValueFactory(quantityValueFactory);
 
-        tasksToFinish.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty(),
+        tasksToFinish.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty()
+                        && NumericUtil.isBigDecimal(taskCost.getText()),
                 taskCost.textProperty()).not());
 
         tasksToFinish.getCheckModel().getCheckedIndices().addListener((ListChangeListener<? super Integer>) changed -> {

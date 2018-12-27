@@ -63,7 +63,7 @@
                     <Label text="Wprowadź nazwę zadania" />
                     <TextField fx:id="taskName" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#addTaskToJob" text="Dodaj do listy" />
+                        <Button fx:id="addOneTask" mnemonicParsing="false" onAction="#addTaskToJob" text="Dodaj do listy" />
                     </HBox>
                     <ListView fx:id="unfinishedTasks" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
@@ -85,13 +85,13 @@
                     <Label text="Wybierz zadanie, do którego ją przypisać" />
                     <ChoiceBox fx:id="tasks" prefWidth="200.0" />
                     <Label text="Określ ilość" />
-                    <Spinner fx:id="quantity" editable="true" />
+                    <Spinner fx:id="quantity" />
                     <Label text="Podaj cenę" />
                     <HBox>
                         <TextField fx:id="demandPrice" />
                     </HBox>
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#addDemandToTask" text="Dodaj zapotrzebowanie" />
+                        <Button fx:id="addOneDemand" mnemonicParsing="false" onAction="#addDemandToTask" text="Dodaj zapotrzebowanie" />
                     </HBox>
                     <ListView fx:id="demands" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
