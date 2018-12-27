@@ -2,7 +2,6 @@ package pl.edu.pwsztar.controller;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +18,7 @@ import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.entity.Task;
 import pl.edu.pwsztar.singleton.Singleton;
+import pl.edu.pwsztar.util.NumericUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -174,13 +174,15 @@ public class JobManagementController implements Initializable {
 
         singleton.getDemandRepository().add(demand);
 
-        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository().findAllByJob(job)));
+        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
+                .findAllByJob(job)));
     }
 
     public void deleteChoosenDemand() {
         singleton.getDemandRepository().delete(demands.getSelectionModel().getSelectedItem());
 
-        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository().findAllByJob(job)));
+        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
+                .findAllByJob(job)));
 
         refreshOrLoadTasks();
         refreshOrLoadFinishedTasks();
@@ -226,7 +228,8 @@ public class JobManagementController implements Initializable {
         String line;
 
         try (InputStream inputStream = getClass().getResourceAsStream("/txt/BAZA_ZADAN.txt")) {
-            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,
+                    StandardCharsets.UTF_8))) {
                 while ((line = bufferedReader.readLine()) != null) {
                     taskNames.add(line);
                 }
@@ -256,14 +259,21 @@ public class JobManagementController implements Initializable {
 
         refreshOrLoadFinishedTasks();
 
-        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository().findAllByJob(job)));
+        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
+                .findAllByJob(job)));
 
         if (!demands.getItems().isEmpty()) {
             arePartsRequired.setSelected(true);
             demandVBox.setDisable(false);
         }
 
-        end.disableProperty().bind(Bindings.createBooleanBinding(() -> !tasksToFinish.getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size() == tasksToFinish.getItems().size()), tasksToFinish.getCheckModel().getCheckedIndices()).not());
+        end.disableProperty().bind(Bindings.createBooleanBinding(() -> (!tasksToFinish.getCheckModel()
+                .getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size()
+                == tasksToFinish.getItems().size()) && !isDiscountIncluded.isSelected()) || (!tasksToFinish
+                .getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices()
+                .size() == tasksToFinish.getItems().size()) && (isDiscountIncluded.isSelected() && (!discount.getText()
+                .isEmpty() && NumericUtil.isDouble(discount.getText())))), tasksToFinish.getCheckModel().getCheckedIndices(),
+                discount.textProperty(), isDiscountIncluded.selectedProperty()).not());
     }
 
     private void customListenersConfiguration() {
@@ -275,10 +285,12 @@ public class JobManagementController implements Initializable {
             }
         });
 
-        SpinnerValueFactory<Integer> quantityValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 255, 1, 1);
+        SpinnerValueFactory<Integer> quantityValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory
+                (1, 255, 1, 1);
         quantity.setValueFactory(quantityValueFactory);
 
-        tasksToFinish.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty(), taskCost.textProperty()).not());
+        tasksToFinish.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty(),
+                taskCost.textProperty()).not());
 
         tasksToFinish.getCheckModel().getCheckedIndices().addListener((ListChangeListener<? super Integer>) changed -> {
             while (changed.next()) {
@@ -312,22 +324,7 @@ public class JobManagementController implements Initializable {
         isDiscountIncluded.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 discount.setDisable(false);
-
-                BooleanBinding discountValid = Bindings.createBooleanBinding(() -> {
-                    try {
-                        Double.parseDouble(discount.getText().trim());
-
-                        return true;
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
-                }, discount.textProperty());
-
-                end.disableProperty().bind(discountValid.not());
             } else {
-                end.disableProperty().unbind();
-                end.setDisable(false);
-
                 discount.setDisable(true);
             }
         });

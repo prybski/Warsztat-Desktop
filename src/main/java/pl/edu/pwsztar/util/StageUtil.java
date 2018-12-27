@@ -3,20 +3,18 @@ package pl.edu.pwsztar.util;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class StageUtil {
 
-    public static void generateAlertDialog(Alert.AlertType alertType, String title,
-                                            ButtonType resultButton, String contextText, String headerText) {
+    public static void generateAlertDialog(Alert.AlertType alertType, String title, String headerText
+            , String contextText) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
-        alert.setResult(resultButton);
-        alert.setContentText(contextText);
         alert.setHeaderText(headerText);
+        alert.setContentText(contextText);
         alert.showAndWait();
     }
 
