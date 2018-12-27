@@ -127,7 +127,7 @@ public class JobManagementController implements Initializable {
             tasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
             parts.getItems().setAll(singleton.getPartRepository().findAll());
 
-            tasksToFinish.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+            refreshOrLoadFinishedTasks();
 
             demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository().findAllByJob(job)));
 
@@ -136,7 +136,7 @@ public class JobManagementController implements Initializable {
                 demandVBox.setDisable(false);
             }
 
-            end.disableProperty().bind(Bindings.createBooleanBinding(() -> tasksToFinish.getCheckModel().getCheckedIndices().size() == tasksToFinish.getItems().size(), tasksToFinish.getCheckModel().getCheckedIndices()).not());
+            end.disableProperty().bind(Bindings.createBooleanBinding(() -> !tasksToFinish.getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size() == tasksToFinish.getItems().size()), tasksToFinish.getCheckModel().getCheckedIndices()).not());
         });
 
         arePartsRequired.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -159,19 +159,25 @@ public class JobManagementController implements Initializable {
                 if (changed.wasAdded()) {
                     for (int i : changed.getAddedSubList()) {
                         Task task = tasksToFinish.getItems().get(i);
-                        task.setIsFinished(true);
-                        task.setCost(new BigDecimal(taskCost.getText()));
 
-                        singleton.getTaskRepository().update(task);
+                        if (!task.getIsFinished()) {
+                            task.setIsFinished(true);
+                            task.setCost(new BigDecimal(taskCost.getText()));
+
+                            singleton.getTaskRepository().update(task);
+                        }
                     }
                 }
                 if (changed.wasRemoved()) {
                     for (int i : changed.getRemoved()) {
                         Task task = tasksToFinish.getItems().get(i);
-                        task.setIsFinished(false);
-                        task.setCost(null);
 
-                        singleton.getTaskRepository().update(task);
+                        if (task.getIsFinished()) {
+                            task.setIsFinished(false);
+                            task.setCost(null);
+
+                            singleton.getTaskRepository().update(task);
+                        }
                     }
                 }
             }
@@ -307,6 +313,14 @@ public class JobManagementController implements Initializable {
 
     private void refreshOrLoadFinishedTasks() {
         tasksToFinish.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+
+        for (Task task : singleton.getTaskRepository().findAllByJob(job)) {
+            if (task.getIsFinished()) {
+                tasksToFinish.getCheckModel().check(task);
+            } else {
+                tasksToFinish.getCheckModel().clearCheck(task);
+            }
+        }
     }
 
     private void refreshOrLoadTasks() {
