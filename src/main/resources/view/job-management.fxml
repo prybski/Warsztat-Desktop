@@ -52,7 +52,7 @@
                 </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="mainControlHBox" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <HBox.margin>
                         <Insets />

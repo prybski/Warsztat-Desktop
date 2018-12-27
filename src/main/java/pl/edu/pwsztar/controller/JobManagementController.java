@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.controlsfx.control.CheckListView;
@@ -18,7 +19,6 @@ import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.entity.Task;
 import pl.edu.pwsztar.singleton.Singleton;
-import pl.edu.pwsztar.util.StageUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,6 +55,9 @@ public class JobManagementController implements Initializable {
 
     @FXML
     private VBox demandVBox;
+
+    @FXML
+    private HBox mainControlHBox;
 
     @FXML
     private CheckBox arePartsRequired;
@@ -119,34 +122,30 @@ public class JobManagementController implements Initializable {
     public void endJob() {
         BigDecimal finalCost = new BigDecimal(0);
 
-        try {
-            if (tasksToFinish.getItems().isEmpty()) {
-                throw new NullPointerException();
-            }
+        if (isDiscountIncluded.isSelected()) {
+            job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
+            job.setDiscount(new BigDecimal(discount.getText()));
+            singleton.getJobRepository().update(job);
 
-            if (isDiscountIncluded.isSelected()) {
-                job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
-                job.setDiscount(new BigDecimal(discount.getText()));
-                singleton.getJobRepository().update(job);
+            finalCost = calculateFinalCost(finalCost);
 
-                finalCost = calculateFinalCost(finalCost);
+            finalCost = finalCost.subtract(job.getDiscount());
+        } else {
+            job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
+            job.setDiscount(null);
+            singleton.getJobRepository().update(job);
 
-                finalCost = finalCost.subtract(job.getDiscount());
-            } else {
-                job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
-                job.setDiscount(null);
-                singleton.getJobRepository().update(job);
-
-                finalCost = calculateFinalCost(finalCost);
-            }
-
-            finalJobCost.setText(finalCost.toString() + " zł");
-
-            end.disableProperty().unbind();
-            end.setDisable(true);
-        } catch (NullPointerException e) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", ButtonType.OK, "Musisz zakończyć wszystkie zadania przed podsumowaniem zlecenia!", "Błąd!");
+            finalCost = calculateFinalCost(finalCost);
         }
+
+        finalJobCost.setText(finalCost.toString() + " zł");
+
+        end.disableProperty().unbind();
+        end.setDisable(true);
+
+        mainControlHBox.setDisable(true);
+        discount.setDisable(true);
+        isDiscountIncluded.setDisable(true);
     }
 
     public void addTaskToJob() {
