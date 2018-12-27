@@ -104,7 +104,11 @@ public class JobCreateController implements Initializable {
                 .selectedItemProperty()
                 .addListener((value, oldValue, newValue) -> {
                     List<Vehicle> vehiclesUpdated = singleton.getVehicleRepository().findByClient(newValue);
-                    vehicles.getItems().setAll(vehiclesUpdated);
+
+                    if (!vehiclesUpdated.isEmpty()) {
+                        vehicles.setDisable(false);
+                        vehicles.getItems().setAll(vehiclesUpdated);
+                    }
 
                     propertyBindingsConfiguration(vehiclesUpdated);
 

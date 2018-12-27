@@ -20,9 +20,9 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
          <Label text="Wybierz klienta" />
-            <ChoiceBox fx:id="clients" prefHeight="25.0" prefWidth="250.0" />
+            <ChoiceBox fx:id="clients" prefHeight="25.0" prefWidth="200.0" />
          <Label text="Wybierz pojazd" />
-            <ChoiceBox fx:id="vehicles" prefHeight="25.0" prefWidth="250.0" />
+            <ChoiceBox fx:id="vehicles" disable="true" prefHeight="25.0" prefWidth="200.0" />
          <Label text="Opis" />
             <TextArea fx:id="description" prefHeight="110.0" prefWidth="340.0" />
          <Label text="Data ustalona" />
