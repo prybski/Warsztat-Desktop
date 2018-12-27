@@ -24,13 +24,13 @@ public class ClientDetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater(() -> {
-            if (client != null) {
-                firstAndLastName.setText(client.getFirstName() + " " + client.getLastName());
-                email.setText(client.getEmail());
-                phoneNumber.setText(client.getPhoneNumber());
-            }
-        });
+        Platform.runLater(this::readClientData);
+    }
+
+    private void readClientData() {
+        firstAndLastName.setText(client.getFirstName() + " " + client.getLastName());
+        email.setText(client.getEmail());
+        phoneNumber.setText(client.getPhoneNumber());
     }
 
     public void setClient(Client client) {
