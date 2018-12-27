@@ -3,17 +3,15 @@ package pl.edu.pwsztar.controller;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.textfield.TextFields;
 import pl.edu.pwsztar.entity.Demand;
 import pl.edu.pwsztar.entity.Job;
@@ -21,7 +19,6 @@ import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.entity.Task;
 import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.StageUtil;
-import pl.edu.pwsztar.util.scene.control.NoSelectionModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,7 +75,7 @@ public class JobManagementController implements Initializable {
     private ListView<Demand> demands;
     
     @FXML
-    private ListView<Task> finishedTasks;
+    private CheckListView<Task> tasksToFinish;
 
     @FXML
     private TextField taskCost;
@@ -128,8 +125,8 @@ public class JobManagementController implements Initializable {
 
             tasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
             parts.getItems().setAll(singleton.getPartRepository().findAll());
-            finishedTasks.setSelectionModel(new NoSelectionModel<>());
-            finishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+
+            tasksToFinish.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
 
             demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository().findAllByJob(job)));
 
@@ -137,6 +134,16 @@ public class JobManagementController implements Initializable {
                 arePartsRequired.setSelected(true);
                 demandVBox.setDisable(false);
             }
+
+//            end.disableProperty().bind(Bindings.createBooleanBinding(() -> {
+//                for (Task task : singleton.getTaskRepository().findAllByJob(job)) {
+//                    if (!task.getIsFinished()) {
+//                        return false;
+//                    }
+//                }
+//
+//                return true;
+//            }, tasksToFinish.itemsProperty()).not());
         });
 
         arePartsRequired.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -152,26 +159,26 @@ public class JobManagementController implements Initializable {
 
         BooleanBinding taskCostValid = Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty(), taskCost.textProperty());
 
-        finishedTasks.disableProperty().bind(taskCostValid.not());
-        finishedTasks.setCellFactory(CheckBoxListCell.forListView(task -> {
-            BooleanProperty property = new SimpleBooleanProperty(task.getIsFinished());
-
-            property.addListener((observable, oldValue, newValue) -> {
-                if (newValue) {
-                    task.setIsFinished(true);
-                    task.setCost(new BigDecimal(taskCost.getText()));
-
-                    singleton.getTaskRepository().update(task);
-                } else {
-                    task.setIsFinished(false);
-                    task.setCost(null);
-
-                    singleton.getTaskRepository().update(task);
-                }
-            });
-
-            return property;
-        }));
+        tasksToFinish.disableProperty().bind(taskCostValid.not());
+//        tasksToFinish.setCellFactory(CheckBoxListCell.forListView(task -> {
+//            BooleanProperty property = new SimpleBooleanProperty(task.getIsFinished());
+//
+//            property.addListener((observable, oldValue, newValue) -> {
+//                if (newValue) {
+//                    task.setIsFinished(true);
+//                    task.setCost(new BigDecimal(taskCost.getText()));
+//
+//                    singleton.getTaskRepository().update(task);
+//                } else {
+//                    task.setIsFinished(false);
+//                    task.setCost(null);
+//
+//                    singleton.getTaskRepository().update(task);
+//                }
+//            });
+//
+//            return property;
+//        }));
 
         isDiscountIncluded.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -216,7 +223,7 @@ public class JobManagementController implements Initializable {
         BigDecimal finalCost = new BigDecimal(0);
 
         try {
-            if (finishedTasks.getItems().isEmpty()) {
+            if (tasksToFinish.getItems().isEmpty()) {
                 throw new NullPointerException();
             }
 
@@ -237,6 +244,7 @@ public class JobManagementController implements Initializable {
             }
 
             finalJobCost.setText(finalCost.toString() + " zł");
+            end.setDisable(true);
         } catch (NullPointerException e) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", ButtonType.OK, "Musisz zakończyć wszystkie zadania przed podsumowaniem zlecenia!", "Błąd!");
         }
@@ -282,7 +290,7 @@ public class JobManagementController implements Initializable {
     }
 
     private BigDecimal calculateFinalCost(BigDecimal costHolder) {
-        for (Task task : finishedTasks.getItems()) {
+        for (Task task : tasksToFinish.getItems()) {
             costHolder = costHolder.add(task.getCost());
         }
 
@@ -300,7 +308,7 @@ public class JobManagementController implements Initializable {
     }
 
     private void refreshOrLoadFinishedTasks() {
-        finishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+        tasksToFinish.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
     }
 
     private void refreshOrLoadTasks() {
