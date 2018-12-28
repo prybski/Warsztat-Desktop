@@ -48,8 +48,8 @@ public class JobDetailsController implements Initializable {
     }
 
     private void readJobData() {
-        startDate.setText(job.getStartDate().toString());
-        endDate.setText(job.getEndDate().toString());
+        startDate.setText(job.getStartDate().toString().substring(0, job.getStartDate().toString().lastIndexOf(".")));
+        endDate.setText(job.getEndDate().toString().substring(0, job.getEndDate().toString().lastIndexOf(".")));
 
         if (job.getDiscount() != null) {
             discount.setText(job.getDiscount().toString() + " zł");

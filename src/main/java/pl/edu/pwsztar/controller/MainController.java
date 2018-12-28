@@ -132,7 +132,17 @@ public class MainController implements Initializable {
     }
 
     public void showAboutApplication() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/about-application.fxml"));
 
+        try {
+            AnchorPane anchorPane = loader.load();
+            Stage stage = new Stage();
+
+            StageUtil.stageConfiguration(anchorPane, "O aplikacji", stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showClientData() {
