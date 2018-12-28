@@ -8,5 +8,6 @@ public interface ClientDAO {
 
     List<Client> findAll();
     Client findOneByFirstAndLastName(String firstAndLastName);
+    List<Client> findAllWithVehicles();
     void add(Client client);
 }

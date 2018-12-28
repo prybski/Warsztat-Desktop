@@ -7,4 +7,5 @@ import java.util.List;
 public interface PartDAO {
 
     List<Part> findAll();
+    void add(Part part);
 }

@@ -10,4 +10,5 @@ public interface VehicleDAO {
     List<Vehicle> findAll();
     List<Vehicle> findByClient(Client client);
     void add(Vehicle vehicle);
+    void update(Vehicle vehicle);
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="432.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobDetailsController">
+   <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <Label text="Data rozpoczęcia" />
+         <Text fx:id="startDate" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+               <Font name="System Italic" size="18.0" />
+            </font>
+         </Text>
+         <Label text="Data zakończenia" />
+         <Text fx:id="endDate" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+               <Font name="System Italic" size="18.0" />
+            </font>
+         </Text>
+         <Label text="Zniżka" />
+         <Text fx:id="discount" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+               <Font name="System Italic" size="18.0" />
+            </font>
+         </Text>
+      </VBox>
+      <HBox>
+         <Separator orientation="VERTICAL" prefHeight="200.0">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <padding>
+               <Insets left="3.0" />
+            </padding>
+         </Separator>
+      </HBox>
+      <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <Label text="Wykonane zadania" />
+         <ListView fx:id="doneTasks" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+      </VBox>
+      <HBox>
+         <Separator orientation="VERTICAL" prefHeight="200.0">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <padding>
+               <Insets left="3.0" />
+            </padding>
+         </Separator>
+      </HBox>
+      <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <Label text="Wymagane zapotrzebowania" />
+         <ListView fx:id="requiredDemands" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+         <Label text="Końcowa cena za zlecenie" />
+         <Text fx:id="finalCost" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0">
+            <font>
+               <Font name="System Italic" size="18.0" />
+            </font>
+         </Text>
+      </VBox>
+   </HBox>
+</AnchorPane>

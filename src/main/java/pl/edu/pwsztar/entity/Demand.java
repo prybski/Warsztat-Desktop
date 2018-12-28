@@ -94,6 +94,6 @@ public class Demand {
 
     @Override
     public String toString() {
-        return task.getActivity() + ", " + part.getName() + ", " + quantity;
+        return "Część: " + part.getName() + ", ilość: " + quantity + ", cena: " + price;
     }
 }

@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.singleton.Singleton;
+import pl.edu.pwsztar.util.ConstraintCheckUtil;
 import pl.edu.pwsztar.util.RandomPasswordUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
@@ -55,7 +56,7 @@ public class ClientCreateController implements Initializable {
         Client client = new Client(firstName.getText(), lastName.getText(),
                 email.getText(), encodedPassword, phoneNumber.getText());
 
-        if (checkForDuplicateEmail(clients)) {
+        if (ConstraintCheckUtil.checkForDuplicateEmail(clients, email.getText())) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasady intergralności dla kolumny 'email'.");
         } else {
             singleton.getClientRepository().add(client);
@@ -71,15 +72,5 @@ public class ClientCreateController implements Initializable {
                 && email.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
                 && phoneNumber.getText().matches("\\d{9,15}"), firstName.textProperty(),
                 lastName.textProperty(), email.textProperty(), phoneNumber.textProperty()).not());
-    }
-
-    private boolean checkForDuplicateEmail(List<Client> clients) {
-        for (Client client : clients) {
-            if (email.getText().equals(client.getEmail())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

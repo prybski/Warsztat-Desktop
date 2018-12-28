@@ -42,4 +42,9 @@ public class VehicleRepository implements VehicleDAO {
     public void add(Vehicle vehicle) {
         HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(vehicle));
     }
+
+    @Override
+    public void update(Vehicle vehicle) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().update(vehicle));
+    }
 }

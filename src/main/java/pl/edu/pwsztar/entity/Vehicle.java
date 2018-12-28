@@ -140,6 +140,6 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return id + ": " + brand + " " + model + ", numer VIN: " + vinNumber;
+        return "Marka: " + brand + ", model: " + model + ", numer VIN: " + vinNumber;
     }
 }

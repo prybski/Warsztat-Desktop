@@ -25,6 +25,8 @@ public class App extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aplikacja warsztatowa");
+        primaryStage.setMinWidth(1024);
+        primaryStage.setMinHeight(576);
         primaryStage.show();
     }
 }

@@ -7,10 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.textfield.TextFields;
 import pl.edu.pwsztar.entity.Demand;
@@ -19,6 +21,7 @@ import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.entity.Task;
 import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.NumericUtil;
+import pl.edu.pwsztar.util.StageUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -104,6 +107,8 @@ public class JobManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println(borderPane.getTop());
+
         readPredefinedTasks();
 
         Platform.runLater(this::configureForRunLater);
@@ -115,6 +120,24 @@ public class JobManagementController implements Initializable {
         singleton.getJobRepository().updateStartDate(job, Timestamp.valueOf(LocalDateTime.now()));
 
         start.setDisable(true);
+        mainControlHBox.setDisable(false);
+        isDiscountIncluded.setDisable(false);
+    }
+
+    public void showAddPart() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/part-create.fxml"));
+
+        try {
+            AnchorPane anchorPane = loader.load();
+            Stage stage = new Stage();
+
+            StageUtil.stageConfiguration(anchorPane, "Dodaj część", stage);
+
+            refreshOrLoadParts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void backToMain() {
@@ -191,10 +214,6 @@ public class JobManagementController implements Initializable {
 
         demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
                 .findAllByJob(job)));
-
-        refreshOrLoadTasks();
-        refreshOrLoadFinishedTasks();
-        refreshOrLoadUnfinishedTasks();
     }
 
     private BigDecimal calculateFinalCost(BigDecimal costHolder) {
@@ -231,6 +250,10 @@ public class JobManagementController implements Initializable {
         tasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
     }
 
+    private void refreshOrLoadParts() {
+        parts.getItems().setAll(singleton.getPartRepository().findAll());
+    }
+
     private void readPredefinedTasks() {
         List<String> taskNames = new ArrayList<>();
         String line;
@@ -254,17 +277,21 @@ public class JobManagementController implements Initializable {
     private void configureForRunLater() {
         if (job.getStartDate() != null) {
             start.setDisable(true);
+            mainControlHBox.setDisable(false);
+            isDiscountIncluded.setDisable(false);
             end.setDisable(false);
         } else {
             start.setDisable(false);
+            mainControlHBox.setDisable(true);
+            isDiscountIncluded.setDisable(true);
             end.setDisable(true);
         }
 
         unfinishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
 
         tasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
-        parts.getItems().setAll(singleton.getPartRepository().findAll());
 
+        refreshOrLoadParts();
         refreshOrLoadFinishedTasks();
 
         addOneTask.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskName.getText().isEmpty(),
@@ -301,10 +328,6 @@ public class JobManagementController implements Initializable {
                 demandVBox.setDisable(true);
             }
         });
-
-        SpinnerValueFactory<Integer> quantityValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory
-                (1, 255, 1, 1);
-        quantity.setValueFactory(quantityValueFactory);
 
         tasksToFinish.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty()
                         && NumericUtil.isBigDecimal(taskCost.getText()),

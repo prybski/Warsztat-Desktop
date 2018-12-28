@@ -8,6 +8,8 @@ import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.singleton.Singleton;
+import pl.edu.pwsztar.util.ConstraintCheckUtil;
+import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
 import java.sql.Date;
@@ -65,15 +67,23 @@ public class JobCreateController implements Initializable {
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
         singleton.getJobRepository().addWithExistingVehicle(job, vehicles.getValue(), clients.getValue());
+
+        StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", null, "Udało się dodać nowe zlecenie.");
     }
 
     public void addJobAndVehicle() {
         Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
-        singleton.getJobRepository().addWithNewVehicle(job, vehicle, clients.getValue());
+        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber.getText())) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasadę integralności dla kolumny 'vin_number'.");
+        } else {
+            singleton.getJobRepository().addWithNewVehicle(job, vehicle, clients.getValue());
 
-        refreshOrLoadVehicles();
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", null, "Udało się dodać nowe zlecenie z nowym pojazdem.");
+
+            refreshOrLoadVehicles();
+        }
     }
 
     private void propertyBindingsConfiguration(List<Vehicle> clientVehicles) {
@@ -83,7 +93,7 @@ public class JobCreateController implements Initializable {
 
         addWithVehicle.disableProperty().bind(Bindings.createBooleanBinding(() -> !brand.getText().isEmpty()
                         && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty()
-                        && (!vinNumber.getText().isEmpty() && vinNumber.getText().length() == 17)
+                        && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}")
                         && !engineCapacity.getEditor().getText().isEmpty() && !fixedDate.getEditor().getText().isEmpty()
                         && !description.getText().isEmpty(), brand.textProperty(), model.textProperty(), productionYear
                         .getEditor().textProperty(), vinNumber.textProperty(), engineCapacity.getEditor().textProperty()
@@ -91,12 +101,6 @@ public class JobCreateController implements Initializable {
     }
 
     private void customListenersConfiguration() {
-        SpinnerValueFactory<Integer> productionYearValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1900, 2100, 2000);
-        productionYear.setValueFactory(productionYearValueFactory);
-
-        SpinnerValueFactory<Double> engineCapacityValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 6.0, 0.6, 0.1);
-        engineCapacity.setValueFactory(engineCapacityValueFactory);
-
         List<Client> clientsFromDb = singleton.getClientRepository().findAll();
         clients.getItems().setAll(clientsFromDb);
 

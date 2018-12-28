@@ -140,6 +140,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return id + ": " + firstName + " " + lastName + ", email: " + email;
+        return firstName + " " + lastName + ", email: " + email;
     }
 }
