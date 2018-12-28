@@ -81,26 +81,27 @@
                         <Insets left="10.0" right="10.0" />
                     </padding>
                     <Label text="Wybierz wymaganą część" />
-                    <HBox spacing="10.0">
-                        <ChoiceBox fx:id="parts" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową" />
+                     <ChoiceBox fx:id="parts" prefWidth="149.0" />
+                    <HBox alignment="TOP_RIGHT">
+                        <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową"/>
                     </HBox>
                     <Label text="Wybierz zadanie, do którego ją przypisać" />
-                    <ChoiceBox fx:id="tasks" maxWidth="1.7976931348623157E308">
+                    <ChoiceBox fx:id="tasks" prefWidth="149.0">
                   <VBox.margin>
-                     <Insets right="50.0" />
+                     <Insets />
                   </VBox.margin></ChoiceBox>
                     <Label text="Określ ilość" />
-                    <Spinner fx:id="quantity" amountToStepBy="1" initialValue="1" max="255" maxWidth="1.7976931348623157E308" min="1">
+                    <Spinner fx:id="quantity" amountToStepBy="1" initialValue="1" max="255" min="1">
                   <VBox.margin>
-                     <Insets right="50.0" />
+                     <Insets />
                   </VBox.margin></Spinner>
                     <Label text="Podaj cenę" />
-                     <TextField fx:id="demandPrice" maxWidth="1.7976931348623157E308">
-                  <VBox.margin>
-                     <Insets right="50.0" />
-                  </VBox.margin>
-               </TextField>
+                    <HBox>
+                        <VBox.margin>
+                            <Insets/>
+                        </VBox.margin>
+                        <TextField fx:id="demandPrice"/>
+                    </HBox>
                     <HBox alignment="TOP_RIGHT">
                         <Button fx:id="addOneDemand" mnemonicParsing="false" onAction="#addDemandToTask" text="Dodaj zapotrzebowanie" />
                     </HBox>

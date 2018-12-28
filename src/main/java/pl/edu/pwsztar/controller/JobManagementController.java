@@ -107,8 +107,6 @@ public class JobManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(borderPane.getTop());
-
         readPredefinedTasks();
 
         Platform.runLater(this::configureForRunLater);
