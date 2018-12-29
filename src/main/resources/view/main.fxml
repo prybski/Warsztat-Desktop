@@ -23,7 +23,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj klienta" />
             </Menu>
             <Menu mnemonicParsing="false" text="Pojazdy">
-                <MenuItem mnemonicParsing="false" onAction="#showModifyVehicle" text="Modyfikuj pojazd"/>
+                <MenuItem mnemonicParsing="false" onAction="#showModifyVehicle" text="Modyfikuj pojazd" />
             </Menu>
             <Menu mnemonicParsing="false" text="Pomoc">
                 <MenuItem mnemonicParsing="false" onAction="#showAboutApplication" text="O aplikacji" />
@@ -90,8 +90,8 @@
                     <ChoiceBox fx:id="clients" prefWidth="175.0" />
                     <ListView fx:id="clientHistory" onMouseClicked="#showJobDetailsForClient" VBox.vgrow="ALWAYS" />
                <Label text="Wpisz imie i nazwisko klienta" />
-                    <TextField fx:id="firstAndLastName" />
-                    <HBox alignment="TOP_RIGHT">
+                    <HBox spacing="10.0">
+                       <TextField fx:id="firstAndLastName" prefWidth="130.0" />
                         <Button fx:id="showClient" mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
                     </HBox>
                <padding>
@@ -100,8 +100,10 @@
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <Label text="Wyświetl szukając po VIN" />
-                    <HBox prefWidth="285.0" spacing="10.0">
-                        <TextField fx:id="vinNumber" HBox.hgrow="ALWAYS" />
+                    <HBox spacing="10.0">
+                        <HBox HBox.hgrow="NEVER">
+                            <TextField fx:id="vinNumber" prefWidth="156.0"/>
+                        </HBox>
                   <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj" />
                     </HBox>
                     <ListView fx:id="vehicleHistoryByVinNumber" onMouseClicked="#showJobDetailsForVehicleByVin" VBox.vgrow="ALWAYS" />
