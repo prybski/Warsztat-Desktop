@@ -38,6 +38,16 @@
     -fx-font-family: "Noto Sans";
     -fx-font-style: italic;
     -fx-fill: #ffffff;
+    -fx-font-smoothing-type: LCD;
+    -fx-opacity: 1.0;
+}
+
+.text-info-bigger {
+    -fx-font-size: 24;
+    -fx-font-family: "Noto Sans";
+    -fx-fill: #ffffff;
+    -fx-underline: true;
+    -fx-font-smoothing-type: LCD;
     -fx-opacity: 1.0;
 }
 
@@ -598,6 +608,32 @@
 .scroll-bar > .increment-button:pressed > .increment-arrow,
 .scroll-bar > .decrement-button:pressed > .decrement-arrow {
     -fx-background-color: gray;
+}
+
+.auto-complete-popup > .list-view {
+    -fx-background-color: #111 !important;
+    -fx-background-insets: -1 -2 -1 -1, 0 -1 0 0 !important;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 12, 0.0, 0, 8) !important;
+}
+
+.auto-complete-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-padding: 4 0 4 5 !important;
+    -fx-background: #111 !important;
+}
+
+.auto-complete-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-background: derive(#000, 20%) !important;
+    -fx-background-color: derive(#000, 20%) !important;
+}
+
+.auto-complete-popup  > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:hover,
+.auto-complete-popup  > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:hover {
+    -fx-background: derive(#000, 40%) !important;
+    -fx-background-color: derive(#000, 40%) !important;
+}
+
+.auto-complete-popup > .list-view > .placeholder > .label {
+    -fx-text-fill: derive(white,-30%) !important;
 }
 
 .tool-bar {

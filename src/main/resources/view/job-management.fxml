@@ -164,7 +164,7 @@
                             <Font size="20.0" />
                         </font>
                     </Label>
-                    <Text fx:id="finalJobCost" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" underline="true">
+                    <Text fx:id="finalJobCost" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info-bigger">
                         <font>
                             <Font size="24.0" />
                         </font>
