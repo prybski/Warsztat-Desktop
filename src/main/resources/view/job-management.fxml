@@ -17,15 +17,15 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.CheckListView?>
 
-<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobManagementController">
+<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobManagementController">
     <left>
-        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+        <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label text="Początek pracy">
+            <Label styleClass="label-header" text="Początek pracy">
                 <font>
-                    <Font name="Caladea Bold" size="20.0" />
+                    <Font name="Noto Sans Regular" size="20.0" />
                 </font>
             </Label>
             <Separator prefWidth="200.0" />
@@ -42,13 +42,13 @@
         </VBox>
     </left>
     <center>
-        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+        <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label text="Zarządzanie">
+            <Label styleClass="label-header" text="Zarządzanie">
                 <font>
-                    <Font name="Caladea Bold" size="20.0" />
+                    <Font name="Noto Sans Regular" size="20.0" />
                 </font>
             </Label>
             <Separator prefWidth="200.0" />
@@ -60,7 +60,7 @@
                     <padding>
                         <Insets right="10.0" />
                     </padding>
-                    <Label text="Wprowadź nazwę zadania" />
+                    <Label styleClass="label-small" text="Wprowadź nazwę zadania" />
                     <TextField fx:id="taskName" />
                     <HBox alignment="TOP_RIGHT">
                         <Button fx:id="addOneTask" mnemonicParsing="false" onAction="#addTaskToJob" text="Dodaj do listy" />
@@ -70,7 +70,7 @@
                         <Button mnemonicParsing="false" onAction="#deleteChoosenTask" text="Usuń wybrane zadanie" />
                     </HBox>
                     <CheckBox fx:id="arePartsRequired" mnemonicParsing="false" text="Czy któreś zadania wymagają części?" />
-                    <Label text="(Powyżej widać nieukończone zadania)">
+                    <Label styleClass="label-italic" text="(Powyżej widać nieukończone zadania)">
                         <font>
                             <Font name="System Italic" size="12.0" />
                         </font>
@@ -80,27 +80,27 @@
                     <padding>
                         <Insets left="10.0" right="10.0" />
                     </padding>
-                    <Label text="Wybierz wymaganą część" />
+                    <Label styleClass="label-small" text="Wybierz wymaganą część" />
                      <ChoiceBox fx:id="parts" prefWidth="149.0" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową"/>
+                        <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową" />
                     </HBox>
-                    <Label text="Wybierz zadanie, do którego ją przypisać" />
+                    <Label styleClass="label-small" text="Wybierz zadanie, do którego ją przypisać" />
                     <ChoiceBox fx:id="tasks" prefWidth="149.0">
                   <VBox.margin>
                      <Insets />
                   </VBox.margin></ChoiceBox>
-                    <Label text="Określ ilość" />
+                    <Label styleClass="label-small" text="Określ ilość" />
                     <Spinner fx:id="quantity" amountToStepBy="1" initialValue="1" max="255" min="1">
                   <VBox.margin>
                      <Insets />
                   </VBox.margin></Spinner>
-                    <Label text="Podaj cenę" />
+                    <Label styleClass="label-small" text="Podaj cenę" />
                     <HBox>
                         <VBox.margin>
-                            <Insets/>
+                            <Insets />
                         </VBox.margin>
-                        <TextField fx:id="demandPrice"/>
+                        <TextField fx:id="demandPrice" />
                     </HBox>
                     <HBox alignment="TOP_RIGHT">
                         <Button fx:id="addOneDemand" mnemonicParsing="false" onAction="#addDemandToTask" text="Dodaj zapotrzebowanie" />
@@ -109,7 +109,7 @@
                     <HBox alignment="TOP_RIGHT">
                         <Button mnemonicParsing="false" onAction="#deleteChoosenDemand" text="Usuń wybrane zapotrzebowanie" />
                     </HBox>
-                    <Label text="(Kolumna aktywna, gdy potrzeba części)">
+                    <Label styleClass="label-italic" text="(Kolumna aktywna, gdy potrzeba części)">
                         <font>
                             <Font name="System Italic" size="12.0" />
                         </font>
@@ -119,14 +119,14 @@
                     <padding>
                         <Insets left="10.0" />
                     </padding>
-                    <Label text="Wprowadź cenę zadania i je odznacz" />
+                    <Label styleClass="label-small" text="Wprowadź cenę zadania i je odznacz" />
                      <TextField fx:id="taskCost">
                   <VBox.margin>
                      <Insets right="100.0" />
                   </VBox.margin>
                </TextField>
                <CheckListView fx:id="tasksToFinish" VBox.vgrow="ALWAYS" />
-                    <Label text="(Odznacz, aby zakończyć zadanie)">
+                    <Label styleClass="label-italic" text="(Odznacz, aby zakończyć zadanie)">
                         <font>
                             <Font name="System Italic" size="12.0" />
                         </font>
@@ -136,13 +136,13 @@
         </VBox>
     </center>
     <right>
-        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+        <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label text="Podsumowanie">
+            <Label styleClass="label-header" text="Podsumowanie">
                 <font>
-                    <Font name="Caladea Bold" size="20.0" />
+                    <Font name="Noto Sans Regular" size="20.0" />
                 </font>
             </Label>
             <Separator prefWidth="200.0" />
@@ -159,12 +159,12 @@
                             <Font size="24.0" />
                         </font>
                     </Button>
-                    <Label text="Do zapłaty:">
+                    <Label styleClass="label-header" text="Do zapłaty:">
                         <font>
                             <Font size="20.0" />
                         </font>
                     </Label>
-                    <Text fx:id="finalJobCost" strokeType="OUTSIDE" strokeWidth="0.0" underline="true">
+                    <Text fx:id="finalJobCost" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" underline="true">
                         <font>
                             <Font size="24.0" />
                         </font>

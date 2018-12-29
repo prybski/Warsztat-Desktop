@@ -8,18 +8,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.ClientCreateController">
-    <VBox layoutX="20.0" layoutY="15.0" prefHeight="303.0" prefWidth="285.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefWidth="250.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.ClientCreateController">
+    <VBox layoutX="20.0" layoutY="15.0" prefHeight="303.0" prefWidth="285.0" spacing="10.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
         </padding>
-        <Label text="Imię" />
+        <Label styleClass="label-small" text="Imię" />
         <TextField fx:id="firstName" />
-        <Label text="Nazwisko" />
+        <Label styleClass="label-small" text="Nazwisko" />
         <TextField fx:id="lastName" />
-        <Label text="Email" />
+        <Label styleClass="label-small" text="Email" />
         <TextField fx:id="email" />
-        <Label text="Telefon" />
+        <Label styleClass="label-small" text="Telefon" />
         <TextField fx:id="phoneNumber" />
         <HBox alignment="TOP_RIGHT">
             <Button fx:id="add" mnemonicParsing="false" onAction="#addClient" text="Dodaj klienta" />

@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 public class ClientCreateController implements Initializable {
 
     private Singleton singleton;
-    private List<Client> clients;
 
     @FXML
     private TextField firstName;
@@ -39,7 +38,6 @@ public class ClientCreateController implements Initializable {
 
     {
         singleton = Singleton.getInstance();
-        clients = singleton.getClientRepository().findAll();
     }
 
     @Override
@@ -49,6 +47,8 @@ public class ClientCreateController implements Initializable {
     }
 
     public void addClient() {
+        List<Client> clientsToCheck = singleton.getClientRepository().findAll();
+        
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String generatedPassword = RandomPasswordUtil.randomPassword(6);
         String encodedPassword = bCryptPasswordEncoder.encode(generatedPassword);
@@ -56,7 +56,7 @@ public class ClientCreateController implements Initializable {
         Client client = new Client(firstName.getText(), lastName.getText(),
                 email.getText(), encodedPassword, phoneNumber.getText());
 
-        if (ConstraintCheckUtil.checkForDuplicateEmail(clients, email.getText())) {
+        if (ConstraintCheckUtil.checkForDuplicateEmail(clientsToCheck, email.getText())) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasady intergralności dla kolumny 'email'.");
         } else {
             singleton.getClientRepository().add(client);

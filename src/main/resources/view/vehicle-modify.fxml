@@ -10,25 +10,25 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.VehicleModifyController">
-   <VBox layoutX="10.0" layoutY="10.0" prefWidth="0.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefWidth="300.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.VehicleModifyController">
+   <VBox layoutX="10.0" layoutY="10.0" prefWidth="0.0" spacing="10.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
       </padding>
-      <Label text="Wybierz klienta" />
+      <Label styleClass="label-small" text="Wybierz klienta" />
       <ChoiceBox fx:id="clients" prefWidth="150.0" />
-      <Label text="Wybierz pojazd" />
+      <Label styleClass="label-small" text="Wybierz pojazd" />
       <ChoiceBox fx:id="clientVehicles" prefWidth="150.0" />
       <VBox fx:id="editVehicleDataVBox" spacing="10.0">
-         <Label text="Marka" />
+         <Label styleClass="label-small" text="Marka" />
          <TextField fx:id="brand" />
-         <Label text="Model" />
+         <Label styleClass="label-small" text="Model" />
          <TextField fx:id="model" />
-         <Label text="Rok produkcji" />
+         <Label styleClass="label-small" text="Rok produkcji" />
          <Spinner fx:id="productionYear" amountToStepBy="1" initialValue="2000" max="2100" min="1900" />
-         <Label text="Numer VIN" />
+         <Label styleClass="label-small" text="Numer VIN" />
          <TextField fx:id="vinNumber" />
-         <Label text="Pojemność silnika" />
+         <Label styleClass="label-small" text="Pojemność silnika" />
          <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0" min="0.1" />
       </VBox>
       <HBox alignment="TOP_RIGHT">
