@@ -20,6 +20,7 @@ import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.entity.Task;
 import pl.edu.pwsztar.singleton.Singleton;
+import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.NumericUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
@@ -85,7 +86,7 @@ public class JobManagementController implements Initializable {
 
     @FXML
     private ListView<Demand> demands;
-    
+
     @FXML
     private CheckListView<Task> tasksToFinish;
 
@@ -112,6 +113,8 @@ public class JobManagementController implements Initializable {
         Platform.runLater(this::configureForRunLater);
 
         customListenersConfiguration();
+
+        removeContextMenu();
     }
 
     public void startJob() {
@@ -228,6 +231,10 @@ public class JobManagementController implements Initializable {
         return costHolder;
     }
 
+    private void removeContextMenu() {
+        ContextMenuUtil.remove(taskName, quantity, demandPrice, taskCost, discount);
+    }
+
     private void refreshOrLoadUnfinishedTasks() {
         unfinishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
     }
@@ -296,8 +303,8 @@ public class JobManagementController implements Initializable {
                 taskName.textProperty()).not());
 
         addOneDemand.disableProperty().bind(Bindings.createBooleanBinding(() -> parts.getSelectionModel()
-                .getSelectedItem() != null && tasks.getSelectionModel().getSelectedItem() != null &&
-                (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
+                        .getSelectedItem() != null && tasks.getSelectionModel().getSelectedItem() != null &&
+                        (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
                 parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty()).not());
 
         demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
@@ -309,11 +316,11 @@ public class JobManagementController implements Initializable {
         }
 
         end.disableProperty().bind(Bindings.createBooleanBinding(() -> (!tasksToFinish.getCheckModel()
-                .getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size()
-                == tasksToFinish.getItems().size()) && !isDiscountIncluded.isSelected()) || (!tasksToFinish
-                .getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices()
-                .size() == tasksToFinish.getItems().size()) && (isDiscountIncluded.isSelected() && (!discount.getText()
-                .isEmpty() && NumericUtil.isBigDecimal(discount.getText())))),
+                        .getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size()
+                        == tasksToFinish.getItems().size()) && !isDiscountIncluded.isSelected()) || (!tasksToFinish
+                        .getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices()
+                        .size() == tasksToFinish.getItems().size()) && (isDiscountIncluded.isSelected() && (!discount.getText()
+                        .isEmpty() && NumericUtil.isBigDecimal(discount.getText())))),
                 tasksToFinish.getCheckModel().getCheckedIndices(), discount.textProperty(),
                 isDiscountIncluded.selectedProperty()).not());
     }

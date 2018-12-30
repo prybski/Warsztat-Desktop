@@ -38,6 +38,16 @@ public class ConstraintCheckUtil {
         return false;
     }
 
+    public static boolean checkForDuplicatePhoneNumber(List<Client> clients, String phoneNumber) {
+        for (Client client : clients) {
+            if (phoneNumber.equals(client.getPhoneNumber())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static boolean checkForDuplicateDevelopmentCode(List<Part> parts, String developmentCode) {
         for (Part part : parts) {
             if (developmentCode.equals(part.getDevelopmentCode())) {

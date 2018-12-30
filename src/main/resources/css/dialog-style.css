@@ -9,8 +9,6 @@
 }
 
 .dialog-pane .label {
-    -fx-background-color: #111;
-    -fx-background-radius: 10;
     -fx-text-fill: white;
     -fx-font-family: "Noto Sans";
 }
@@ -20,6 +18,14 @@
     -fx-border-width: 2;
     -fx-accent: gray;
     -fx-border-color: transparent;
+}
+
+.dialog-pane .text-field .context-menu {
+    -fx-background-color: derive(#1d1d1d, 30%);
+}
+
+.dialog-pane .text-field .context-menu .menu-item .label {
+    -fx-text-fill: white;
 }
 
 .dialog-pane .text-field:focused {

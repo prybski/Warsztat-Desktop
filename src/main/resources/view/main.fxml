@@ -16,58 +16,62 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.MainController">
+<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/main-style.css"
+            xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pl.edu.pwsztar.controller.MainController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Klienci">
-                <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj klienta" />
+                <MenuItem mnemonicParsing="false" onAction="#showAddClient" text="Dodaj klienta"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Pojazdy">
-                <MenuItem mnemonicParsing="false" onAction="#showModifyVehicle" text="Modyfikuj pojazd" />
+                <MenuItem mnemonicParsing="false" onAction="#showModifyVehicle" text="Modyfikuj pojazd"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Pomoc">
-                <MenuItem mnemonicParsing="false" onAction="#showAboutApplication" text="O aplikacji" />
+                <MenuItem mnemonicParsing="false" onAction="#showAboutApplication" text="O aplikacji"/>
             </Menu>
         </MenuBar>
     </top>
     <left>
         <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
             </padding>
-         <Label styleClass="label-header" text="Początek zarządzania">
-            <font>
-               <Font name="Noto Sans Regular" size="20.0" />
-            </font>
-         </Label>
-            <Separator prefWidth="200.0" />
-         <Label styleClass="label-small" text="Wyszukaj nierozpoczęte zlecenia" />
-         <ComboBox fx:id="fixedDates" maxWidth="1.7976931348623157E308" />
-            <ListView fx:id="jobs" onMouseClicked="#startManagingNotStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-         <Label styleClass="label-small" text="Rozpoczęte zlecenia" />
-         <ListView fx:id="startedJobs" onMouseClicked="#startManagingStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-         <Label styleClass="label-italic" text="(Kliknij w zlecenie, aby zarządzać)">
-            <font>
-               <Font name="System Italic" size="12.0" />
-            </font>
-         </Label>
+            <Label styleClass="label-header" text="Początek zarządzania">
+                <font>
+                    <Font name="Noto Sans Regular" size="20.0"/>
+                </font>
+            </Label>
+            <Separator prefWidth="200.0"/>
+            <Label styleClass="label-small" text="Wyszukaj nierozpoczęte zlecenia"/>
+            <ComboBox fx:id="fixedDates" maxWidth="1.7976931348623157E308"/>
+            <ListView fx:id="jobs" onMouseClicked="#startManagingNotStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+            <Label styleClass="label-small" text="Rozpoczęte zlecenia"/>
+            <ListView fx:id="startedJobs" onMouseClicked="#startManagingStartedJobs" prefWidth="200.0"
+                      VBox.vgrow="ALWAYS"/>
+            <Label styleClass="label-italic" text="(Kliknij w zlecenie, aby zarządzać)">
+                <font>
+                    <Font name="System Italic" size="12.0"/>
+                </font>
+            </Label>
         </VBox>
     </left>
     <right>
         <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
             </padding>
-         <Label styleClass="label-header" text="Zlecenie">
-            <font>
-               <Font name="Noto Sans Regular" size="20.0" />
-            </font>
-         </Label>
-            <Separator prefWidth="200.0" />
+            <Label styleClass="label-header" text="Zlecenie">
+                <font>
+                    <Font name="Noto Sans Regular" size="20.0"/>
+                </font>
+            </Label>
+            <Separator prefWidth="200.0"/>
             <VBox alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="20.0" prefWidth="200.0" text="Dodaj zlecenie">
+                <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="20.0" prefWidth="200.0"
+                        text="Dodaj zlecenie">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="24.0"/>
                     </font>
                 </Button>
             </VBox>
@@ -76,60 +80,63 @@
     <center>
         <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
             </padding>
-         <Label styleClass="label-header" text="Historia zleceń i wyszukiwanie danych">
-            <font>
-               <Font name="Noto Sans Regular" size="20.0" />
-            </font>
-         </Label>
-            <Separator prefWidth="200.0" />
+            <Label styleClass="label-header" text="Historia zleceń i wyszukiwanie danych">
+                <font>
+                    <Font name="Noto Sans Regular" size="20.0"/>
+                </font>
+            </Label>
+            <Separator prefWidth="200.0"/>
             <HBox spacing="10.0" VBox.vgrow="ALWAYS">
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-               <Label styleClass="label-small" text="Wyświetl dla wybranego klienta" />
-               <ComboBox fx:id="clients" prefWidth="200.0" />
-                    <ListView fx:id="clientHistory" onMouseClicked="#showJobDetailsForClient" VBox.vgrow="ALWAYS" />
-               <Label styleClass="label-small" text="Wpisz imie i nazwisko klienta" />
+                    <Label styleClass="label-small" text="Wyświetl dla wybranego klienta"/>
+                    <ComboBox fx:id="clients" prefWidth="200.0"/>
+                    <ListView fx:id="clientHistory" onMouseClicked="#showJobDetailsForClient" VBox.vgrow="ALWAYS"/>
+                    <Label styleClass="label-small" text="Wpisz imie i nazwisko klienta"/>
                     <HBox spacing="10.0">
-                       <TextField fx:id="firstAndLastName" prefWidth="125.0" />
-                        <Button fx:id="showClient" mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
+                        <TextField fx:id="firstAndLastName" prefWidth="125.0"/>
+                        <Button fx:id="showClient" mnemonicParsing="false" onAction="#showClientData"
+                                text="Wyświetl dane"/>
                     </HBox>
-               <padding>
-                  <Insets right="10.0" />
-               </padding>
+                    <padding>
+                        <Insets right="10.0"/>
+                    </padding>
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-               <Label styleClass="label-small" text="Wyświetl szukając po VIN" />
+                    <Label styleClass="label-small" text="Wyświetl szukając po VIN"/>
                     <HBox spacing="10.0">
                         <HBox HBox.hgrow="NEVER">
-                            <TextField fx:id="vinNumber" prefWidth="153.0" />
+                            <TextField fx:id="vinNumber" prefWidth="153.0"/>
                         </HBox>
-                  <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj" />
+                        <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin"
+                                text="Wyszukaj"/>
                     </HBox>
-                    <ListView fx:id="vehicleHistoryByVinNumber" onMouseClicked="#showJobDetailsForVehicleByVin" VBox.vgrow="ALWAYS" />
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
+                    <ListView fx:id="vehicleHistoryByVinNumber" onMouseClicked="#showJobDetailsForVehicleByVin"
+                              VBox.vgrow="ALWAYS"/>
+                    <padding>
+                        <Insets left="10.0" right="10.0"/>
+                    </padding>
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-               <Label styleClass="label-small" text="Wyświetl dla wybranego pojazdu" />
-               <ComboBox fx:id="vehicles" prefWidth="200.0" />
-                    <ListView fx:id="vehicleHistory" onMouseClicked="#showJobDetailsForVehicle" VBox.vgrow="ALWAYS" />
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
+                    <Label styleClass="label-small" text="Wyświetl dla wybranego pojazdu"/>
+                    <ComboBox fx:id="vehicles" prefWidth="200.0"/>
+                    <ListView fx:id="vehicleHistory" onMouseClicked="#showJobDetailsForVehicle" VBox.vgrow="ALWAYS"/>
+                    <padding>
+                        <Insets left="10.0"/>
+                    </padding>
                 </VBox>
             </HBox>
-         <Label styleClass="label-italic" text="(Kliknij w zlecenie, aby ukazać jego szczegóły)">
-            <font>
-               <Font name="System Italic" size="12.0" />
-            </font>
-         </Label>
+            <Label styleClass="label-italic" text="(Kliknij w zlecenie, aby ukazać jego szczegóły)">
+                <font>
+                    <Font name="System Italic" size="12.0"/>
+                </font>
+            </Label>
         </VBox>
     </center>
-   <bottom>
-       <ToolBar BorderPane.alignment="CENTER">
-           <Button mnemonicParsing="false" onAction="#exit" text="Wyjdź" />
-       </ToolBar>
-   </bottom>
+    <bottom>
+        <ToolBar BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#exit" text="Wyjdź"/>
+        </ToolBar>
+    </bottom>
 </BorderPane>

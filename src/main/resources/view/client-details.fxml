@@ -7,28 +7,31 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefWidth="250.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.ClientDetailsController">
-    <VBox layoutX="34.0" layoutY="34.0" spacing="5.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <Label styleClass="label-small" text="Imie i nazwisko" />
-        <Text fx:id="firstAndLastName" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
+<AnchorPane prefWidth="250.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.ClientDetailsController">
+    <VBox layoutX="34.0" layoutY="34.0" spacing="5.0" styleClass="background" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label styleClass="label-small" text="Imie i nazwisko"/>
+        <Text fx:id="firstAndLastName" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0"
+              styleClass="text-info">
             <font>
-                <Font name="System Italic" size="18.0" />
+                <Font name="System Italic" size="18.0"/>
             </font>
         </Text>
-        <Label styleClass="label-small" text="Email" />
+        <Label styleClass="label-small" text="Email"/>
         <Text fx:id="email" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
             <font>
-                <Font name="System Italic" size="18.0" />
+                <Font name="System Italic" size="18.0"/>
             </font>
         </Text>
-        <Label styleClass="label-small" text="Numer telefonu" />
+        <Label styleClass="label-small" text="Numer telefonu"/>
         <Text fx:id="phoneNumber" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
             <font>
-                <Font name="System Italic" size="18.0" />
+                <Font name="System Italic" size="18.0"/>
             </font>
         </Text>
-      <padding>
-         <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
-      </padding>
+        <padding>
+            <Insets bottom="15.0" left="20.0" right="20.0" top="15.0"/>
+        </padding>
     </VBox>
 </AnchorPane>

@@ -9,6 +9,7 @@ import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.ConstraintCheckUtil;
+import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
@@ -61,6 +62,9 @@ public class JobCreateController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // sekcja ładowania konfiguracji niestandardowych nasłuchiwaczy
         customListenersConfiguration();
+
+        // usunięcie menu kontekstowego
+        removeContextMenu();
     }
 
     public void addJob() {
@@ -83,13 +87,19 @@ public class JobCreateController implements Initializable {
             StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nowe zlecenie z nowym pojazdem.");
 
             refreshOrLoadVehicles();
+
+            if (!vehicles.getItems().isEmpty()) {
+                vehicles.setDisable(false);
+            } else {
+                vehicles.setDisable(true);
+            }
         }
     }
 
     private void propertyBindingsConfiguration(List<Vehicle> clientVehicles) {
         add.disableProperty().bind(Bindings.createBooleanBinding(() -> !fixedDate.getEditor().getText().isEmpty()
-                        && !description.getText().isEmpty() && !clientVehicles.isEmpty(), fixedDate.getEditor()
-                .textProperty(), description.textProperty()).not());
+                && !description.getText().isEmpty() && !clientVehicles.isEmpty() && vehicles.getSelectionModel().getSelectedItem() != null, fixedDate.getEditor()
+                .textProperty(), description.textProperty(), vehicles.getSelectionModel().selectedIndexProperty()).not());
 
         addWithVehicle.disableProperty().bind(Bindings.createBooleanBinding(() -> !brand.getText().isEmpty()
                         && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty()
@@ -111,6 +121,7 @@ public class JobCreateController implements Initializable {
 
                     if (!vehiclesUpdated.isEmpty()) {
                         vehicles.setDisable(false);
+                        vehicles.getItems().clear();
                         vehicles.getItems().setAll(vehiclesUpdated);
                     }
 
@@ -122,6 +133,10 @@ public class JobCreateController implements Initializable {
                         vehicles.setDisable(true);
                     }
                 });
+    }
+
+    private void removeContextMenu() {
+        ContextMenuUtil.remove(description, fixedDate, brand, model, productionYear, vinNumber, engineCapacity);
     }
 
     private void refreshOrLoadVehicles() {

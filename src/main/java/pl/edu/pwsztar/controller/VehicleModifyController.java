@@ -9,6 +9,7 @@ import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.ConstraintCheckUtil;
+import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
@@ -58,7 +59,7 @@ public class VehicleModifyController implements Initializable {
         editVehicleDataVBox.disableProperty().bind(Bindings.createBooleanBinding(() -> !clientVehicles.getSelectionModel().isEmpty(), clientVehicles.valueProperty()).not());
 
         modifyOneVehicle.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !brand.getText().isEmpty() && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty() && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}") && !engineCapacity.getEditor().getText().isEmpty()
+                        !brand.getText().isEmpty() && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty() && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}") && !engineCapacity.getEditor().getText().isEmpty()
                 , brand.textProperty(), model.textProperty(), productionYear.getEditor().textProperty(), vinNumber.textProperty(), engineCapacity.getEditor().textProperty()).not());
 
         List<Client> clientsFromDb = singleton.getClientRepository().findAllWithVehicles();
@@ -87,6 +88,8 @@ public class VehicleModifyController implements Initializable {
                 engineCapacity.getEditor().setText(String.valueOf(newValue.getEngineCapacity()));
             }
         });
+
+        removeContextMenu();
     }
 
     public void modifyVehicle() {
@@ -108,5 +111,9 @@ public class VehicleModifyController implements Initializable {
 
             clientVehicles.getItems().setAll(updatedVehicles);
         }
+    }
+
+    private void removeContextMenu() {
+        ContextMenuUtil.remove(brand, model, productionYear, vinNumber, engineCapacity);
     }
 }

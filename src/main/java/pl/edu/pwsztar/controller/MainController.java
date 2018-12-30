@@ -13,6 +13,7 @@ import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.singleton.Singleton;
+import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
 import javax.persistence.NoResultException;
@@ -81,6 +82,9 @@ public class MainController implements Initializable {
 
         // sekcja ładowania konfiguracji niestandardowych nasłuchiwaczy
         customListenersConfiguration();
+
+        // usunięcie menu kontekstowego
+        removeContextMenu();
     }
 
     public void showAddClient() {
@@ -234,6 +238,10 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void removeContextMenu() {
+        ContextMenuUtil.remove(vinNumber, firstAndLastName);
     }
 
     private void refreshOrLoadClients() {

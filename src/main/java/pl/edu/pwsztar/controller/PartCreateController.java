@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.ConstraintCheckUtil;
+import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
@@ -38,6 +39,8 @@ public class PartCreateController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addOnePart.disableProperty().bind(Bindings.createBooleanBinding(() -> !name.getText().isEmpty() && !details.getText().isEmpty() && !developmentCode.getText().isEmpty(), name.textProperty(), details.textProperty(), developmentCode.textProperty()).not());
+
+        removeContextMenu();
     }
 
     public void addPart() {
@@ -52,5 +55,9 @@ public class PartCreateController implements Initializable {
 
             StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nową część.");
         }
+    }
+
+    private void removeContextMenu() {
+        ContextMenuUtil.remove(developmentCode, details, name);
     }
 }

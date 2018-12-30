@@ -10,32 +10,36 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefWidth="300.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.VehicleModifyController">
-   <VBox layoutX="10.0" layoutY="10.0" prefWidth="0.0" spacing="10.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <padding>
-         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-      </padding>
-      <Label styleClass="label-small" text="Wybierz klienta" />
-      <ComboBox fx:id="clients" prefWidth="200.0" />
-      <Label styleClass="label-small" text="Wybierz pojazd" />
-      <ComboBox fx:id="clientVehicles" prefWidth="200.0" />
-      <VBox fx:id="editVehicleDataVBox" spacing="10.0">
-         <Label styleClass="label-small" text="Marka" />
-         <TextField fx:id="brand" />
-         <Label styleClass="label-small" text="Model" />
-         <TextField fx:id="model" />
-         <Label styleClass="label-small" text="Rok produkcji" />
-         <Spinner fx:id="productionYear" amountToStepBy="1" initialValue="2000" max="2100" min="1900" />
-         <Label styleClass="label-small" text="Numer VIN" />
-         <TextField fx:id="vinNumber" />
-         <Label styleClass="label-small" text="Pojemność silnika" />
-         <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0" min="0.1" />
-      </VBox>
-      <HBox alignment="TOP_RIGHT">
-         <padding>
-            <Insets top="10.0" />
-         </padding>
-         <Button fx:id="modifyOneVehicle" mnemonicParsing="false" onAction="#modifyVehicle" text="Modyfikuj dane pojazdu" />
-      </HBox>
-   </VBox>
+<AnchorPane prefWidth="300.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.VehicleModifyController">
+    <VBox layoutX="10.0" layoutY="10.0" prefWidth="0.0" spacing="10.0" styleClass="background"
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        </padding>
+        <Label styleClass="label-small" text="Wybierz klienta"/>
+        <ComboBox fx:id="clients" prefWidth="200.0"/>
+        <Label styleClass="label-small" text="Wybierz pojazd"/>
+        <ComboBox fx:id="clientVehicles" prefWidth="200.0"/>
+        <VBox fx:id="editVehicleDataVBox" spacing="10.0">
+            <Label styleClass="label-small" text="Marka"/>
+            <TextField fx:id="brand"/>
+            <Label styleClass="label-small" text="Model"/>
+            <TextField fx:id="model"/>
+            <Label styleClass="label-small" text="Rok produkcji"/>
+            <Spinner fx:id="productionYear" amountToStepBy="1" initialValue="2000" max="2100" min="1900"/>
+            <Label styleClass="label-small" text="Numer VIN"/>
+            <TextField fx:id="vinNumber"/>
+            <Label styleClass="label-small" text="Pojemność silnika"/>
+            <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0" min="0.1"/>
+        </VBox>
+        <HBox alignment="TOP_RIGHT">
+            <padding>
+                <Insets top="10.0"/>
+            </padding>
+            <Button fx:id="modifyOneVehicle" mnemonicParsing="false" onAction="#modifyVehicle"
+                    text="Modyfikuj dane pojazdu"/>
+        </HBox>
+    </VBox>
 </AnchorPane>
