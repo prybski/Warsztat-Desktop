@@ -21,14 +21,14 @@ public class StageUtil {
         alert.showAndWait();
     }
 
-    public static void generateTextInputDialog(String title, String headerText, String contentText, String textToTextField) {
+    public static void generateTextInputDialog(String title, String contentText, String textToTextField) {
         TextInputDialog textInputDialog = new TextInputDialog();
 
         textInputDialog.getEditor().setText(textToTextField);
         textInputDialog.getEditor().setEditable(false);
         textInputDialog.setTitle(title);
-        textInputDialog.setHeaderText(headerText);
         textInputDialog.setContentText(contentText);
+        textInputDialog.setHeaderText(null);
         textInputDialog.getDialogPane().getButtonTypes().removeAll(ButtonType.CANCEL);
         textInputDialog.getDialogPane().getStylesheets().add(StageUtil.class.getResource("/css/dialog-style.css").toExternalForm());
         textInputDialog.showAndWait();
