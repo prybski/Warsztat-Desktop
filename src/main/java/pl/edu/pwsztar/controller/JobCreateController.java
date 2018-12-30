@@ -121,7 +121,6 @@ public class JobCreateController implements Initializable {
 
                     if (!vehiclesUpdated.isEmpty()) {
                         vehicles.setDisable(false);
-                        vehicles.getItems().clear();
                         vehicles.getItems().setAll(vehiclesUpdated);
                     }
 
