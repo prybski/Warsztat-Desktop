@@ -1,0 +1,45 @@
+.dialog-pane {
+    -fx-border-color: black;
+    -fx-background-color: #111;
+    -fx-border-width: 2;
+}
+
+.dialog-pane > .content.label {
+    -fx-text-fill: #fff;
+}
+
+.dialog-pane .label {
+    -fx-background-color: #111;
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-family: "Noto Sans";
+}
+
+.dialog-pane .text-field {
+    -fx-background-radius: 0;
+    -fx-border-width: 2;
+    -fx-accent: gray;
+    -fx-border-color: transparent;
+}
+
+.dialog-pane .text-field:focused {
+    -fx-background-color: gray, -fx-background;
+}
+
+.dialog-pane .button {
+    -fx-background-radius: 0;
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+    -fx-border-width: 2;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+}
+
+.dialog-pane .button:hover {
+    -fx-background-color: #444;
+}
+
+.dialog-pane .button:pressed {
+    -fx-background-color: white;
+    -fx-text-fill: #1d1d1d;
+}
