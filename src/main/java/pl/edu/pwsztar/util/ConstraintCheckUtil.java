@@ -8,6 +8,16 @@ import java.util.List;
 
 public class ConstraintCheckUtil {
 
+    public static boolean checkForDuplicateVinNumber(List<Vehicle> vehicles, String vinNumber, int vehicleId) {
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getId() != vehicleId && vinNumber.equals(vehicle.getVinNumber())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static boolean checkForDuplicateVinNumber(List<Vehicle> vehicles, String vinNumber) {
         for (Vehicle vehicle : vehicles) {
             if (vinNumber.equals(vehicle.getVinNumber())) {

@@ -11,13 +11,13 @@ import javafx.stage.StageStyle;
 
 public class StageUtil {
 
-    public static void generateAlertDialog(Alert.AlertType alertType, String title, String headerText
-            , String contextText) {
+    public static void generateAlertDialog(Alert.AlertType alertType, String title, String contextText) {
         Alert alert = new Alert(alertType);
 
         alert.setTitle(title);
-        alert.setHeaderText(headerText);
+        alert.setHeaderText(null);
         alert.setContentText(contextText);
+        alert.getDialogPane().getStylesheets().add(StageUtil.class.getResource("/css/dialog-style.css").toExternalForm());
         alert.showAndWait();
     }
 
@@ -30,6 +30,7 @@ public class StageUtil {
         textInputDialog.setHeaderText(headerText);
         textInputDialog.setContentText(contentText);
         textInputDialog.getDialogPane().getButtonTypes().removeAll(ButtonType.CANCEL);
+        textInputDialog.getDialogPane().getStylesheets().add(StageUtil.class.getResource("/css/dialog-style.css").toExternalForm());
         textInputDialog.showAndWait();
     }
 

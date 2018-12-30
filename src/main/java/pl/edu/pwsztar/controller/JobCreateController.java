@@ -68,7 +68,7 @@ public class JobCreateController implements Initializable {
 
         singleton.getJobRepository().addWithExistingVehicle(job, vehicles.getValue(), clients.getValue());
 
-        StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", null, "Udało się dodać nowe zlecenie.");
+        StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nowe zlecenie.");
     }
 
     public void addJobAndVehicle() {
@@ -76,11 +76,11 @@ public class JobCreateController implements Initializable {
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
 
         if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasadę integralności dla kolumny 'vin_number'.");
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę integralności dla kolumny 'vin_number'.");
         } else {
             singleton.getJobRepository().addWithNewVehicle(job, vehicle, clients.getValue());
 
-            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", null, "Udało się dodać nowe zlecenie z nowym pojazdem.");
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nowe zlecenie z nowym pojazdem.");
 
             refreshOrLoadVehicles();
         }

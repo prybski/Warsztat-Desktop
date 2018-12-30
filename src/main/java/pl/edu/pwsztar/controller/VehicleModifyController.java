@@ -97,12 +97,12 @@ public class VehicleModifyController implements Initializable {
         vehicle.setVinNumber(vinNumber.getText());
         vehicle.setEngineCapacity(engineCapacity.getValue().floatValue());
 
-        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasadę integralności dla kolumny 'vin_number'.");
+        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber.getText(), vehicle.getId())) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę integralności dla kolumny 'vin_number'.");
         } else {
             singleton.getVehicleRepository().update(vehicle);
 
-            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", null, "Dane wybranego pojazdu zostały zmodyfikowane");
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Dane wybranego pojazdu zostały zmodyfikowane");
 
             List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel().getSelectedItem());
 

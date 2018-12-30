@@ -1,4 +1,4 @@
-/* Custom style classes */
+/* Niestandardowe klasy CSS */
 .background {
     -fx-background-color: #1d1d1d;
 }
@@ -51,7 +51,7 @@
     -fx-opacity: 1.0;
 }
 
-/* FX elements styling */
+/* Stylowanie elementów JavaFX */
 .menu-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
@@ -158,8 +158,8 @@
 
 .date-picker > .text-input{
     -fx-background-radius: 0;
-
-    -fx-background-color: white;
+    -fx-border-width: 2;
+    -fx-border-color: transparent;
     -fx-background-insets: 0;
 }
 
@@ -315,7 +315,7 @@
 }
 
 .date-picker-popup > * > .today {
-    -fx-background-color: #64191e;
+    -fx-background-color: #175b00;
 }
 
 .check-box .box {
@@ -343,8 +343,8 @@
 
 /* odznaczony */
 .check-box:selected > .box{
-    -fx-background-color: #111;
-    -fx-border-color: #111;
+    -fx-background-color: #333;
+    -fx-border-color: #333;
 }
 
 .check-box:selected > .box > .mark{
@@ -489,6 +489,10 @@
     -fx-background-color: #111;
 }
 
+.list-view .virtual-flow > .corner{
+    -fx-background-color: transparent;
+}
+
 .list-view .list-cell {
     -fx-background-color: black;
     -fx-text-fill: white;
@@ -514,6 +518,11 @@
     -fx-background-color: derive(#000, 50%);;
 }
 
+.scroll-bar {
+    -fx-background-color: #000;
+    -fx-border-color: #000;
+}
+
 .scroll-bar > .thumb{
     -fx-background-color: #444;
     -fx-background-insets: 0;
@@ -529,17 +538,18 @@
 }
 
 .scroll-bar > .track {
-    -fx-background-color: #222;
+    -fx-background-color: #555;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
+
 .scroll-bar > .track-background {
     -fx-background-insets: 0;
 }
 
 .scroll-bar > .increment-button,
 .scroll-bar > .decrement-button {
-    -fx-background-color: #666;
+    -fx-background-color: #222;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 

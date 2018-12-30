@@ -46,11 +46,11 @@ public class PartCreateController implements Initializable {
         List<Part> partsToCheck = singleton.getPartRepository().findAll();
 
         if (ConstraintCheckUtil.checkForDuplicateDevelopmentCode(partsToCheck, developmentCode.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasadę integralności dla kolumny 'development_code.'");
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę integralności dla kolumny 'development_code.'");
         } else {
             singleton.getPartRepository().add(part);
 
-            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", null, "Udało się dodać nową część.");
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nową część.");
         }
     }
 }

@@ -57,7 +57,7 @@ public class ClientCreateController implements Initializable {
                 email.getText(), encodedPassword, phoneNumber.getText());
 
         if (ConstraintCheckUtil.checkForDuplicateEmail(clientsToCheck, email.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", null, "Złamano zasady intergralności dla kolumny 'email'.");
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasady intergralności dla kolumny 'email'.");
         } else {
             singleton.getClientRepository().add(client);
 

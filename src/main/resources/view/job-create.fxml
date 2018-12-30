@@ -26,7 +26,7 @@
          <Label styleClass="label-small" text="Opis" />
             <TextArea fx:id="description" prefHeight="110.0" prefWidth="340.0" />
          <Label styleClass="label-small" text="Data ustalona" />
-            <DatePicker fx:id="fixedDate" prefHeight="25.0" prefWidth="175.0" />
+            <DatePicker fx:id="fixedDate" />
             <HBox alignment="TOP_RIGHT">
                 <padding>
                     <Insets top="10.0" />
