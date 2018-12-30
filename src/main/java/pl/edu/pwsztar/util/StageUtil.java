@@ -29,6 +29,7 @@ public class StageUtil {
         textInputDialog.setTitle(title);
         textInputDialog.setContentText(contentText);
         textInputDialog.setHeaderText(null);
+        ContextMenuUtil.remove(textInputDialog.getEditor());
         textInputDialog.getDialogPane().getButtonTypes().removeAll(ButtonType.CANCEL);
         textInputDialog.getDialogPane().getStylesheets().add(StageUtil.class.getResource("/css/dialog-style.css").toExternalForm());
         textInputDialog.showAndWait();
