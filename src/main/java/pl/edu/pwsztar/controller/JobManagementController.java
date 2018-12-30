@@ -72,10 +72,10 @@ public class JobManagementController implements Initializable {
     private CheckBox arePartsRequired;
 
     @FXML
-    private ChoiceBox<Part> parts;
+    private ComboBox<Part> parts;
 
     @FXML
-    private ChoiceBox<Task> tasks;
+    private ComboBox<Task> tasks;
 
     @FXML
     private Spinner<Integer> quantity;

@@ -20,10 +20,10 @@ public class VehicleModifyController implements Initializable {
     private Singleton singleton;
 
     @FXML
-    private ChoiceBox<Client> clients;
+    private ComboBox<Client> clients;
 
     @FXML
-    private ChoiceBox<Vehicle> clientVehicles;
+    private ComboBox<Vehicle> clientVehicles;
 
     @FXML
     private TextField brand;

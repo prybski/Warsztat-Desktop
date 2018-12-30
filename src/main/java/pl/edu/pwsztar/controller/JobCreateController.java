@@ -27,10 +27,10 @@ public class JobCreateController implements Initializable {
     private DatePicker fixedDate;
 
     @FXML
-    private ChoiceBox<Client> clients;
+    private ComboBox<Client> clients;
 
     @FXML
-    private ChoiceBox<Vehicle> vehicles;
+    private ComboBox<Vehicle> vehicles;
 
     @FXML
     private TextField brand;

@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -42,7 +42,7 @@
          </Label>
             <Separator prefWidth="200.0" />
          <Label styleClass="label-small" text="Wyszukaj nierozpoczęte zlecenia" />
-            <ChoiceBox fx:id="fixedDates" maxWidth="1.7976931348623157E308" />
+         <ComboBox fx:id="fixedDates" maxWidth="1.7976931348623157E308" />
             <ListView fx:id="jobs" onMouseClicked="#startManagingNotStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS" />
          <Label styleClass="label-small" text="Rozpoczęte zlecenia" />
          <ListView fx:id="startedJobs" onMouseClicked="#startManagingStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS" />
@@ -87,7 +87,7 @@
             <HBox spacing="10.0" VBox.vgrow="ALWAYS">
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <Label styleClass="label-small" text="Wyświetl dla wybranego klienta" />
-                    <ChoiceBox fx:id="clients" prefWidth="175.0" />
+               <ComboBox fx:id="clients" prefWidth="200.0" />
                     <ListView fx:id="clientHistory" onMouseClicked="#showJobDetailsForClient" VBox.vgrow="ALWAYS" />
                <Label styleClass="label-small" text="Wpisz imie i nazwisko klienta" />
                     <HBox spacing="10.0">
@@ -102,7 +102,7 @@
                <Label styleClass="label-small" text="Wyświetl szukając po VIN" />
                     <HBox spacing="10.0">
                         <HBox HBox.hgrow="NEVER">
-                            <TextField fx:id="vinNumber" prefWidth="154.0" />
+                            <TextField fx:id="vinNumber" prefWidth="153.0" />
                         </HBox>
                   <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj" />
                     </HBox>
@@ -113,7 +113,7 @@
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <Label styleClass="label-small" text="Wyświetl dla wybranego pojazdu" />
-                    <ChoiceBox fx:id="vehicles" prefWidth="180.0" />
+               <ComboBox fx:id="vehicles" prefWidth="200.0" />
                     <ListView fx:id="vehicleHistory" onMouseClicked="#showJobDetailsForVehicle" VBox.vgrow="ALWAYS" />
                <padding>
                   <Insets left="10.0" />

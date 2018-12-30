@@ -81,40 +81,44 @@
     -fx-opacity: 0.5;
 }
 
-.choice-box {
+.combo-box {
     -fx-background-color: black;
     -fx-background-radius: 0;
-    -fx-mark-color: white;
 }
 
-.choice-box > .label {
+.combo-box > .label {
     -fx-text-fill: #fff;
 }
 
-.choice-box:hover {
+.combo-box:hover {
     -fx-background-color: derive(black, 50%);
 }
 
-.choice-box .context-menu {
+.combo-box .context-menu {
     -fx-background-color: black;
 }
 
-.choice-box .menu-item:focused {
+.combo-box .menu-item:focused {
     -fx-background-color: white;
 }
 
-.choice-box .menu-item > .label {
+.combo-box .menu-item > .label {
     -fx-text-fill: white;
 }
 
-.choice-box .menu-item:focused > .label {
+.combo-box .menu-item:focused > .label {
     -fx-text-fill: black;
 }
 
-.check-box {
-    -fx-text-fill: white;
-    -fx-font-family: "Noto Sans";
-    -fx-font-size: 11;
+.combo-box .list-cell {
+    -fx-text-fill: #fff;
+}
+
+.combo-box > .arrow-button > .arrow {
+    -fx-padding: 4px 6px 4px 6px;
+    -fx-shape: "M21.361,12.736l0.527,0.527L16,19.152l-5.889-5.889l0.527-0.527L16,18.098L21.361,12.736z";
+    -fx-background-insets: 0 0 0 0, 0;
+    -fx-background-color: #fff;
 }
 
 .text-field {
@@ -318,6 +322,12 @@
     -fx-background-color: #175b00;
 }
 
+.check-box {
+    -fx-text-fill: white;
+    -fx-font-family: "Noto Sans";
+    -fx-font-size: 11;
+}
+
 .check-box .box {
     -fx-background-color: #fff;
     -fx-background-radius: 0;
@@ -372,17 +382,17 @@
     -fx-border-insets: -3, 0;
 }
 
-/* -- z focusem - odznaczony */
+/* z focusem - odznaczony */
 .check-box:focused:selected > .box{
     -fx-border-color: #fff, #000;
 }
 
-/* -- z focusem - odznaczony, hover */
+/* z focusem - odznaczony, hover */
 .check-box:focused:selected:hover > .box{
     -fx-border-color: #000, #777;
 }
 
-/* -- z focusem - wciśnięty */
+/* z focusem - wciśnięty */
 .check-box:focused:pressed > .box{
     -fx-border-color: #777, #000;
 }
@@ -416,7 +426,6 @@
 .spinner .increment-arrow-button,
 .spinner .decrement-arrow-button  {
     -fx-background-color: white;
-    /*Change the two 0's here to -1 to get rid of the horizontal line */
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }

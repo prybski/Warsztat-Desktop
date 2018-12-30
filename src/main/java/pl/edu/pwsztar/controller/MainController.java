@@ -29,7 +29,7 @@ public class MainController implements Initializable {
     private BorderPane borderPane;
 
     @FXML
-    private ChoiceBox<Date> fixedDates;
+    private ComboBox<Date> fixedDates;
 
     @FXML
     private ListView<Job> jobs;
@@ -38,7 +38,7 @@ public class MainController implements Initializable {
     private ListView<Job> startedJobs;
 
     @FXML
-    private ChoiceBox<Client> clients;
+    private ComboBox<Client> clients;
 
     @FXML
     private ListView<Job> clientHistory;
@@ -53,7 +53,7 @@ public class MainController implements Initializable {
     private ListView<Job> vehicleHistoryByVinNumber;
 
     @FXML
-    private ChoiceBox<Vehicle> vehicles;
+    private ComboBox<Vehicle> vehicles;
 
     @FXML
     private ListView<Job> vehicleHistory;
