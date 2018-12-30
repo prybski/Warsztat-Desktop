@@ -106,12 +106,6 @@ public class VehicleModifyController implements Initializable {
 
             List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel().getSelectedItem());
 
-            brand.clear();
-            model.clear();
-            productionYear.getEditor().setText("2000");
-            vinNumber.clear();
-            engineCapacity.getEditor().setText("0.6");
-
             clientVehicles.getItems().setAll(updatedVehicles);
         }
     }
