@@ -56,7 +56,7 @@ public class VehicleModifyController implements Initializable {
         // bindings
         clientVehicles.disableProperty().bind(Bindings.createBooleanBinding(() -> !clients.getSelectionModel().isEmpty(), clients.valueProperty()).not());
 
-        editVehicleDataVBox.disableProperty().bind(Bindings.createBooleanBinding(() -> !clientVehicles.getSelectionModel().isEmpty(), clientVehicles.valueProperty()).not());
+        editVehicleDataVBox.disableProperty().bind(Bindings.createBooleanBinding(() -> !clientVehicles.getSelectionModel().isEmpty(), clientVehicles.getSelectionModel().selectedIndexProperty()).not());
 
         modifyOneVehicle.disableProperty().bind(Bindings.createBooleanBinding(() ->
                         !brand.getText().isEmpty() && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty() && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}") && !engineCapacity.getEditor().getText().isEmpty()
