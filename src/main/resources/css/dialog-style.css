@@ -14,10 +14,11 @@
 }
 
 .dialog-pane .text-field {
+    -fx-background-color: #000;
     -fx-background-radius: 0;
-    -fx-border-width: 2;
-    -fx-accent: gray;
-    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-accent: #444;
+    -fx-text-fill: #fff;
 }
 
 .dialog-pane .text-field .context-menu {
@@ -29,7 +30,7 @@
 }
 
 .dialog-pane .text-field:focused {
-    -fx-background-color: gray, -fx-background;
+    -fx-background-color: black;
 }
 
 .dialog-pane .button {
