@@ -62,7 +62,7 @@
                <Insets right="55.0" />
             </VBox.margin></Spinner>
             <Label styleClass="label-small" text="Numer VIN" />
-            <TextField fx:id="vinNumber" disable="true" maxWidth="1.7976931348623157E308" prefWidth="208.0" />
+            <TextField fx:id="vinNumber" maxWidth="1.7976931348623157E308" prefWidth="208.0" />
             <Label styleClass="label-small" text="Pojemność silnika" />
             <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0" maxWidth="1.7976931348623157E308" min="0.1" prefWidth="153.0">
             <VBox.margin>
