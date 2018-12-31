@@ -44,7 +44,13 @@ public class PartCreateController implements Initializable {
     }
 
     public void addPart() {
-        Part part = new Part(name.getText(), details.getText(), developmentCode.getText());
+        Part part;
+
+        if (details.getText().isEmpty()) {
+            part = new Part(name.getText(), null, developmentCode.getText());
+        } else  {
+            part = new Part(name.getText(), details.getText(), developmentCode.getText());
+        }
 
         List<Part> partsToCheck = singleton.getPartRepository().findAll();
 
