@@ -57,7 +57,7 @@
 }
 
 .context-menu {
-    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-background-color: derive(#1d1d1d, 10%);
 }
 
 .context-menu .menu-item .label {
@@ -83,7 +83,7 @@
 
 .separator .line {
     -fx-border-color: black;
-    -fx-border-width: 2;
+    -fx-border-width: 1;
 }
 
 .combo-box {
@@ -205,12 +205,15 @@
 .date-picker > .arrow-button > .arrow {
     -fx-background-color: #fff;
     -fx-background-insets: 0;
-    -fx-padding: 8 8 10 8;
     -fx-scale-shape: true;
 }
 
+.date-picker > .arrow-button:hover {
+    -fx-background-color: #333;
+}
+
 .date-picker > .arrow-button:hover > .arrow {
-    -fx-background-color: #000;
+    -fx-background-color: #fff;
 }
 
 .date-picker > .arrow-button:pressed {
