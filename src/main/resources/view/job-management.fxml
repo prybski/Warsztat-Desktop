@@ -17,27 +17,25 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.CheckListView?>
 
-<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/main-style.css"
-            xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.pwsztar.controller.JobManagementController">
+<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobManagementController">
     <left>
         <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Label styleClass="label-header" text="Początek pracy">
                 <font>
-                    <Font name="Noto Sans Regular" size="20.0"/>
+                    <Font name="Noto Sans Regular" size="20.0" />
                 </font>
             </Label>
-            <Separator prefWidth="200.0"/>
+            <Separator prefWidth="200.0" />
             <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
                 <padding>
-                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>
                 <Button fx:id="start" mnemonicParsing="false" onAction="#startJob" prefWidth="160.0" text="Rozpocznij">
                     <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                     </font>
                 </Button>
             </VBox>
@@ -46,93 +44,96 @@
     <center>
         <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Label styleClass="label-header" text="Zarządzanie">
                 <font>
-                    <Font name="Noto Sans Regular" size="20.0"/>
+                    <Font name="Noto Sans Regular" size="20.0" />
                 </font>
             </Label>
-            <Separator prefWidth="200.0"/>
+            <Separator prefWidth="200.0" />
             <HBox fx:id="mainControlHBox" spacing="10.0" VBox.vgrow="ALWAYS">
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                     <padding>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                     </padding>
-                    <Label styleClass="label-small" text="Wprowadź nazwę zadania"/>
-                    <TextField fx:id="taskName"/>
-                    <HBox alignment="TOP_RIGHT">
+                    <Label styleClass="label-small" text="Wprowadź nazwę zadania" />
+                    <HBox spacing="10.0">
+                        <TextField fx:id="taskName" maxWidth="1.7976931348623157E308" prefWidth="128.0"
+                                   HBox.hgrow="ALWAYS"/>
                         <Button fx:id="addOneTask" mnemonicParsing="false" onAction="#addTaskToJob"
                                 text="Dodaj do listy"/>
                     </HBox>
-                    <ListView fx:id="unfinishedTasks" VBox.vgrow="ALWAYS"/>
+                    <ListView fx:id="unfinishedTasks" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#deleteChoosenTask" text="Usuń wybrane zadanie"/>
+                        <Button mnemonicParsing="false" onAction="#deleteChoosenTask" text="Usuń wybrane zadanie" />
                     </HBox>
-                    <CheckBox fx:id="arePartsRequired" mnemonicParsing="false"
-                              text="Czy któreś zadania wymagają części?"/>
+                    <CheckBox fx:id="arePartsRequired" mnemonicParsing="false" text="Czy któreś zadania wymagają części?" />
                     <Label styleClass="label-italic" text="(Powyżej widać nieukończone zadania)">
                         <font>
-                            <Font name="System Italic" size="12.0"/>
+                            <Font name="System Italic" size="12.0" />
                         </font>
                     </Label>
                 </VBox>
                 <VBox fx:id="demandVBox" disable="true" spacing="10.0" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets left="10.0" right="10.0"/>
+                        <Insets left="10.0" right="10.0" />
                     </padding>
-                    <Label styleClass="label-small" text="Wybierz wymaganą część"/>
-                    <ComboBox fx:id="parts" prefWidth="160.0"/>
-                    <HBox alignment="TOP_RIGHT">
+                    <Label styleClass="label-small" text="Wybierz wymaganą część" />
+                    <HBox spacing="10.0">
+                        <ComboBox fx:id="parts" maxWidth="1.7976931348623157E308" prefWidth="143.0"
+                                  HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową"/>
                     </HBox>
-                    <Label styleClass="label-small" text="Wybierz zadanie, do którego ją przypisać"/>
-                    <ComboBox fx:id="tasks" prefWidth="160.0"/>
-                    <Label styleClass="label-small" text="Określ ilość"/>
-                    <Spinner fx:id="quantity" amountToStepBy="1" initialValue="1" max="255" min="1" prefWidth="160.0">
+                    <Label styleClass="label-small" text="Wybierz zadanie, do którego ją przypisać" />
+                    <ComboBox fx:id="tasks" maxWidth="1.7976931348623157E308" prefWidth="160.0">
+                  <VBox.margin>
+                     <Insets right="73.0" />
+                  </VBox.margin></ComboBox>
+                    <Label styleClass="label-small" text="Określ ilość" />
+                    <Spinner fx:id="quantity" amountToStepBy="1" initialValue="1" max="255" maxWidth="1.7976931348623157E308" min="1" prefWidth="160.0">
                         <VBox.margin>
-                            <Insets/>
+                            <Insets right="73.0" />
                         </VBox.margin>
                     </Spinner>
-                    <Label styleClass="label-small" text="Podaj cenę"/>
-                    <HBox>
+                    <Label styleClass="label-small" text="Podaj cenę" />
+                    <HBox spacing="10.0">
                         <VBox.margin>
-                            <Insets/>
+                            <Insets />
                         </VBox.margin>
-                        <TextField fx:id="demandPrice" prefWidth="160.0"/>
+                        <TextField fx:id="demandPrice" maxWidth="1.7976931348623157E308" prefWidth="81.0" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></TextField>
+                        <Button fx:id="addOneDemand" mnemonicParsing="false" onAction="#addDemandToTask" text="Dodaj zapotrzebowanie" />
                     </HBox>
+                    <ListView fx:id="demands" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button fx:id="addOneDemand" mnemonicParsing="false" onAction="#addDemandToTask"
-                                text="Dodaj zapotrzebowanie"/>
-                    </HBox>
-                    <ListView fx:id="demands" VBox.vgrow="ALWAYS"/>
-                    <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#deleteChoosenDemand"
-                                text="Usuń wybrane zapotrzebowanie"/>
+                        <Button mnemonicParsing="false" onAction="#deleteChoosenDemand" text="Usuń wybrane zapotrzebowanie" />
                     </HBox>
                     <Label styleClass="label-italic" text="(Kolumna aktywna, gdy potrzeba części)">
                         <font>
-                            <Font name="System Italic" size="12.0"/>
+                            <Font name="System Italic" size="12.0" />
                         </font>
                     </Label>
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                     </padding>
-                    <Label styleClass="label-small" text="Wprowadź cenę zadania i je odznacz"/>
-                    <TextField fx:id="taskCost">
+                    <Label styleClass="label-small" text="Wprowadź cenę zadania i je odznacz" />
+                    <TextField fx:id="taskCost" maxWidth="1.7976931348623157E308" prefWidth="134.0">
                         <VBox.margin>
-                            <Insets right="100.0"/>
+                            <Insets right="100.0" />
                         </VBox.margin>
                     </TextField>
-                    <CheckListView fx:id="tasksToFinish" VBox.vgrow="ALWAYS"/>
+                    <CheckListView fx:id="tasksToFinish" VBox.vgrow="ALWAYS" />
                     <Label styleClass="label-italic" text="(Odznacz, aby zakończyć zadanie)">
                         <font>
-                            <Font name="System Italic" size="12.0"/>
+                            <Font name="System Italic" size="12.0" />
                         </font>
                     </Label>
                 </VBox>
@@ -142,36 +143,35 @@
     <right>
         <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Label styleClass="label-header" text="Podsumowanie">
                 <font>
-                    <Font name="Noto Sans Regular" size="20.0"/>
+                    <Font name="Noto Sans Regular" size="20.0" />
                 </font>
             </Label>
-            <Separator prefWidth="200.0"/>
-            <CheckBox fx:id="isDiscountIncluded" mnemonicParsing="false" text="Czy chcesz uwzględnić rabat?"/>
-            <TextField fx:id="discount" disable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+            <Separator prefWidth="200.0" />
+            <CheckBox fx:id="isDiscountIncluded" mnemonicParsing="false" text="Czy chcesz uwzględnić rabat?" />
+            <TextField fx:id="discount" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" VBox.vgrow="ALWAYS">
                 <VBox.margin>
-                    <Insets right="50.0"/>
+                    <Insets right="50.0" />
                 </VBox.margin>
             </TextField>
             <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
-                    <Button fx:id="end" disable="true" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0"
-                            text="Zakończ">
+                    <Button fx:id="end" disable="true" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0" text="Zakończ">
                         <font>
-                            <Font size="24.0"/>
+                            <Font size="24.0" />
                         </font>
                     </Button>
                     <Label styleClass="label-header" text="Do zapłaty:">
                         <font>
-                            <Font size="20.0"/>
+                            <Font size="20.0" />
                         </font>
                     </Label>
                     <Text fx:id="finalJobCost" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info-bigger">
                         <font>
-                            <Font size="24.0"/>
+                            <Font size="24.0" />
                         </font>
                     </Text>
                 </VBox>
@@ -180,7 +180,7 @@
     </right>
     <bottom>
         <ToolBar BorderPane.alignment="CENTER">
-            <Button mnemonicParsing="false" onAction="#backToMain" text="Powrót"/>
+            <Button mnemonicParsing="false" onAction="#backToMain" text="Powrót" />
         </ToolBar>
     </bottom>
 </BorderPane>

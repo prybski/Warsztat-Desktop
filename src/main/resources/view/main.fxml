@@ -42,7 +42,7 @@
             </Label>
             <Separator prefWidth="200.0" />
             <Label styleClass="label-small" text="Wyszukaj nierozpoczęte zlecenia" />
-            <ComboBox fx:id="fixedDates" maxWidth="1.7976931348623157E308" />
+            <ComboBox fx:id="fixedDates" maxWidth="1.7976931348623157E308" prefWidth="200.0" />
             <ListView fx:id="jobs" onMouseClicked="#startManagingNotStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <Label styleClass="label-small" text="Rozpoczęte zlecenia" />
             <ListView fx:id="startedJobs" onMouseClicked="#startManagingStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS" />
@@ -87,14 +87,14 @@
             <HBox spacing="10.0" VBox.vgrow="ALWAYS">
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <Label styleClass="label-small" text="Wyświetl dla wybranego klienta" />
-                    <ComboBox fx:id="clients" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="200.0">
+                    <ComboBox fx:id="clients" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                   <VBox.margin>
-                     <Insets right="30.0" />
+                     <Insets right="33.0" />
                   </VBox.margin></ComboBox>
                     <ListView fx:id="clientHistory" onMouseClicked="#showJobDetailsForClient" VBox.vgrow="ALWAYS" />
                     <Label styleClass="label-small" text="Wpisz imie i nazwisko klienta" />
                     <HBox spacing="10.0">
-                        <TextField fx:id="firstAndLastName" prefWidth="125.0" />
+                        <TextField fx:id="firstAndLastName" maxWidth="1.7976931348623157E308" prefWidth="125.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="showClient" mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
                     </HBox>
                     <padding>
@@ -104,10 +104,18 @@
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <Label styleClass="label-small" text="Wyświetl szukając po VIN" />
                     <HBox spacing="10.0">
-                        <HBox HBox.hgrow="NEVER">
-                            <TextField fx:id="vinNumber" prefWidth="153.0" />
-                        </HBox>
-                        <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj" />
+                         <TextField fx:id="vinNumber" maxWidth="1.7976931348623157E308" prefWidth="153.0" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+                        <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Button>
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin>
                     </HBox>
                     <ListView fx:id="vehicleHistoryByVinNumber" onMouseClicked="#showJobDetailsForVehicleByVin" VBox.vgrow="ALWAYS" />
                     <padding>
@@ -116,9 +124,9 @@
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                     <Label styleClass="label-small" text="Wyświetl dla wybranego pojazdu" />
-                    <ComboBox fx:id="vehicles" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="200.0">
+                    <ComboBox fx:id="vehicles" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                   <VBox.margin>
-                     <Insets right="30.0" />
+                     <Insets right="29.0" />
                   </VBox.margin></ComboBox>
                     <ListView fx:id="vehicleHistory" onMouseClicked="#showJobDetailsForVehicle" VBox.vgrow="ALWAYS" />
                     <padding>

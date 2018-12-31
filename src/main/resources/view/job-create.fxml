@@ -13,55 +13,66 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefWidth="550.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobCreateController">
-    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="background" AnchorPane.bottomAnchor="0.0"
-          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefWidth="550.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobCreateController">
+    <HBox prefHeight="100.0" prefWidth="200.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox prefWidth="300.0" spacing="10.0">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label styleClass="label-small" text="Wybierz klienta"/>
-            <ComboBox fx:id="clients" prefWidth="200.0"/>
-            <Label styleClass="label-small" text="Wybierz pojazd"/>
-            <ComboBox fx:id="vehicles" disable="true" prefWidth="200.0"/>
-            <Label styleClass="label-small" text="Opis"/>
-            <TextArea fx:id="description" prefHeight="110.0" prefWidth="340.0"/>
-            <Label styleClass="label-small" text="Data ustalona"/>
-            <DatePicker fx:id="fixedDate"/>
+            <Label styleClass="label-small" text="Wybierz klienta" />
+            <ComboBox fx:id="clients" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+            <VBox.margin>
+               <Insets right="53.0" />
+            </VBox.margin></ComboBox>
+            <Label styleClass="label-small" text="Wybierz pojazd" />
+            <ComboBox fx:id="vehicles" disable="true" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+            <VBox.margin>
+               <Insets right="53.0" />
+            </VBox.margin></ComboBox>
+            <Label styleClass="label-small" text="Opis" />
+            <TextArea fx:id="description" maxWidth="1.7976931348623157E308" prefWidth="253.0" wrapText="true" />
+            <Label styleClass="label-small" text="Data ustalona" />
+            <DatePicker fx:id="fixedDate" editable="false" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+            <VBox.margin>
+               <Insets right="53.0" />
+            </VBox.margin></DatePicker>
             <HBox alignment="TOP_RIGHT">
                 <padding>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </padding>
-                <Button fx:id="add" disable="true" mnemonicParsing="false" onAction="#addJob"
-                        text="Dodaj zlecenie z istniejącym pojazdem"/>
+                <Button fx:id="add" disable="true" mnemonicParsing="false" onAction="#addJob" text="Dodaj zlecenie z istniejącym pojazdem" />
             </HBox>
         </VBox>
         <Separator orientation="VERTICAL">
             <padding>
-                <Insets left="3.0"/>
+                <Insets left="3.0" />
             </padding>
         </Separator>
         <VBox prefHeight="409.0" prefWidth="255.0" spacing="10.0" HBox.hgrow="ALWAYS">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label styleClass="label-small" text="Marka"/>
-            <TextField fx:id="brand"/>
-            <Label styleClass="label-small" text="Model"/>
-            <TextField fx:id="model"/>
-            <Label styleClass="label-small" text="Rok produkcji"/>
-            <Spinner fx:id="productionYear" amountToStepBy="1" initialValue="2000" max="2100" min="1900"/>
-            <Label styleClass="label-small" text="Numer VIN"/>
-            <TextField fx:id="vinNumber"/>
-            <Label styleClass="label-small" text="Pojemność silnika"/>
-            <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0" min="0.1"/>
+            <Label styleClass="label-small" text="Marka" />
+            <TextField fx:id="brand" maxWidth="1.7976931348623157E308" prefWidth="208.0" />
+            <Label styleClass="label-small" text="Model" />
+            <TextField fx:id="model" maxWidth="1.7976931348623157E308" prefWidth="208.0" />
+            <Label styleClass="label-small" text="Rok produkcji" />
+            <Spinner fx:id="productionYear" amountToStepBy="1" initialValue="2000" max="2100" maxWidth="1.7976931348623157E308" min="1900" prefWidth="153.0">
+            <VBox.margin>
+               <Insets right="55.0" />
+            </VBox.margin></Spinner>
+            <Label styleClass="label-small" text="Numer VIN" />
+            <TextField fx:id="vinNumber" disable="true" maxWidth="1.7976931348623157E308" prefWidth="208.0" />
+            <Label styleClass="label-small" text="Pojemność silnika" />
+            <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0" maxWidth="1.7976931348623157E308" min="0.1" prefWidth="153.0">
+            <VBox.margin>
+               <Insets right="55.0" />
+            </VBox.margin></Spinner>
             <HBox alignment="TOP_RIGHT">
                 <padding>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </padding>
-                <Button fx:id="addWithVehicle" disable="true" mnemonicParsing="false" onAction="#addJobAndVehicle"
-                        text="Dodaj zlecenie z nowym pojazdem"/>
+                <Button fx:id="addWithVehicle" disable="true" mnemonicParsing="false" onAction="#addJobAndVehicle" text="Dodaj zlecenie z nowym pojazdem" />
             </HBox>
         </VBox>
     </HBox>
