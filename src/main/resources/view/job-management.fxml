@@ -62,7 +62,7 @@
                     </padding>
                     <Label styleClass="label-small" text="Wprowadź nazwę zadania" />
                     <HBox spacing="10.0">
-                        <TextField fx:id="taskName" maxWidth="1.7976931348623157E308" prefWidth="128.0" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="taskName" maxWidth="1.7976931348623157E308" prefWidth="134.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="addOneTask" mnemonicParsing="false" onAction="#addTaskToJob" text="Dodaj do listy" />
                     </HBox>
                     <ListView fx:id="unfinishedTasks" VBox.vgrow="ALWAYS" />
@@ -76,7 +76,7 @@
                         </font>
                     </Label>
                 </VBox>
-                <VBox fx:id="demandVBox" disable="true" spacing="10.0" HBox.hgrow="ALWAYS">
+                <VBox fx:id="demandVBox" spacing="10.0" HBox.hgrow="ALWAYS">
                     <padding>
                         <Insets left="10.0" right="10.0" />
                     </padding>
@@ -85,13 +85,13 @@
                         <ComboBox fx:id="parts" maxWidth="1.7976931348623157E308" prefWidth="143.0" HBox.hgrow="ALWAYS" />
                         <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową" />
                     </HBox>
-                    <Label styleClass="label-small" text="Wybierz zadanie, do którego ją przypisać" />
+                    <Label styleClass="label-small" text="Wybierz zadanie" />
                     <ComboBox fx:id="tasks" maxWidth="1.7976931348623157E308" prefWidth="160.0">
                   <VBox.margin>
                      <Insets right="73.0" />
                   </VBox.margin></ComboBox>
                     <Label styleClass="label-small" text="Określ ilość" />
-                    <Spinner fx:id="quantity" amountToStepBy="1" initialValue="1" max="255" maxWidth="1.7976931348623157E308" min="1" prefWidth="160.0">
+                    <Spinner fx:id="quantity" amountToStepBy="1" initialValue="1" max="255" maxWidth="1.7976931348623157E308" min="1" minWidth="75.0" prefWidth="160.0">
                         <VBox.margin>
                             <Insets right="73.0" />
                         </VBox.margin>
