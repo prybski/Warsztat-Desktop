@@ -542,8 +542,8 @@
     -fx-background-color: #000;
     -fx-border-color: #000;
 }
-.scroll-bar > .thumb{
-    -fx-background-color: #444;
+.scroll-bar > .thumb {
+    -fx-background-color: #111;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
@@ -553,11 +553,11 @@
 }
 
 .scroll-bar > .thumb:pressed {
-    -fx-background-color: #333;
+    -fx-background-color: #444;
 }
 
 .scroll-bar > .track {
-    -fx-background-color: #555;
+    -fx-background-color: #888;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
@@ -582,12 +582,12 @@
 
 .scroll-bar > .increment-button:hover,
 .scroll-bar > .decrement-button:hover  {
-    -fx-background-color: black;
+    -fx-background-color: #333;
 }
 
 .scroll-bar > .increment-button:pressed,
 .scroll-bar > .decrement-button:pressed {
-    -fx-background-color: black;
+    -fx-background-color: #555;
 }
 
 .scroll-bar:disabled {
@@ -636,7 +636,7 @@
 
 .scroll-bar > .increment-button:pressed > .increment-arrow,
 .scroll-bar > .decrement-button:pressed > .decrement-arrow {
-    -fx-background-color: gray;
+    -fx-background-color: black;
 }
 
 .auto-complete-popup > .list-view {

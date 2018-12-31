@@ -55,7 +55,13 @@ public class JobManagementController implements Initializable {
     private Button addOneTask;
 
     @FXML
+    private Button deleteOneTask;
+
+    @FXML
     private Button addOneDemand;
+
+    @FXML
+    private Button deleteOneDemand;
 
     @FXML
     private TextField taskName;
@@ -113,6 +119,8 @@ public class JobManagementController implements Initializable {
         Platform.runLater(this::configureForRunLater);
 
         customListenersConfiguration();
+
+        bindingsConfiguration();
 
         removeContextMenu();
     }
@@ -374,6 +382,12 @@ public class JobManagementController implements Initializable {
                 discount.setDisable(true);
             }
         });
+    }
+
+    private void bindingsConfiguration() {
+        deleteOneTask.disableProperty().bind(Bindings.createBooleanBinding(() -> !unfinishedTasks.getSelectionModel().isEmpty(), unfinishedTasks.getSelectionModel().selectedIndexProperty()).not());
+
+        deleteOneDemand.disableProperty().bind(Bindings.createBooleanBinding(() -> !demands.getSelectionModel().isEmpty(), demands.getSelectionModel().selectedIndexProperty()).not());
     }
 
     public void setJob(Job job) {

@@ -62,14 +62,12 @@
                     </padding>
                     <Label styleClass="label-small" text="Wprowadź nazwę zadania" />
                     <HBox spacing="10.0">
-                        <TextField fx:id="taskName" maxWidth="1.7976931348623157E308" prefWidth="128.0"
-                                   HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addOneTask" mnemonicParsing="false" onAction="#addTaskToJob"
-                                text="Dodaj do listy"/>
+                        <TextField fx:id="taskName" maxWidth="1.7976931348623157E308" prefWidth="128.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="addOneTask" mnemonicParsing="false" onAction="#addTaskToJob" text="Dodaj do listy" />
                     </HBox>
                     <ListView fx:id="unfinishedTasks" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#deleteChoosenTask" text="Usuń wybrane zadanie" />
+                        <Button fx:id="deleteOneTask" mnemonicParsing="false" onAction="#deleteChoosenTask" text="Usuń wybrane zadanie" />
                     </HBox>
                     <CheckBox fx:id="arePartsRequired" mnemonicParsing="false" text="Czy któreś zadania wymagają części?" />
                     <Label styleClass="label-italic" text="(Powyżej widać nieukończone zadania)">
@@ -84,9 +82,8 @@
                     </padding>
                     <Label styleClass="label-small" text="Wybierz wymaganą część" />
                     <HBox spacing="10.0">
-                        <ComboBox fx:id="parts" maxWidth="1.7976931348623157E308" prefWidth="143.0"
-                                  HBox.hgrow="ALWAYS"/>
-                        <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową"/>
+                        <ComboBox fx:id="parts" maxWidth="1.7976931348623157E308" prefWidth="143.0" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#showAddPart" text="Dodaj nową" />
                     </HBox>
                     <Label styleClass="label-small" text="Wybierz zadanie, do którego ją przypisać" />
                     <ComboBox fx:id="tasks" maxWidth="1.7976931348623157E308" prefWidth="160.0">
@@ -112,7 +109,7 @@
                     </HBox>
                     <ListView fx:id="demands" VBox.vgrow="ALWAYS" />
                     <HBox alignment="TOP_RIGHT">
-                        <Button mnemonicParsing="false" onAction="#deleteChoosenDemand" text="Usuń wybrane zapotrzebowanie" />
+                        <Button fx:id="deleteOneDemand" mnemonicParsing="false" onAction="#deleteChoosenDemand" text="Usuń wybrane zapotrzebowanie" />
                     </HBox>
                     <Label styleClass="label-italic" text="(Kolumna aktywna, gdy potrzeba części)">
                         <font>
