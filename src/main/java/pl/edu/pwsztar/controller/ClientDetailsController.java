@@ -28,9 +28,11 @@ public class ClientDetailsController implements Initializable {
     }
 
     private void readClientData() {
-        firstAndLastName.setText(client.getFirstName() + " " + client.getLastName());
-        email.setText(client.getEmail());
-        phoneNumber.setText(client.getPhoneNumber());
+        if (client != null) {
+            firstAndLastName.setText(client.getFirstName() + " " + client.getLastName());
+            email.setText(client.getEmail());
+            phoneNumber.setText(client.getPhoneNumber());
+        }
     }
 
     public void setClient(Client client) {
