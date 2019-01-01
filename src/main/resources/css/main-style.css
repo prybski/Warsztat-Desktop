@@ -60,6 +60,17 @@
     -fx-background-color: derive(#1d1d1d, 10%);
 }
 
+.context-menu .separator {
+    -fx-opacity: 1;
+    -fx-padding: 2 0 2 0;
+}
+
+.context-menu .separator .line {
+    -fx-background-color: #fff;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: transparent;
+}
+
 .context-menu .menu-item .label {
     -fx-text-fill: #ffffff;
 }
@@ -83,7 +94,7 @@
 
 .separator .line {
     -fx-border-color: black;
-    -fx-border-width: 1;
+    -fx-border-width: 2;
 }
 
 .combo-box {

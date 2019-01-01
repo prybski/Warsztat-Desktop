@@ -20,11 +20,22 @@
 }
 
 .dialog-pane .text-field .context-menu {
-    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-background-color: derive(#1d1d1d, 10%);
+}
+
+.dialog-pane .text-field .context-menu .separator {
+    -fx-opacity: 1;
+    -fx-padding: 2 0 2 0;
+}
+
+.dialog-pane .text-field .context-menu .separator .line {
+    -fx-background-color: #fff;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: transparent;
 }
 
 .dialog-pane .text-field .context-menu .menu-item .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #fff;
 }
 
 .dialog-pane .text-field:focused {
