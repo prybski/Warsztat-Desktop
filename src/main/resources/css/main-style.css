@@ -81,6 +81,11 @@
     -fx-text-fill: #ffffff;
     -fx-opacity: 0.8;
 }
+
+.menu-bar .context-menu {
+    -fx-background-color: derive(#1d1d1d, 30%);
+}
+
 .menu-item:focused,
 .menu-button:hover,
 .menu:hover,
