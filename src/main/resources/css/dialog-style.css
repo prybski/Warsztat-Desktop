@@ -12,6 +12,7 @@
 }
 
 .dialog-pane .text-field {
+    -fx-background-insets: 0;
     -fx-background-color: #000;
     -fx-background-radius: 0;
     -fx-border-width: 0;

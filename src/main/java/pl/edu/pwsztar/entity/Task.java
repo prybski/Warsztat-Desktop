@@ -117,6 +117,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Aktywność: " + activity + ", koszt: " + cost;
+        if (cost != null) {
+            return "Aktywność: " + activity + ", koszt: " + cost + " zł";
+        }
+
+        return "Aktywność: " + activity + ", koszt: 0.00 zł";
     }
 }
