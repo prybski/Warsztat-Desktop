@@ -105,15 +105,15 @@ public class VehicleModifyController implements Initializable {
 
     private void propertyBindingsConfiguration() {
         BooleanBinding clientIsSelected = Bindings.createBooleanBinding(() -> !clients.getSelectionModel().isEmpty(),
-                clients.getSelectionModel().selectedItemProperty());
+                        clients.getSelectionModel().selectedItemProperty());
         BooleanBinding clientVehicleIsSelected = Bindings.createBooleanBinding(() -> !clientVehicles.getSelectionModel()
-                .isEmpty(), clientVehicles.getSelectionModel().selectedItemProperty());
+                        .isEmpty(), clientVehicles.getSelectionModel().selectedItemProperty());
         BooleanBinding modifiedVehicleDataValid = Bindings.createBooleanBinding(() ->
                         !brand.getText().isEmpty() && !model.getText().isEmpty() && !productionYear.getEditor()
-                                .getText().isEmpty() && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}")
-                                && !engineCapacity.getEditor().getText().isEmpty()
-                , brand.textProperty(), model.textProperty(), productionYear.getEditor().textProperty(),
-                vinNumber.textProperty(), engineCapacity.getEditor().textProperty());
+                        .getText().isEmpty() && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}")
+                        && !engineCapacity.getEditor().getText().isEmpty(), brand.textProperty(),
+                        model.textProperty(), productionYear.getEditor().textProperty(),
+                        vinNumber.textProperty(), engineCapacity.getEditor().textProperty());
 
 
         clientVehicles.disableProperty().bind(clientIsSelected.not());

@@ -68,8 +68,8 @@ public class PartCreateController implements Initializable {
 
     private void propertyBindingsConfiguration() {
         BooleanBinding partDataValid = Bindings.createBooleanBinding(() -> !name.getText().isEmpty()
-                && !details.getText().isEmpty() && !developmentCode.getText().isEmpty(),
-                name.textProperty(), details.textProperty(), developmentCode.textProperty());
+                        && !details.getText().isEmpty() && !developmentCode.getText().isEmpty(),
+                        name.textProperty(), details.textProperty(), developmentCode.textProperty());
 
         addOnePart.disableProperty().bind(partDataValid.not());
     }
