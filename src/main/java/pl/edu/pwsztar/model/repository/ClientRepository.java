@@ -11,11 +11,29 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ClientRepository implements ClientDAO {
 
     @Override
+    public void add(Client client) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(client));
+    }
+
+    @Override
     public List<Client> findAll() {
         AtomicReference<List<Client>> clientsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
             Query<Client> clientQuery = HibernateUtil.getSession().createQuery("from Client", Client.class);
+
+            clientsFromDb.set(clientQuery.getResultList());
+        });
+
+        return clientsFromDb.get();
+    }
+
+    @Override
+    public List<Client> findAllWithVehicles() {
+        AtomicReference<List<Client>> clientsFromDb = new AtomicReference<>();
+
+        HibernateUtil.withinSession(() -> {
+            Query<Client> clientQuery = HibernateUtil.getSession().createQuery("select distinct j.client from Job j where j.vehicle is not null", Client.class);
 
             clientsFromDb.set(clientQuery.getResultList());
         });
@@ -35,23 +53,5 @@ public class ClientRepository implements ClientDAO {
         });
 
         return clientFromDb.get();
-    }
-
-    @Override
-    public List<Client> findAllWithVehicles() {
-        AtomicReference<List<Client>> clientsFromDb = new AtomicReference<>();
-
-        HibernateUtil.withinSession(() -> {
-            Query<Client> clientQuery = HibernateUtil.getSession().createQuery("select distinct j.client from Job j where j.vehicle is not null", Client.class);
-
-            clientsFromDb.set(clientQuery.getResultList());
-        });
-
-        return clientsFromDb.get();
-    }
-
-    @Override
-    public void add(Client client) {
-        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(client));
     }
 }

@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -20,6 +21,8 @@ import java.util.ResourceBundle;
 
 public class ClientCreateController implements Initializable {
 
+    private static final byte GENERATED_PASSWORD_LENGTH;
+
     private Singleton singleton;
 
     @FXML
@@ -37,16 +40,18 @@ public class ClientCreateController implements Initializable {
     @FXML
     private Button add;
 
+    static {
+        GENERATED_PASSWORD_LENGTH = 6;
+    }
+
     {
         singleton = Singleton.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // sekcja wiązania ze sobą dynamicznych walidatorów
         propertyBindingsConfiguration();
 
-        // usunięcie menu kontekstowego
         removeContextMenu();
     }
 
@@ -54,29 +59,33 @@ public class ClientCreateController implements Initializable {
         List<Client> clientsToCheck = singleton.getClientRepository().findAll();
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String generatedPassword = RandomPasswordUtil.randomPassword(6);
+        String generatedPassword = RandomPasswordUtil.randomPassword(GENERATED_PASSWORD_LENGTH);
         String encodedPassword = bCryptPasswordEncoder.encode(generatedPassword);
 
-        Client client = new Client(firstName.getText(), lastName.getText(),
+        Client client = new Client(firstName.getText().trim(), lastName.getText().trim(),
                 email.getText(), encodedPassword, phoneNumber.getText());
 
         if (ConstraintCheckUtil.checkForDuplicateEmail(clientsToCheck, email.getText())
                 || ConstraintCheckUtil.checkForDuplicatePhoneNumber(clientsToCheck, phoneNumber.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę intergralności dla kolumny 'email' lub 'phone_number'.");
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
+                    "intergralności dla kolumny 'email' lub 'phone_number'.");
         } else {
             singleton.getClientRepository().add(client);
 
-            StageUtil.generateTextInputDialog("Informacja!", "Proszę zapisać hasło", generatedPassword);
+            StageUtil.generateTextInputDialog("Informacja!", "Proszę zapisać hasło",
+                    generatedPassword);
         }
     }
 
-    // prywatne metody pomocnicze
     private void propertyBindingsConfiguration() {
-        add.disableProperty().bind(Bindings.createBooleanBinding(() -> (!firstName.getText().isEmpty()
-                        && !lastName.getText().isEmpty() && !email.getText().isEmpty() && !phoneNumber.getText().isEmpty())
+        BooleanBinding clientDataValid = Bindings.createBooleanBinding(() -> (!firstName.getText().isEmpty()
+                        && !lastName.getText().isEmpty() && !email.getText().isEmpty() && !phoneNumber.getText()
+                        .isEmpty())
                         && email.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
                         && phoneNumber.getText().matches("\\d{9,15}"), firstName.textProperty(),
-                lastName.textProperty(), email.textProperty(), phoneNumber.textProperty()).not());
+                        lastName.textProperty(), email.textProperty(), phoneNumber.textProperty());
+
+        add.disableProperty().bind(clientDataValid.not());
     }
 
     private void removeContextMenu() {

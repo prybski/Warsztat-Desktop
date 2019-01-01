@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface TaskDAO {
 
-    List<Task> findAllByJob(Job job);
     void add(Task task);
-    void delete(Task task);
+    List<Task> findAllByJob(Job job);
     void update(Task task);
+    void delete(Task task);
 }

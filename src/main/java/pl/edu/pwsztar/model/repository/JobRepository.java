@@ -16,6 +16,38 @@ import java.util.concurrent.atomic.AtomicReference;
 public class JobRepository implements JobDAO {
 
     @Override
+    public void addWithNewVehicle(Job job, Vehicle vehicle, Client client) {
+        HibernateUtil.withinTransaction(() -> {
+            vehicle.addJob(job, client);
+
+            HibernateUtil.getSession().save(vehicle);
+        });
+    }
+
+    @Override
+    public void addWithExistingVehicle(Job job, Vehicle vehicle, Client client) {
+        HibernateUtil.withinTransaction(() -> {
+            job.setVehicle(vehicle);
+            job.setClient(client);
+
+            HibernateUtil.getSession().save(job);
+        });
+    }
+
+    @Override
+    public List<Job> findAllStarted() {
+        AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
+
+        HibernateUtil.withinSession(() -> {
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job j where j.startDate is not null and j.endDate is null", Job.class);
+
+            jobsFromDb.set(jobQuery.getResultList());
+        });
+
+        return jobsFromDb.get();
+    }
+
+    @Override
     public List<Job> findHistoryByClient(Client client) {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
@@ -86,35 +118,8 @@ public class JobRepository implements JobDAO {
     }
 
     @Override
-    public List<Job> findAllStarted() {
-        AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
-
-        HibernateUtil.withinSession(() -> {
-            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job j where j.startDate is not null and j.endDate is null", Job.class);
-
-            jobsFromDb.set(jobQuery.getResultList());
-        });
-
-        return jobsFromDb.get();
-    }
-
-    @Override
-    public void addWithNewVehicle(Job job, Vehicle vehicle, Client client) {
-        HibernateUtil.withinTransaction(() -> {
-            vehicle.addJob(job, client);
-
-            HibernateUtil.getSession().save(vehicle);
-        });
-    }
-
-    @Override
-    public void addWithExistingVehicle(Job job, Vehicle vehicle, Client client) {
-        HibernateUtil.withinTransaction(() -> {
-            job.setVehicle(vehicle);
-            job.setClient(client);
-
-            HibernateUtil.getSession().save(job);
-        });
+    public void update(Job job) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().update(job));
     }
 
     @Override
@@ -124,11 +129,6 @@ public class JobRepository implements JobDAO {
 
             HibernateUtil.getSession().update(job);
         });
-    }
-
-    @Override
-    public void update(Job job) {
-        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().update(job));
     }
 
     private List<Date> convertToSqlDates(List dates) {

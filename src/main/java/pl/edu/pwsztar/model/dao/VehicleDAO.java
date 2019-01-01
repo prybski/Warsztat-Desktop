@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface VehicleDAO {
 
+    void add(Vehicle vehicle);
     List<Vehicle> findAll();
     List<Vehicle> findByClient(Client client);
-    void add(Vehicle vehicle);
     void update(Vehicle vehicle);
 }

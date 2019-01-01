@@ -12,6 +12,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TaskRepository implements TaskDAO {
 
     @Override
+    public void add(Task task) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(task));
+    }
+
+    @Override
     public List<Task> findAllByJob(Job job) {
         AtomicReference<List<Task>> tasksFromDb = new AtomicReference<>();
 
@@ -26,17 +31,12 @@ public class TaskRepository implements TaskDAO {
     }
 
     @Override
-    public void add(Task task) {
-        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(task));
+    public void update(Task task) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().update(task));
     }
 
     @Override
     public void delete(Task task) {
         HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().delete(task));
-    }
-
-    @Override
-    public void update(Task task) {
-        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().update(task));
     }
 }

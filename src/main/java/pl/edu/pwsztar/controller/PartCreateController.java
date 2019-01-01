@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -38,7 +39,7 @@ public class PartCreateController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addOnePart.disableProperty().bind(Bindings.createBooleanBinding(() -> !name.getText().isEmpty() && !details.getText().isEmpty() && !developmentCode.getText().isEmpty(), name.textProperty(), details.textProperty(), developmentCode.textProperty()).not());
+        propertyBindingsConfiguration();
 
         removeContextMenu();
     }
@@ -55,12 +56,22 @@ public class PartCreateController implements Initializable {
         List<Part> partsToCheck = singleton.getPartRepository().findAll();
 
         if (ConstraintCheckUtil.checkForDuplicateDevelopmentCode(partsToCheck, developmentCode.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę integralności dla kolumny 'development_code.'");
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
+                    "integralności dla kolumny 'development_code.'");
         } else {
             singleton.getPartRepository().add(part);
 
-            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nową część.");
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało " +
+                    "się dodać nową część.");
         }
+    }
+
+    private void propertyBindingsConfiguration() {
+        BooleanBinding partDataValid = Bindings.createBooleanBinding(() -> !name.getText().isEmpty()
+                && !details.getText().isEmpty() && !developmentCode.getText().isEmpty(),
+                name.textProperty(), details.textProperty(), developmentCode.textProperty());
+
+        addOnePart.disableProperty().bind(partDataValid.not());
     }
 
     private void removeContextMenu() {

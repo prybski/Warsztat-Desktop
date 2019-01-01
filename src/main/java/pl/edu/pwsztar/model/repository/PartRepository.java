@@ -11,6 +11,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PartRepository implements PartDAO {
 
     @Override
+    public void add(Part part) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(part));
+    }
+
+    @Override
     public List<Part> findAll() {
         AtomicReference<List<Part>> partsFromDb = new AtomicReference<>();
 
@@ -21,10 +26,5 @@ public class PartRepository implements PartDAO {
         });
 
         return partsFromDb.get();
-    }
-
-    @Override
-    public void add(Part part) {
-        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(part));
     }
 }

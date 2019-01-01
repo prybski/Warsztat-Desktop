@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ClientDAO {
 
-    List<Client> findAll();
-    Client findOneByFirstAndLastName(String firstAndLastName);
-    List<Client> findAllWithVehicles();
     void add(Client client);
+    List<Client> findAll();
+    List<Client> findAllWithVehicles();
+    Client findOneByFirstAndLastName(String firstAndLastName);
 }

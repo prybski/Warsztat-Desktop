@@ -12,6 +12,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public class VehicleRepository implements VehicleDAO {
 
     @Override
+    public void add(Vehicle vehicle) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(vehicle));
+    }
+
+    @Override
     public List<Vehicle> findAll() {
         AtomicReference<List<Vehicle>> vehiclesFromDb = new AtomicReference<>();
 
@@ -36,11 +41,6 @@ public class VehicleRepository implements VehicleDAO {
         });
 
         return vehiclesFromDb.get();
-    }
-
-    @Override
-    public void add(Vehicle vehicle) {
-        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(vehicle));
     }
 
     @Override

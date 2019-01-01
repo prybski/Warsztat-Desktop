@@ -48,8 +48,13 @@ public class JobDetailsController implements Initializable {
     }
 
     private void readJobData() {
-        startDate.setText(job.getStartDate().toString().substring(0, job.getStartDate().toString().lastIndexOf(".")));
-        endDate.setText(job.getEndDate().toString().substring(0, job.getEndDate().toString().lastIndexOf(".")));
+        String startDateString = job.getStartDate().toString().substring(0, job.getStartDate().toString()
+                .lastIndexOf("."));
+        String endDateString = job.getEndDate().toString().substring(0, job.getEndDate().toString()
+                .lastIndexOf("."));
+
+        startDate.setText(startDateString);
+        endDate.setText(endDateString);
 
         if (job.getDiscount() != null) {
             discount.setText(job.getDiscount().toString() + " zł");
@@ -58,9 +63,11 @@ public class JobDetailsController implements Initializable {
         }
 
         List<Task> tasks = singleton.getTaskRepository().findAllByJob(job);
+
         doneTasks.getItems().setAll(tasks);
 
         List<Demand> demands = singleton.getDemandRepository().findAllByTasks(tasks);
+
         requiredDemands.getItems().setAll(demands);
 
         finalCost.setText(calculateFinalCost().toString() + " zł");

@@ -1,6 +1,7 @@
 package pl.edu.pwsztar.controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,6 +18,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class VehicleModifyController implements Initializable {
+
+    private static final short DEFAULT_PRODUCTION_YEAR;
+    private static final float DEFAULT_ENGINE_CAPACITY;
 
     private Singleton singleton;
 
@@ -47,33 +51,85 @@ public class VehicleModifyController implements Initializable {
     @FXML
     private Button modifyOneVehicle;
 
+    static {
+        DEFAULT_PRODUCTION_YEAR = 2000;
+        DEFAULT_ENGINE_CAPACITY = 0.6f;
+    }
+
     {
         singleton = Singleton.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // bindings
-        clientVehicles.disableProperty().bind(Bindings.createBooleanBinding(() -> !clients.getSelectionModel().isEmpty(), clients.valueProperty()).not());
+        loadClientsWithVehicles();
 
-        editVehicleDataVBox.disableProperty().bind(Bindings.createBooleanBinding(() -> !clientVehicles.getSelectionModel().isEmpty(), clientVehicles.getSelectionModel().selectedIndexProperty()).not());
+        propertyBindingsConfiguration();
 
-        modifyOneVehicle.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                        !brand.getText().isEmpty() && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty() && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}") && !engineCapacity.getEditor().getText().isEmpty()
-                , brand.textProperty(), model.textProperty(), productionYear.getEditor().textProperty(), vinNumber.textProperty(), engineCapacity.getEditor().textProperty()).not());
+        customListenersConfiguration();
 
+        removeContextMenu();
+    }
+
+    public void modifyVehicle() {
+        Vehicle vehicle = clientVehicles.getSelectionModel().getSelectedItem();
+        vehicle.setBrand(brand.getText());
+        vehicle.setModel(model.getText());
+        vehicle.setProductionYear(productionYear.getValue().shortValue());
+        vehicle.setVinNumber(vinNumber.getText());
+        vehicle.setEngineCapacity(engineCapacity.getValue().floatValue());
+
+        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber
+                .getText(), vehicle.getId())) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
+                    "integralności dla kolumny 'vin_number'.");
+        } else {
+            singleton.getVehicleRepository().update(vehicle);
+
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Dane " +
+                    "wybranego pojazdu zostały zmodyfikowane");
+
+            List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel()
+                    .getSelectedItem());
+
+            clientVehicles.getItems().clear();
+            clientVehicles.getItems().setAll(updatedVehicles);
+        }
+    }
+
+    private void loadClientsWithVehicles() {
         List<Client> clientsFromDb = singleton.getClientRepository().findAllWithVehicles();
 
         clients.getItems().setAll(clientsFromDb);
+    }
 
+    private void propertyBindingsConfiguration() {
+        BooleanBinding clientIsSelected = Bindings.createBooleanBinding(() -> !clients.getSelectionModel().isEmpty(),
+                clients.getSelectionModel().selectedItemProperty());
+        BooleanBinding clientVehicleIsSelected = Bindings.createBooleanBinding(() -> !clientVehicles.getSelectionModel()
+                .isEmpty(), clientVehicles.getSelectionModel().selectedItemProperty());
+        BooleanBinding modifiedVehicleDataValid = Bindings.createBooleanBinding(() ->
+                        !brand.getText().isEmpty() && !model.getText().isEmpty() && !productionYear.getEditor()
+                                .getText().isEmpty() && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}")
+                                && !engineCapacity.getEditor().getText().isEmpty()
+                , brand.textProperty(), model.textProperty(), productionYear.getEditor().textProperty(),
+                vinNumber.textProperty(), engineCapacity.getEditor().textProperty());
+
+
+        clientVehicles.disableProperty().bind(clientIsSelected.not());
+        editVehicleDataVBox.disableProperty().bind(clientVehicleIsSelected.not());
+        modifyOneVehicle.disableProperty().bind(modifiedVehicleDataValid.not());
+    }
+
+    private void customListenersConfiguration() {
         clients.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             List<Vehicle> vehiclesFromDb = singleton.getVehicleRepository().findByClient(newValue);
 
             brand.clear();
             model.clear();
-            productionYear.getEditor().setText("2000");
+            productionYear.getEditor().setText(String.valueOf(DEFAULT_PRODUCTION_YEAR));
             vinNumber.clear();
-            engineCapacity.getEditor().setText("0.6");
+            engineCapacity.getEditor().setText(String.valueOf(DEFAULT_ENGINE_CAPACITY));
             clientVehicles.getSelectionModel().clearSelection();
 
             clientVehicles.getItems().setAll(vehiclesFromDb);
@@ -88,29 +144,6 @@ public class VehicleModifyController implements Initializable {
                 engineCapacity.getEditor().setText(String.valueOf(newValue.getEngineCapacity()));
             }
         });
-
-        removeContextMenu();
-    }
-
-    public void modifyVehicle() {
-        Vehicle vehicle = clientVehicles.getSelectionModel().getSelectedItem();
-        vehicle.setBrand(brand.getText());
-        vehicle.setModel(model.getText());
-        vehicle.setProductionYear(productionYear.getValue().shortValue());
-        vehicle.setVinNumber(vinNumber.getText());
-        vehicle.setEngineCapacity(engineCapacity.getValue().floatValue());
-
-        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber.getText(), vehicle.getId())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę integralności dla kolumny 'vin_number'.");
-        } else {
-            singleton.getVehicleRepository().update(vehicle);
-
-            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Dane wybranego pojazdu zostały zmodyfikowane");
-
-            List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel().getSelectedItem());
-
-            clientVehicles.getItems().setAll(updatedVehicles);
-        }
     }
 
     private void removeContextMenu() {
