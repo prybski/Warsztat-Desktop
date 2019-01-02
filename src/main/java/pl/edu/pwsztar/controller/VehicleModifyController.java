@@ -128,9 +128,9 @@ public class VehicleModifyController implements Initializable {
             if (newValue != null) {
                 brand.setText(newValue.getBrand());
                 model.setText(newValue.getModel());
-                productionYear.getEditor().setText(String.valueOf(newValue.getProductionYear()));
+                productionYear.getValueFactory().setValue((int) newValue.getProductionYear());
                 vinNumber.setText(newValue.getVinNumber());
-                engineCapacity.getEditor().setText(String.valueOf(newValue.getEngineCapacity()));
+                engineCapacity.getValueFactory().setValue((double) newValue.getEngineCapacity());
             }
         });
     }

@@ -21,8 +21,8 @@ public class DataFieldsUtil {
             field.clear();
         }
 
-        integerSpinner.getEditor().setText(String.valueOf(DEFAULT_PRODUCTION_YEAR));
-        doubleSpinner.getEditor().setText(String.valueOf(DEFAULT_ENGINE_CAPACITY));
+        integerSpinner.getValueFactory().setValue((int) DEFAULT_PRODUCTION_YEAR);
+        doubleSpinner.getValueFactory().setValue((double) DEFAULT_ENGINE_CAPACITY);
     }
 
     public static void clearDatePicker(DatePicker datePicker) {
