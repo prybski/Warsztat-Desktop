@@ -16,22 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class JobRepository implements JobDAO {
 
     @Override
-    public void addWithNewVehicle(Job job, Vehicle vehicle, Client client) {
-        HibernateUtil.withinTransaction(() -> {
-            vehicle.addJob(job, client);
-
-            HibernateUtil.getSession().save(vehicle);
-        });
-    }
-
-    @Override
-    public void addWithExistingVehicle(Job job, Vehicle vehicle, Client client) {
-        HibernateUtil.withinTransaction(() -> {
-            job.setVehicle(vehicle);
-            job.setClient(client);
-
-            HibernateUtil.getSession().save(job);
-        });
+    public void addWithExistingVehicle(Job job) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(job));
     }
 
     @Override

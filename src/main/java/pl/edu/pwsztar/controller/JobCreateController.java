@@ -1,9 +1,11 @@
 package pl.edu.pwsztar.controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
@@ -11,6 +13,7 @@ import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.ConstraintCheckUtil;
 import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.StageUtil;
+import pl.edu.pwsztar.util.DataFieldsUtil;
 
 import java.net.URL;
 import java.sql.Date;
@@ -49,6 +52,9 @@ public class JobCreateController implements Initializable {
     private Spinner<Double> engineCapacity;
 
     @FXML
+    private VBox vehicleDataVBox;
+
+    @FXML
     private Button add;
 
     @FXML
@@ -60,85 +66,112 @@ public class JobCreateController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // sekcja ładowania konfiguracji niestandardowych nasłuchiwaczy
+        loadClients();
+
+        propertyBindingsConfiguration();
+
         customListenersConfiguration();
 
-        // usunięcie menu kontekstowego
         removeContextMenu();
     }
 
     public void addJob() {
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
+        job.setClient(clients.getSelectionModel().getSelectedItem());
+        job.setVehicle(vehicles.getSelectionModel().getSelectedItem());
 
-        singleton.getJobRepository().addWithExistingVehicle(job, vehicles.getValue(), clients.getValue());
+        singleton.getJobRepository().addWithExistingVehicle(job);
 
-        StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nowe zlecenie.");
+        StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać " +
+                "nowe zlecenie.");
     }
 
     public void addJobAndVehicle() {
-        Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(), vinNumber.getText(), engineCapacity.getValue().floatValue());
         Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
+        Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(),
+                vinNumber.getText(), engineCapacity.getValue().floatValue());
+        vehicle.addJob(job, clients.getSelectionModel().getSelectedItem());
 
-        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę integralności dla kolumny 'vin_number'.");
+        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber
+                .getText())) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
+                    "integralności dla kolumny 'vin_number'.");
         } else {
-            singleton.getJobRepository().addWithNewVehicle(job, vehicle, clients.getValue());
+            singleton.getVehicleRepository().addVehicleWithJob(vehicle);
 
-            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać nowe zlecenie z nowym pojazdem.");
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się " +
+                    "dodać nowe zlecenie z nowym pojazdem.");
 
-            refreshOrLoadVehicles();
+            List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel()
+                    .getSelectedItem());
 
-            if (!vehicles.getItems().isEmpty()) {
-                vehicles.setDisable(false);
-            } else {
-                vehicles.setDisable(true);
-            }
+            refreshOrLoadVehicles(updatedVehicles);
         }
     }
 
-    private void propertyBindingsConfiguration(List<Vehicle> clientVehicles) {
-        add.disableProperty().bind(Bindings.createBooleanBinding(() -> !fixedDate.getEditor().getText().isEmpty()
-                && !description.getText().isEmpty() && !clientVehicles.isEmpty() && vehicles.getSelectionModel().getSelectedItem() != null, fixedDate.getEditor()
-                .textProperty(), description.textProperty(), vehicles.getSelectionModel().selectedIndexProperty()).not());
+    private void loadClients() {
+        List<Client> clientsFromDb = singleton.getClientRepository().findAll();
 
-        addWithVehicle.disableProperty().bind(Bindings.createBooleanBinding(() -> !brand.getText().isEmpty()
-                        && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty()
-                        && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}")
-                        && !engineCapacity.getEditor().getText().isEmpty() && !fixedDate.getEditor().getText().isEmpty()
-                        && !description.getText().isEmpty(), brand.textProperty(), model.textProperty(), productionYear
-                        .getEditor().textProperty(), vinNumber.textProperty(), engineCapacity.getEditor().textProperty()
-                , fixedDate.getEditor().textProperty(), description.textProperty()).not());
+        clients.getItems().setAll(clientsFromDb);
+    }
+
+    private void refreshOrLoadVehicles(List<Vehicle> vehiclesToLoad) {
+        vehicles.getItems().clear();
+        vehicles.getItems().setAll(vehiclesToLoad);
+    }
+
+    private void propertyBindingsConfiguration() {
+        BooleanBinding existingVehicleIsSelected = Bindings.createBooleanBinding(() -> !fixedDate.getEditor().getText()
+                        .isEmpty() && !description.getText().isEmpty() && !vehicles.getSelectionModel().isEmpty()
+                        && !clients.getSelectionModel().isEmpty(), fixedDate.getEditor()
+                        .textProperty(), description.textProperty(), vehicles.getSelectionModel()
+                        .selectedIndexProperty(), clients.getSelectionModel().selectedItemProperty());
+        BooleanBinding clientIsSelected = Bindings.createBooleanBinding(() -> !clients.getSelectionModel().isEmpty(),
+                        clients.getSelectionModel().selectedItemProperty());
+        BooleanBinding existingVehicleIsSelectedOrNewVehicleIsDefined = Bindings.createBooleanBinding(() -> !vehicles
+                        .getSelectionModel().isEmpty() || (!brand.getText().isEmpty() && !model.getText().isEmpty()
+                        && !productionYear.getEditor().getText().isEmpty() && vinNumber.getText().matches(
+                                "[A-HJ-NPR-Z\\d]{17}") && !engineCapacity.getEditor().getText().isEmpty()),
+                        vehicles.getSelectionModel().selectedItemProperty(), brand.textProperty(), model
+                        .textProperty(), productionYear.getEditor().textProperty(), vinNumber.textProperty(),
+                        engineCapacity.getEditor().textProperty());
+        BooleanBinding newVehicleIsDefinedAndClientIsSelected = Bindings.createBooleanBinding(() -> !brand.getText()
+                        .isEmpty() && !model.getText().isEmpty() && !productionYear.getEditor().getText().isEmpty()
+                        && vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}") && !engineCapacity.getEditor()
+                        .getText().isEmpty() && !fixedDate.getEditor().getText().isEmpty() && !description.getText()
+                        .isEmpty() && !clients.getSelectionModel().isEmpty(), brand.textProperty(), model
+                        .textProperty(), productionYear.getEditor().textProperty(), vinNumber.textProperty(),
+                        engineCapacity.getEditor().textProperty(), fixedDate.getEditor().textProperty(), description
+                        .textProperty(), clients.getSelectionModel().selectedItemProperty());
+
+        add.disableProperty().bind(existingVehicleIsSelected.not());
+
+        vehicles.disableProperty().bind(clientIsSelected.not());
+
+        description.disableProperty().bind(existingVehicleIsSelectedOrNewVehicleIsDefined.not());
+
+        fixedDate.disableProperty().bind(existingVehicleIsSelectedOrNewVehicleIsDefined.not());
+
+        vehicleDataVBox.disableProperty().bind(clientIsSelected.not());
+
+        addWithVehicle.disableProperty().bind(newVehicleIsDefinedAndClientIsSelected.not());
     }
 
     private void customListenersConfiguration() {
-        List<Client> clientsFromDb = singleton.getClientRepository().findAll();
-        clients.getItems().setAll(clientsFromDb);
-
         clients.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((value, oldValue, newValue) -> {
-                    List<Vehicle> vehiclesUpdated = singleton.getVehicleRepository().findByClient(newValue);
+                    List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(newValue);
 
-                    if (!vehiclesUpdated.isEmpty()) {
-                        vehicles.setDisable(false);
-                        vehicles.getItems().setAll(vehiclesUpdated);
-                    }
+                    DataFieldsUtil.resetFieldsToDefaults(productionYear, engineCapacity, brand, model,
+                            vinNumber, fixedDate.getEditor());
+                    DataFieldsUtil.clearTextArea(description);
 
-                    propertyBindingsConfiguration(vehiclesUpdated);
-
-                    if (!vehiclesUpdated.isEmpty()) {
-                        vehicles.setDisable(false);
-                    } else {
-                        vehicles.setDisable(true);
-                    }
+                    refreshOrLoadVehicles(updatedVehicles);
                 });
     }
 
     private void removeContextMenu() {
         ContextMenuUtil.remove(description, fixedDate, brand, model, productionYear, vinNumber, engineCapacity);
-    }
-
-    private void refreshOrLoadVehicles() {
-        vehicles.getItems().setAll(singleton.getVehicleRepository().findByClient(clients.getSelectionModel().getSelectedItem()));
     }
 }

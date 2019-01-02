@@ -10,8 +10,7 @@ import java.util.List;
 
 public interface JobDAO {
 
-    void addWithNewVehicle(Job job, Vehicle vehicle, Client client);
-    void addWithExistingVehicle(Job job, Vehicle vehicle, Client client);
+    void addWithExistingVehicle(Job job);
     List<Job> findAllStarted();
     List<Job> findHistoryByClient(Client client);
     List<Job> findHistoryByVehicle(Vehicle vehicle);

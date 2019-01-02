@@ -12,15 +12,13 @@ import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.ConstraintCheckUtil;
 import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.StageUtil;
+import pl.edu.pwsztar.util.DataFieldsUtil;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class VehicleModifyController implements Initializable {
-
-    private static final short DEFAULT_PRODUCTION_YEAR;
-    private static final float DEFAULT_ENGINE_CAPACITY;
 
     private Singleton singleton;
 
@@ -50,11 +48,6 @@ public class VehicleModifyController implements Initializable {
 
     @FXML
     private Button modifyOneVehicle;
-
-    static {
-        DEFAULT_PRODUCTION_YEAR = 2000;
-        DEFAULT_ENGINE_CAPACITY = 0.6f;
-    }
 
     {
         singleton = Singleton.getInstance();
@@ -125,11 +118,7 @@ public class VehicleModifyController implements Initializable {
         clients.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             List<Vehicle> vehiclesFromDb = singleton.getVehicleRepository().findByClient(newValue);
 
-            brand.clear();
-            model.clear();
-            productionYear.getEditor().setText(String.valueOf(DEFAULT_PRODUCTION_YEAR));
-            vinNumber.clear();
-            engineCapacity.getEditor().setText(String.valueOf(DEFAULT_ENGINE_CAPACITY));
+            DataFieldsUtil.resetFieldsToDefaults(productionYear, engineCapacity, brand, model, vinNumber);
             clientVehicles.getSelectionModel().clearSelection();
 
             clientVehicles.getItems().setAll(vehiclesFromDb);

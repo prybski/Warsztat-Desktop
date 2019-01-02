@@ -1,9 +1,9 @@
 package pl.edu.pwsztar.model.repository;
 
 import org.hibernate.query.Query;
-import pl.edu.pwsztar.model.dao.VehicleDAO;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Vehicle;
+import pl.edu.pwsztar.model.dao.VehicleDAO;
 import pl.edu.pwsztar.util.HibernateUtil;
 
 import java.util.List;
@@ -13,6 +13,11 @@ public class VehicleRepository implements VehicleDAO {
 
     @Override
     public void add(Vehicle vehicle) {
+        HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(vehicle));
+    }
+
+    @Override
+    public void addVehicleWithJob(Vehicle vehicle) {
         HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().save(vehicle));
     }
 
