@@ -5,7 +5,6 @@ import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface JobDAO {
@@ -18,5 +17,4 @@ public interface JobDAO {
     List<Job> findNotStartedByFixedDate(Date date);
     List<Date> findNotStartedFixedDates();
     void update(Job job);
-    void updateStartDate(Job job, Timestamp timestamp);
 }

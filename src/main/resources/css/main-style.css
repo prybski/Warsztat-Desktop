@@ -146,7 +146,6 @@
     -fx-background-insets: 0;
     -fx-background-color: #000;
     -fx-background-radius: 0;
-    -fx-border-width: 0;
     -fx-accent: #444;
     -fx-text-fill: #fff;
 }
@@ -569,15 +568,15 @@
 }
 
 .scroll-bar > .thumb:hover {
-    -fx-background-color: #333;
+    -fx-background-color: #222;
 }
 
 .scroll-bar > .thumb:pressed {
-    -fx-background-color: #444;
+    -fx-background-color: #333;
 }
 
 .scroll-bar > .track {
-    -fx-background-color: #888;
+    -fx-background-color: #666;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }

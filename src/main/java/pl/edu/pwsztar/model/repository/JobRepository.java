@@ -1,14 +1,13 @@
 package pl.edu.pwsztar.model.repository;
 
 import org.hibernate.query.Query;
-import pl.edu.pwsztar.model.dao.JobDAO;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
+import pl.edu.pwsztar.model.dao.JobDAO;
 import pl.edu.pwsztar.util.HibernateUtil;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -106,15 +105,6 @@ public class JobRepository implements JobDAO {
     @Override
     public void update(Job job) {
         HibernateUtil.withinTransaction(() -> HibernateUtil.getSession().update(job));
-    }
-
-    @Override
-    public void updateStartDate(Job job, Timestamp timestamp) {
-        HibernateUtil.withinTransaction(() -> {
-            job.setStartDate(timestamp);
-
-            HibernateUtil.getSession().update(job);
-        });
     }
 
     private List<Date> convertToSqlDates(List dates) {

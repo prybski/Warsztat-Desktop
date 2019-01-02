@@ -164,7 +164,8 @@ public class JobCreateController implements Initializable {
                     List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(newValue);
 
                     DataFieldsUtil.resetFieldsToDefaults(productionYear, engineCapacity, brand, model,
-                            vinNumber, fixedDate.getEditor());
+                            vinNumber);
+                    DataFieldsUtil.clearDatePicker(fixedDate);
                     DataFieldsUtil.clearTextArea(description);
 
                     refreshOrLoadVehicles(updatedVehicles);

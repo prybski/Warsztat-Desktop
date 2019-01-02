@@ -1,5 +1,6 @@
 package pl.edu.pwsztar.util;
 
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -22,6 +23,10 @@ public class DataFieldsUtil {
 
         integerSpinner.getEditor().setText(String.valueOf(DEFAULT_PRODUCTION_YEAR));
         doubleSpinner.getEditor().setText(String.valueOf(DEFAULT_ENGINE_CAPACITY));
+    }
+
+    public static void clearDatePicker(DatePicker datePicker) {
+        datePicker.setValue(null);
     }
 
     public static void clearTextArea(TextArea... textAreas) {

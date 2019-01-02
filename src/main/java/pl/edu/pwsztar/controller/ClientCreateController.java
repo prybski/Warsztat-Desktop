@@ -80,10 +80,9 @@ public class ClientCreateController implements Initializable {
     private void propertyBindingsConfiguration() {
         BooleanBinding clientDataValid = Bindings.createBooleanBinding(() -> (!firstName.getText().isEmpty()
                         && !lastName.getText().isEmpty() && !email.getText().isEmpty() && !phoneNumber.getText()
-                        .isEmpty())
-                        && email.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
-                        && phoneNumber.getText().matches("\\d{9,15}"), firstName.textProperty(),
-                        lastName.textProperty(), email.textProperty(), phoneNumber.textProperty());
+                        .isEmpty()) && email.getText().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\." +
+                        "[A-Za-z]{2,6}$") && phoneNumber.getText().matches("\\d{9,15}"), firstName
+                        .textProperty(), lastName.textProperty(), email.textProperty(), phoneNumber.textProperty());
 
         add.disableProperty().bind(clientDataValid.not());
     }

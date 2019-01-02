@@ -35,7 +35,7 @@ public class StageUtil {
         textInputDialog.showAndWait();
     }
 
-    public static void stageConfiguration(Parent parent, String title, Stage stage) {
+    public static void stageConfiguration(Parent parent, Stage stage, String title) {
         Scene scene = new Scene(parent);
 
         stage.initModality(Modality.APPLICATION_MODAL);

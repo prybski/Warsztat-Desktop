@@ -149,14 +149,14 @@
             </Label>
             <Separator prefWidth="200.0" />
             <CheckBox fx:id="isDiscountIncluded" mnemonicParsing="false" text="Czy chcesz uwzględnić rabat?" />
-            <TextField fx:id="discount" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" VBox.vgrow="ALWAYS">
+            <TextField fx:id="discount" maxWidth="1.7976931348623157E308" prefWidth="150.0" VBox.vgrow="ALWAYS">
                 <VBox.margin>
                     <Insets right="50.0" />
                 </VBox.margin>
             </TextField>
             <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                 <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
-                    <Button fx:id="end" disable="true" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0" text="Zakończ">
+                    <Button fx:id="end" mnemonicParsing="false" onAction="#endJob" prefWidth="160.0" text="Zakończ">
                         <font>
                             <Font size="24.0" />
                         </font>

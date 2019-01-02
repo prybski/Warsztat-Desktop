@@ -2,6 +2,7 @@ package pl.edu.pwsztar.controller;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -114,19 +115,21 @@ public class JobManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        readPredefinedTasks();
-
         Platform.runLater(this::configureForRunLater);
 
-        customListenersConfiguration();
+        readPredefinedTasks();
 
-        bindingsConfiguration();
+        propertyBindingsConfiguration();
+
+        customListenersConfiguration();
 
         removeContextMenu();
     }
 
     public void startJob() {
-        singleton.getJobRepository().updateStartDate(job, Timestamp.valueOf(LocalDateTime.now()));
+        job.setStartDate(Timestamp.valueOf(LocalDateTime.now()));
+
+        singleton.getJobRepository().update(job);
 
         start.setDisable(true);
         mainControlHBox.setDisable(false);
@@ -141,7 +144,7 @@ public class JobManagementController implements Initializable {
             AnchorPane anchorPane = loader.load();
             Stage stage = new Stage();
 
-            StageUtil.stageConfiguration(anchorPane, "Dodaj część", stage);
+            StageUtil.stageConfiguration(anchorPane, stage, "Dodaj część");
 
             refreshOrLoadParts();
         } catch (IOException e) {
@@ -149,12 +152,42 @@ public class JobManagementController implements Initializable {
         }
     }
 
-    public void backToMain() {
-        try {
-            borderPane.getScene().setRoot(FXMLLoader.load(getClass().getResource("/view/main.fxml")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void addTaskToJob() {
+        Task task = new Task(taskName.getText());
+        task.setJob(job);
+
+        singleton.getTaskRepository().add(task);
+
+        taskName.clear();
+
+        refreshOrLoadTasks();
+        refreshOrLoadFinishedTasks();
+        refreshOrLoadUnfinishedTasks();
+    }
+
+    public void deleteChoosenTask() {
+        singleton.getTaskRepository().delete(unfinishedTasks.getSelectionModel().getSelectedItem());
+
+        refreshOrLoadTasks();
+        refreshOrLoadFinishedTasks();
+        refreshOrLoadUnfinishedTasks();
+        refreshOrLoadDemands();
+    }
+
+    public void addDemandToTask() {
+        Demand demand = new Demand(quantity.getValue().byteValue(), new BigDecimal(demandPrice.getText()));
+        demand.setTask(tasks.getValue());
+        demand.setPart(parts.getValue());
+
+        singleton.getDemandRepository().add(demand);
+
+        refreshOrLoadDemands();
+    }
+
+    public void deleteChoosenDemand() {
+        singleton.getDemandRepository().delete(demands.getSelectionModel().getSelectedItem());
+
+        refreshOrLoadDemands();
     }
 
     public void endJob() {
@@ -179,50 +212,23 @@ public class JobManagementController implements Initializable {
         finalJobCost.setText(finalCost.toString() + " zł");
 
         end.disableProperty().unbind();
-        end.setDisable(true);
+        discount.disableProperty().unbind();
 
+        end.setDisable(true);
         mainControlHBox.setDisable(true);
         discount.setDisable(true);
         isDiscountIncluded.setDisable(true);
     }
 
-    public void addTaskToJob() {
-        Task task = new Task(taskName.getText());
-        task.setJob(job);
+    public void backToMain() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/main.fxml"));
 
-        singleton.getTaskRepository().add(task);
-
-        taskName.clear();
-
-        refreshOrLoadTasks();
-        refreshOrLoadFinishedTasks();
-        refreshOrLoadUnfinishedTasks();
-    }
-
-    public void deleteChoosenTask() {
-        singleton.getTaskRepository().delete(unfinishedTasks.getSelectionModel().getSelectedItem());
-
-        refreshOrLoadTasks();
-        refreshOrLoadFinishedTasks();
-        refreshOrLoadUnfinishedTasks();
-    }
-
-    public void addDemandToTask() {
-        Demand demand = new Demand(quantity.getValue().byteValue(), new BigDecimal(demandPrice.getText()));
-        demand.setTask(tasks.getValue());
-        demand.setPart(parts.getValue());
-
-        singleton.getDemandRepository().add(demand);
-
-        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
-                .findAllByJob(job)));
-    }
-
-    public void deleteChoosenDemand() {
-        singleton.getDemandRepository().delete(demands.getSelectionModel().getSelectedItem());
-
-        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
-                .findAllByJob(job)));
+        try {
+            borderPane.getScene().setRoot(loader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private BigDecimal calculateFinalCost(BigDecimal costHolder) {
@@ -239,18 +245,18 @@ public class JobManagementController implements Initializable {
         return costHolder;
     }
 
-    private void removeContextMenu() {
-        ContextMenuUtil.remove(taskName, quantity, demandPrice, taskCost, discount);
-    }
-
     private void refreshOrLoadUnfinishedTasks() {
-        unfinishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+        List<Task> foundUnfinishedTasks = singleton.getTaskRepository().findAllByJob(job);
+
+        unfinishedTasks.getItems().setAll(foundUnfinishedTasks);
     }
 
     private void refreshOrLoadFinishedTasks() {
-        tasksToFinish.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+        List<Task> foundTasks = singleton.getTaskRepository().findAllByJob(job);
 
-        for (Task task : singleton.getTaskRepository().findAllByJob(job)) {
+        tasksToFinish.getItems().setAll(foundTasks);
+
+        for (Task task : foundTasks) {
             if (task.getIsFinished()) {
                 tasksToFinish.getCheckModel().check(task);
             } else {
@@ -260,11 +266,23 @@ public class JobManagementController implements Initializable {
     }
 
     private void refreshOrLoadTasks() {
-        tasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
+        List<Task> foundTasks = singleton.getTaskRepository().findAllByJob(job);
+
+        tasks.getItems().setAll(foundTasks);
     }
 
     private void refreshOrLoadParts() {
-        parts.getItems().setAll(singleton.getPartRepository().findAll());
+        List<Part> foundParts = singleton.getPartRepository().findAll();
+
+        parts.getItems().clear();
+        parts.getItems().setAll(foundParts);
+    }
+
+    private void refreshOrLoadDemands() {
+        List<Demand> foundDemands = singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
+                .findAllByJob(job));
+
+        demands.getItems().setAll(foundDemands);
     }
 
     private void readPredefinedTasks() {
@@ -300,52 +318,20 @@ public class JobManagementController implements Initializable {
             end.setDisable(true);
         }
 
-        unfinishedTasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
-
-        tasks.getItems().setAll(singleton.getTaskRepository().findAllByJob(job));
-
+        refreshOrLoadUnfinishedTasks();
+        refreshOrLoadTasks();
         refreshOrLoadParts();
         refreshOrLoadFinishedTasks();
+        refreshOrLoadDemands();
 
-        addOneTask.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskName.getText().isEmpty(),
-                taskName.textProperty()).not());
-
-        addOneDemand.disableProperty().bind(Bindings.createBooleanBinding(() -> parts.getSelectionModel()
-                        .getSelectedItem() != null && tasks.getSelectionModel().getSelectedItem() != null &&
-                        (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
-                parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty()).not());
-
-        demands.getItems().setAll(singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
-                .findAllByJob(job)));
+        propertyBindingsConfigurationForRunLater();
 
         if (!demands.getItems().isEmpty()) {
             arePartsRequired.setSelected(true);
-            demandVBox.setDisable(false);
         }
-
-        end.disableProperty().bind(Bindings.createBooleanBinding(() -> (!tasksToFinish.getCheckModel()
-                        .getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size()
-                        == tasksToFinish.getItems().size()) && !isDiscountIncluded.isSelected()) || (!tasksToFinish
-                        .getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices()
-                        .size() == tasksToFinish.getItems().size()) && (isDiscountIncluded.isSelected() && (!discount.getText()
-                        .isEmpty() && NumericUtil.isBigDecimal(discount.getText())))),
-                tasksToFinish.getCheckModel().getCheckedIndices(), discount.textProperty(),
-                isDiscountIncluded.selectedProperty()).not());
     }
 
     private void customListenersConfiguration() {
-        arePartsRequired.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                demandVBox.setDisable(false);
-            } else {
-                demandVBox.setDisable(true);
-            }
-        });
-
-        tasksToFinish.disableProperty().bind(Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty()
-                        && NumericUtil.isBigDecimal(taskCost.getText()),
-                taskCost.textProperty()).not());
-
         tasksToFinish.getCheckModel().getCheckedIndices().addListener((ListChangeListener<? super Integer>) changed -> {
             while (changed.next()) {
                 if (changed.wasAdded()) {
@@ -360,6 +346,7 @@ public class JobManagementController implements Initializable {
                         }
                     }
                 }
+
                 if (changed.wasRemoved()) {
                     for (int i : changed.getRemoved()) {
                         Task task = tasksToFinish.getItems().get(i);
@@ -374,20 +361,58 @@ public class JobManagementController implements Initializable {
                 }
             }
         });
-
-        isDiscountIncluded.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                discount.setDisable(false);
-            } else {
-                discount.setDisable(true);
-            }
-        });
     }
 
-    private void bindingsConfiguration() {
-        deleteOneTask.disableProperty().bind(Bindings.createBooleanBinding(() -> !unfinishedTasks.getSelectionModel().isEmpty(), unfinishedTasks.getSelectionModel().selectedIndexProperty()).not());
+    private void propertyBindingsConfigurationForRunLater() {
+        BooleanBinding taskNameValid = Bindings.createBooleanBinding(() -> !taskName.getText().isEmpty(),
+                        taskName.textProperty());
+        BooleanBinding demandDataValid = Bindings.createBooleanBinding(() -> parts.getSelectionModel()
+                        .getSelectedItem() != null && tasks.getSelectionModel().getSelectedItem() != null &&
+                        (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
+                        parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty());
+        BooleanBinding unfinishedTasksEmpty = Bindings.isEmpty(unfinishedTasks.getItems());
+        BooleanBinding allRequiredDataValid = Bindings.createBooleanBinding(() -> (!tasksToFinish.getCheckModel()
+                        .getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size()
+                        == tasksToFinish.getItems().size()) && !isDiscountIncluded.isSelected()) || (!tasksToFinish
+                        .getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel()
+                        .getCheckedIndices().size() == tasksToFinish.getItems().size()) && (isDiscountIncluded
+                        .isSelected() && (!discount.getText().isEmpty() && NumericUtil.isBigDecimal(discount
+                        .getText())))), tasksToFinish.getCheckModel().getCheckedIndices(), discount.textProperty(),
+                        isDiscountIncluded.selectedProperty());
 
-        deleteOneDemand.disableProperty().bind(Bindings.createBooleanBinding(() -> !demands.getSelectionModel().isEmpty(), demands.getSelectionModel().selectedIndexProperty()).not());
+        addOneTask.disableProperty().bind(taskNameValid.not());
+
+        addOneDemand.disableProperty().bind(demandDataValid.not());
+
+        taskCost.disableProperty().bind(unfinishedTasksEmpty);
+
+        end.disableProperty().bind(allRequiredDataValid.not());
+    }
+
+    private void propertyBindingsConfiguration() {
+        BooleanBinding unfinishedTaskSelected = Bindings.createBooleanBinding(() -> !unfinishedTasks.getSelectionModel()
+                        .isEmpty(), unfinishedTasks.getSelectionModel().selectedIndexProperty());
+        BooleanBinding demandIsSelected = Bindings.createBooleanBinding(() -> !demands.getSelectionModel().isEmpty(),
+                        demands.getSelectionModel().selectedIndexProperty());
+        BooleanBinding partsRequiredNotChecked = arePartsRequired.selectedProperty().not();
+        BooleanBinding taskCostValid = Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty()
+                        && NumericUtil.isBigDecimal(taskCost.getText()),
+                        taskCost.textProperty());
+        BooleanBinding discountIncludedNotChecked = isDiscountIncluded.selectedProperty().not();
+
+        deleteOneTask.disableProperty().bind(unfinishedTaskSelected.not());
+
+        discount.disableProperty().bind(discountIncludedNotChecked);
+
+        deleteOneDemand.disableProperty().bind(demandIsSelected.not());
+
+        demandVBox.disableProperty().bind(partsRequiredNotChecked);
+
+        tasksToFinish.disableProperty().bind(taskCostValid.not());
+    }
+
+    private void removeContextMenu() {
+        ContextMenuUtil.remove(taskName, quantity, demandPrice, taskCost, discount);
     }
 
     public void setJob(Job job) {
