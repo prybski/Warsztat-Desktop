@@ -232,6 +232,8 @@ public class MainController implements Initializable {
                 JobDetailsController jobDetailsController = loader.getController();
                 jobDetailsController.setJob(jobsListView.getSelectionModel().getSelectedItem());
 
+                jobsListView.getSelectionModel().clearSelection();
+
                 StageUtil.stageConfiguration(anchorPane, stage, "Szczegóły zlecenia");
             } catch (IOException e) {
                 e.printStackTrace();
