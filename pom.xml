@@ -151,9 +151,6 @@
                         <configuration>
                             <mainClass>pl.edu.pwsztar.App</mainClass>
                             <verbose>true</verbose>
-                            <bundleArguments>
-                                <installdirChooser>true</installdirChooser>
-                            </bundleArguments>
                             <vendor>Praca dyplomowa</vendor>
                             <appName>Warsztat</appName>
                             <nativeReleaseVersion>1.0</nativeReleaseVersion>
