@@ -151,7 +151,7 @@
                         <configuration>
                             <mainClass>pl.edu.pwsztar.App</mainClass>
                             <verbose>true</verbose>
-                            <vendor>Praca dyplomowa</vendor>
+                            <vendor>Piotr Rybski</vendor>
                             <appName>Warsztat</appName>
                             <nativeReleaseVersion>1.0</nativeReleaseVersion>
                             <jfxMainAppJarName>dist-jfx.jar</jfxMainAppJarName>
