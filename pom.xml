@@ -111,7 +111,7 @@
         <profile>
             <id>shade</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <build>
                 <plugins>
@@ -140,7 +140,7 @@
         <profile>
             <id>native</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <build>
                 <plugins>
@@ -153,12 +153,11 @@
                             <verbose>true</verbose>
                             <bundleArguments>
                                 <installdirChooser>true</installdirChooser>
-                                <allPermissions>true</allPermissions>
                             </bundleArguments>
                             <vendor>PWSZ w Tarnowie</vendor>
                             <appName>Aplikacja warsztatowa</appName>
                             <nativeReleaseVersion>1.0</nativeReleaseVersion>
-                            <jfxMainAppJarName>dist.jar</jfxMainAppJarName>
+                            <jfxMainAppJarName>dist-jfx.jar</jfxMainAppJarName>
                             <deployDir>${project.basedir}/src/main/deploy</deployDir>
                         </configuration>
                     </plugin>
