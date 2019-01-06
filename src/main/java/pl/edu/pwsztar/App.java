@@ -3,6 +3,7 @@ package pl.edu.pwsztar;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ public class App extends Application {
 
         Scene scene = new Scene(borderPane);
 
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/img/icon.png")));
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aplikacja warsztatowa");
         primaryStage.setMinWidth(1024);

@@ -111,7 +111,7 @@
         <profile>
             <id>shade</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <build>
                 <plugins>
@@ -140,7 +140,7 @@
         <profile>
             <id>native</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <build>
                 <plugins>
@@ -149,8 +149,17 @@
                         <artifactId>javafx-maven-plugin</artifactId>
                         <version>8.8.3</version>
                         <configuration>
-                            <vendor>PWSZ</vendor>
                             <mainClass>pl.edu.pwsztar.App</mainClass>
+                            <verbose>true</verbose>
+                            <bundleArguments>
+                                <installdirChooser>true</installdirChooser>
+                                <allPermissions>true</allPermissions>
+                            </bundleArguments>
+                            <vendor>PWSZ w Tarnowie</vendor>
+                            <appName>Aplikacja warsztatowa</appName>
+                            <nativeReleaseVersion>1.0</nativeReleaseVersion>
+                            <jfxMainAppJarName>dist.jar</jfxMainAppJarName>
+                            <deployDir>${project.basedir}/src/main/deploy</deployDir>
                         </configuration>
                     </plugin>
                 </plugins>
