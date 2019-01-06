@@ -154,8 +154,8 @@
                             <bundleArguments>
                                 <installdirChooser>true</installdirChooser>
                             </bundleArguments>
-                            <vendor>PWSZ w Tarnowie</vendor>
-                            <appName>Aplikacja warsztatowa</appName>
+                            <vendor>Praca dyplomowa</vendor>
+                            <appName>Warsztat</appName>
                             <nativeReleaseVersion>1.0</nativeReleaseVersion>
                             <jfxMainAppJarName>dist-jfx.jar</jfxMainAppJarName>
                             <deployDir>${project.basedir}/src/main/deploy</deployDir>
