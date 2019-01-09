@@ -25,7 +25,6 @@ import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.NumericUtil;
 import pl.edu.pwsztar.util.StageUtil;
-import pl.edu.pwsztar.util.TruncateStringUtil;
 import pl.edu.pwsztar.util.converter.CustomTaskConverter;
 
 import java.io.BufferedReader;
@@ -307,9 +306,9 @@ public class JobManagementController implements Initializable {
     }
 
     private void configureForRunLater() {
-        String jobShortInfo = String.format("Zlecenie (Opis: %s)", job.getDescription());
+        String jobShortInfo = String.format("Zlecenie (%s, %s)", job.getVehicle().getVinNumber(), job.getDescription());
 
-        labelHeader.setText(TruncateStringUtil.truncate(jobShortInfo, 50));
+        labelHeader.setText(jobShortInfo);
 
         if (job.getStartDate() != null) {
             start.setDisable(true);
