@@ -11,65 +11,60 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefWidth="300.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.VehicleModifyController">
-    <VBox layoutX="10.0" layoutY="10.0" spacing="10.0" styleClass="background" AnchorPane.bottomAnchor="0.0"
-          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.VehicleModifyController">
+    <VBox layoutX="10.0" layoutY="10.0" spacing="10.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox spacing="10.0">
             <padding>
-                <Insets bottom="10.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label styleClass="label-small" text="Wybierz klienta"/>
+            <Label styleClass="label-small" text="Wybierz klienta" />
             <ComboBox fx:id="clients" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                 <VBox.margin>
-                    <Insets right="60.0"/>
+                    <Insets right="60.0" />
                 </VBox.margin>
             </ComboBox>
-            <Label styleClass="label-small" text="Wybierz pojazd"/>
+            <Label styleClass="label-small" text="Wybierz pojazd" />
             <ComboBox fx:id="clientVehicles" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                 <VBox.margin>
-                    <Insets right="60.0"/>
+                    <Insets right="60.0" />
                 </VBox.margin>
             </ComboBox>
         </VBox>
         <VBox>
-            <Separator/>
+            <Separator />
         </VBox>
         <VBox fx:id="editVehicleDataVBox" spacing="10.0">
-            <Label styleClass="label-small" text="Marka"/>
-            <TextField fx:id="brand" maxWidth="1.7976931348623157E308" prefWidth="260.0"/>
-            <Label styleClass="label-small" text="Model"/>
-            <TextField fx:id="model" maxWidth="1.7976931348623157E308" prefWidth="260.0"/>
-            <Label styleClass="label-small" text="Rok produkcji"/>
-            <Spinner fx:id="productionYear" amountToStepBy="1" initialValue="2000" max="2100"
-                     maxWidth="1.7976931348623157E308" min="1900" prefWidth="149.0">
+            <Label styleClass="label-small" text="Marka" />
+            <TextField fx:id="brand" maxWidth="1.7976931348623157E308" prefWidth="260.0" />
+            <Label styleClass="label-small" text="Model" />
+            <TextField fx:id="model" maxWidth="1.7976931348623157E308" prefWidth="260.0" />
+            <Label styleClass="label-small" text="Rok produkcji" />
+            <Spinner fx:id="productionYear" amountToStepBy="1" initialValue="2000" max="2100" maxWidth="1.7976931348623157E308" min="1900" prefWidth="149.0">
                 <VBox.margin>
-                    <Insets right="111.0"/>
+                    <Insets right="111.0" />
                 </VBox.margin>
             </Spinner>
-            <Label styleClass="label-small" text="Numer VIN"/>
+            <Label styleClass="label-small" text="Numer VIN" />
             <TextField fx:id="vinNumber" maxWidth="1.7976931348623157E308" prefWidth="260.0">
                 <VBox.margin>
-                    <Insets/>
+                    <Insets />
                 </VBox.margin>
             </TextField>
-            <Label styleClass="label-small" text="Pojemność silnika"/>
-            <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0"
-                     maxWidth="1.7976931348623157E308" min="0.1" prefWidth="149.0">
+            <Label styleClass="label-small" text="Pojemność silnika" />
+            <Spinner fx:id="engineCapacity" amountToStepBy="0.1" initialValue="0.6" max="6.0" maxWidth="1.7976931348623157E308" min="0.1" prefWidth="149.0">
                 <VBox.margin>
-                    <Insets right="111.0"/>
+                    <Insets right="111.0" />
                 </VBox.margin>
             </Spinner>
             <padding>
-                <Insets left="20.0" right="20.0" top="10.0"/>
+                <Insets left="20.0" right="20.0" top="10.0" />
             </padding>
         </VBox>
         <HBox alignment="TOP_RIGHT">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
             </padding>
-            <Button fx:id="modifyOneVehicle" mnemonicParsing="false" onAction="#modifyVehicle"
-                    text="Modyfikuj dane pojazdu"/>
+            <Button fx:id="modifyOneVehicle" mnemonicParsing="false" onAction="#modifyVehicle" text="Modyfikuj dane pojazdu" />
         </HBox>
     </VBox>
 </AnchorPane>

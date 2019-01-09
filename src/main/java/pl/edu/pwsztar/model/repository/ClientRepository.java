@@ -1,8 +1,8 @@
 package pl.edu.pwsztar.model.repository;
 
 import org.hibernate.query.Query;
-import pl.edu.pwsztar.model.dao.ClientDAO;
 import pl.edu.pwsztar.entity.Client;
+import pl.edu.pwsztar.model.dao.ClientDAO;
 import pl.edu.pwsztar.util.HibernateUtil;
 
 import java.util.List;
@@ -26,6 +26,20 @@ public class ClientRepository implements ClientDAO {
         });
 
         return clientsFromDb.get();
+    }
+
+    @Override
+    public Client findOneByVehicleVinNumber(String vinNumber) {
+        AtomicReference<Client> clientFromDB = new AtomicReference<>();
+
+        HibernateUtil.withinSession(() -> {
+            Query<Client> clientQuery = HibernateUtil.getSession().createQuery("select distinct j.client from Job j where j.vehicle.vinNumber = :vinNumber", Client.class);
+            clientQuery.setParameter("vinNumber", vinNumber);
+
+            clientFromDB.set(clientQuery.getSingleResult());
+        });
+
+        return clientFromDB.get();
     }
 
     @Override

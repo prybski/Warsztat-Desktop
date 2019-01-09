@@ -94,6 +94,6 @@ public class Demand {
 
     @Override
     public String toString() {
-        return "Część: " + part.getName() + ", ilość: " + quantity + ", cena: " + price + " zł";
+        return "Cena: " + price + ", " + part.getName() + ", ilość: " + quantity;
     }
 }

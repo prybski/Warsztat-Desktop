@@ -2,6 +2,7 @@ package pl.edu.pwsztar.controller;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -65,6 +66,12 @@ public class MainController implements Initializable {
 
     @FXML
     private Button showClient;
+
+    @FXML
+    private TextField vehicleDetailsVinNumber;
+
+    @FXML
+    private Button showVehicle;
 
     {
         singleton = Singleton.getInstance();
@@ -170,6 +177,31 @@ public class MainController implements Initializable {
         }
     }
 
+    public void showVehicleData() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/vehicle-details.fxml"));
+
+        try {
+            AnchorPane anchorPane = loader.load();
+
+            Stage stage = new Stage();
+
+            Vehicle vehicleFoundInDB = singleton.getVehicleRepository().findOneByVehicleVinNumber(vehicleDetailsVinNumber.getText());
+            Client clientFoundInDB = singleton.getClientRepository().findOneByVehicleVinNumber(vehicleDetailsVinNumber.getText());
+
+            VehicleDetailsController vehicleDetailsController = loader.getController();
+            vehicleDetailsController.setVehicle(vehicleFoundInDB);
+            vehicleDetailsController.setClient(clientFoundInDB);
+
+            StageUtil.stageConfiguration(anchorPane, stage, "Dane pojazdu");
+        } catch (NoResultException ex) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!",
+                    "Nie udało się odnaleźć danych dla pojazdu o podanym numerze VIN.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void searchHistoryByVin() {
         List<Job> jobsFoundByVehicleVin = singleton.getJobRepository().findHistoryByVinNumber(vinNumber
                 .getText());
@@ -270,11 +302,18 @@ public class MainController implements Initializable {
     }
 
     private void propertyBindingsConfiguration() {
-        searchVehicle.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}"), vinNumber.textProperty()).not());
+        BooleanBinding vinNumberValid = Bindings.createBooleanBinding(() ->
+                vinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}"), vinNumber.textProperty());
+        BooleanBinding vehicleDetailsVinNumberValid = Bindings.createBooleanBinding(() ->
+                vehicleDetailsVinNumber.getText().matches("[A-HJ-NPR-Z\\d]{17}"), vehicleDetailsVinNumber.textProperty());
+        BooleanBinding firstAndLastNameValid = Bindings.createBooleanBinding(() -> !firstAndLastName.getText().isEmpty()
+                && firstAndLastName.getText().contains(" "), firstAndLastName.textProperty());
 
-        showClient.disableProperty().bind(Bindings.createBooleanBinding(() -> !firstAndLastName.getText().isEmpty()
-                && firstAndLastName.getText().contains(" "), firstAndLastName.textProperty()).not());
+        searchVehicle.disableProperty().bind(vinNumberValid.not());
+
+        showClient.disableProperty().bind(firstAndLastNameValid.not());
+
+        showVehicle.disableProperty().bind(vehicleDetailsVinNumberValid.not());
     }
 
     private void customListenersConfiguration() {

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -24,6 +25,8 @@ import pl.edu.pwsztar.singleton.Singleton;
 import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.NumericUtil;
 import pl.edu.pwsztar.util.StageUtil;
+import pl.edu.pwsztar.util.TruncateStringUtil;
+import pl.edu.pwsztar.util.converter.CustomTaskConverter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -109,6 +112,9 @@ public class JobManagementController implements Initializable {
     @FXML
     private Text finalJobCost;
 
+    @FXML
+    private Label labelHeader;
+
     {
         singleton = Singleton.getInstance();
     }
@@ -175,7 +181,10 @@ public class JobManagementController implements Initializable {
     }
 
     public void addDemandToTask() {
-        Demand demand = new Demand(quantity.getValue().byteValue(), new BigDecimal(demandPrice.getText()));
+        BigDecimal singlePrice = new BigDecimal(demandPrice.getText());
+        BigDecimal singlePriceMultiplier = new BigDecimal(quantity.getValue());
+
+        Demand demand = new Demand(quantity.getValue().byteValue(), singlePrice.multiply(singlePriceMultiplier));
         demand.setTask(tasks.getValue());
         demand.setPart(parts.getValue());
 
@@ -210,14 +219,6 @@ public class JobManagementController implements Initializable {
         }
 
         finalJobCost.setText(finalCost.toString() + " zł");
-
-        end.disableProperty().unbind();
-        discount.disableProperty().unbind();
-
-        end.setDisable(true);
-        mainControlHBox.setDisable(true);
-        discount.setDisable(true);
-        isDiscountIncluded.setDisable(true);
     }
 
     public void backToMain() {
@@ -306,6 +307,10 @@ public class JobManagementController implements Initializable {
     }
 
     private void configureForRunLater() {
+        String jobShortInfo = String.format("Zlecenie (Opis: %s)", job.getDescription());
+
+        labelHeader.setText(TruncateStringUtil.truncate(jobShortInfo, 50));
+
         if (job.getStartDate() != null) {
             start.setDisable(true);
             mainControlHBox.setDisable(false);
@@ -331,7 +336,18 @@ public class JobManagementController implements Initializable {
         }
     }
 
+    private TextFieldListCell<Task> configureCustomCellFactoryForTasks() {
+        TextFieldListCell<Task> taskCell = new TextFieldListCell<>();
+        taskCell.setConverter(new CustomTaskConverter(taskCell));
+
+        return taskCell;
+    }
+
     private void customListenersConfiguration() {
+        unfinishedTasks.setCellFactory(listView -> configureCustomCellFactoryForTasks());
+
+        tasks.setCellFactory(listView -> configureCustomCellFactoryForTasks());
+
         tasksToFinish.getCheckModel().getCheckedIndices().addListener((ListChangeListener<? super Integer>) changed -> {
             while (changed.next()) {
                 if (changed.wasAdded()) {
@@ -343,6 +359,8 @@ public class JobManagementController implements Initializable {
                             task.setCost(new BigDecimal(taskCost.getText()));
 
                             singleton.getTaskRepository().update(task);
+
+                            refreshOrLoadFinishedTasks();
                         }
                     }
                 }
@@ -356,6 +374,10 @@ public class JobManagementController implements Initializable {
                             task.setCost(null);
 
                             singleton.getTaskRepository().update(task);
+
+                            taskCost.clear();
+
+                            refreshOrLoadFinishedTasks();
                         }
                     }
                 }

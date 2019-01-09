@@ -105,6 +105,6 @@ public class Part {
 
     @Override
     public String toString() {
-        return "Nazwa: " + name + ", numer katalogowy: " + developmentCode;
+        return name + ", numer katalogowy: " + developmentCode;
     }
 }

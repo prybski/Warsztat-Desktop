@@ -8,6 +8,7 @@ public interface ClientDAO {
 
     void add(Client client);
     List<Client> findAll();
+    Client findOneByVehicleVinNumber(String vinNumber);
     List<Client> findAllWithVehicles();
     Client findOneByFirstAndLastName(String firstAndLastName);
 }

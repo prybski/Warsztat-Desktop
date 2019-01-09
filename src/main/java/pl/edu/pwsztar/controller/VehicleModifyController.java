@@ -9,10 +9,7 @@ import javafx.scene.layout.VBox;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.singleton.Singleton;
-import pl.edu.pwsztar.util.ConstraintCheckUtil;
-import pl.edu.pwsztar.util.ContextMenuUtil;
-import pl.edu.pwsztar.util.StageUtil;
-import pl.edu.pwsztar.util.DataFieldsUtil;
+import pl.edu.pwsztar.util.*;
 
 import java.net.URL;
 import java.util.List;
@@ -80,7 +77,7 @@ public class VehicleModifyController implements Initializable {
             singleton.getVehicleRepository().update(vehicle);
 
             StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Dane " +
-                    "wybranego pojazdu zostały zmodyfikowane");
+                    "wybranego pojazdu zostały zmodyfikowane.");
 
             List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel()
                     .getSelectedItem());
@@ -110,7 +107,9 @@ public class VehicleModifyController implements Initializable {
 
 
         clientVehicles.disableProperty().bind(clientIsSelected.not());
+
         editVehicleDataVBox.disableProperty().bind(clientVehicleIsSelected.not());
+
         modifyOneVehicle.disableProperty().bind(modifiedVehicleDataValid.not());
     }
 

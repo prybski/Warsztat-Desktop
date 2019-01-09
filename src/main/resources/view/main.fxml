@@ -35,12 +35,11 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label styleClass="label-header" text="Początek zarządzania">
+            <Label styleClass="label-header" text="Zlecenia">
                 <font>
                     <Font name="Noto Sans Regular" size="20.0" />
                 </font>
             </Label>
-            <Separator prefWidth="200.0" />
             <Label styleClass="label-small" text="Wyszukaj nierozpoczęte zlecenia" />
             <ComboBox fx:id="fixedDates" maxWidth="1.7976931348623157E308" prefWidth="200.0" />
             <ListView fx:id="jobs" onMouseClicked="#startManagingNotStartedJobs" prefWidth="200.0" VBox.vgrow="ALWAYS" />
@@ -58,12 +57,6 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label styleClass="label-header" text="Zlecenie">
-                <font>
-                    <Font name="Noto Sans Regular" size="20.0" />
-                </font>
-            </Label>
-            <Separator prefWidth="200.0" />
             <VBox alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">
                 <Button mnemonicParsing="false" onAction="#showAddJob" prefHeight="20.0" prefWidth="200.0" text="Dodaj zlecenie">
                     <font>
@@ -74,72 +67,83 @@
         </VBox>
     </right>
     <center>
-        <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-            <Label styleClass="label-header" text="Historia zleceń i wyszukiwanie danych">
-                <font>
-                    <Font name="Noto Sans Regular" size="20.0" />
-                </font>
-            </Label>
-            <Separator prefWidth="200.0" />
-            <HBox spacing="10.0" VBox.vgrow="ALWAYS">
-                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                    <Label styleClass="label-small" text="Wyświetl dla wybranego klienta" />
-                    <ComboBox fx:id="clients" maxWidth="1.7976931348623157E308" prefWidth="200.0">
-                  <VBox.margin>
-                     <Insets right="33.0" />
-                  </VBox.margin></ComboBox>
-                    <ListView fx:id="clientHistory" onMouseClicked="#showJobDetailsForClient" VBox.vgrow="ALWAYS" />
-                    <Label styleClass="label-small" text="Wpisz imie i nazwisko klienta" />
-                    <HBox spacing="10.0">
-                        <TextField fx:id="firstAndLastName" maxWidth="1.7976931348623157E308" prefWidth="125.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="showClient" mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
-                    </HBox>
-                    <padding>
-                        <Insets right="10.0" />
-                    </padding>
-                </VBox>
-                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                    <Label styleClass="label-small" text="Wyświetl szukając po VIN" />
-                    <HBox spacing="10.0">
-                         <TextField fx:id="vinNumber" maxWidth="1.7976931348623157E308" prefWidth="153.0" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </TextField>
-                        <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin></Button>
-                  <VBox.margin>
-                     <Insets />
-                  </VBox.margin>
-                    </HBox>
-                    <ListView fx:id="vehicleHistoryByVinNumber" onMouseClicked="#showJobDetailsForVehicleByVin" VBox.vgrow="ALWAYS" />
-                    <padding>
-                        <Insets left="10.0" right="10.0" />
-                    </padding>
-                </VBox>
-                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                    <Label styleClass="label-small" text="Wyświetl dla wybranego pojazdu" />
-                    <ComboBox fx:id="vehicles" maxWidth="1.7976931348623157E308" prefWidth="200.0">
-                  <VBox.margin>
-                     <Insets right="29.0" />
-                  </VBox.margin></ComboBox>
-                    <ListView fx:id="vehicleHistory" onMouseClicked="#showJobDetailsForVehicle" VBox.vgrow="ALWAYS" />
-                    <padding>
-                        <Insets left="10.0" />
-                    </padding>
-                </VBox>
-            </HBox>
-            <Label styleClass="label-italic" text="(Kliknij w zlecenie, aby ukazać jego szczegóły)">
-                <font>
-                    <Font name="System Italic" size="12.0" />
-                </font>
-            </Label>
-        </VBox>
+        <HBox styleClass="background" BorderPane.alignment="CENTER">
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <Label styleClass="label-header" text="Historia zleceń i wyszukiwanie danych">
+                    <font>
+                        <Font name="Noto Sans Regular" size="20.0" />
+                    </font>
+                </Label>
+                <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+                    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <Label styleClass="label-small" text="Wyświetl dla wybranego klienta" />
+                        <ComboBox fx:id="clients" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+                            <VBox.margin>
+                                <Insets right="33.0" />
+                            </VBox.margin>
+                        </ComboBox>
+                        <ListView fx:id="clientHistory" onMouseClicked="#showJobDetailsForClient" VBox.vgrow="ALWAYS" />
+                        <Label styleClass="label-small" text="Wpisz imie i nazwisko klienta" />
+                        <HBox spacing="10.0">
+                            <TextField fx:id="firstAndLastName" maxWidth="1.7976931348623157E308" prefWidth="128.0" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="showClient" mnemonicParsing="false" onAction="#showClientData" text="Wyświetl dane" />
+                        </HBox>
+                        <padding>
+                            <Insets right="10.0" />
+                        </padding>
+                    </VBox>
+                    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <Label styleClass="label-small" text="Wyświetl szukając po VIN" />
+                        <HBox spacing="10.0">
+                            <TextField fx:id="vinNumber" maxWidth="1.7976931348623157E308" prefWidth="153.0" HBox.hgrow="ALWAYS">
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                            </TextField>
+                            <Button fx:id="searchVehicle" mnemonicParsing="false" onAction="#searchHistoryByVin" text="Wyszukaj">
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                            </Button>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </HBox>
+                        <ListView fx:id="vehicleHistoryByVinNumber" onMouseClicked="#showJobDetailsForVehicleByVin" VBox.vgrow="ALWAYS" />
+                        <Label styleClass="label-small" text="Wpisz numer VIN pojazdu" />
+                        <HBox spacing="10.0">
+                            <TextField fx:id="vehicleDetailsVinNumber" prefWidth="128.0" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="showVehicle" mnemonicParsing="false" onAction="#showVehicleData" text="Wyświetl dane" />
+                        </HBox>
+                        <padding>
+                            <Insets left="10.0" right="10.0" />
+                        </padding>
+                    </VBox>
+                    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <Label styleClass="label-small" text="Wyświetl dla wybranego pojazdu" />
+                        <ComboBox fx:id="vehicles" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+                            <VBox.margin>
+                                <Insets right="29.0" />
+                            </VBox.margin>
+                        </ComboBox>
+                        <ListView fx:id="vehicleHistory" onMouseClicked="#showJobDetailsForVehicle" VBox.vgrow="ALWAYS" />
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                    </VBox>
+                </HBox>
+                <Label styleClass="label-italic" text="(Kliknij w zlecenie, aby ukazać jego szczegóły)">
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </Label>
+            </VBox>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+        </HBox>
     </center>
     <bottom>
         <ToolBar BorderPane.alignment="CENTER">

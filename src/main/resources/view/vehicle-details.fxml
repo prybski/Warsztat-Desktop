@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefWidth="300.0" styleClass="background" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.VehicleDetailsController">
+    <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <Label styleClass="label-small" text="Zlecający naprawę" />
+            <Text fx:id="clientOfJob" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" />
+        </VBox>
+        <Separator prefWidth="200.0" />
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <Label styleClass="label-small" text="Marka" />
+            <Text fx:id="brand" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" />
+            <Label styleClass="label-small" text="Model" />
+            <Text fx:id="model" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" />
+            <Label styleClass="label-small" text="Rok produkcji" />
+            <Text fx:id="productionYear" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" />
+            <Label styleClass="label-small" text="Numer VIN" />
+            <Text fx:id="vinNumber" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" />
+            <Label styleClass="label-small" text="Pojemność silnika" />
+            <Text fx:id="engineCapacity" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" />
+        </VBox>
+    </VBox>
+</AnchorPane>
