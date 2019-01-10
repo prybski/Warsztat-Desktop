@@ -26,6 +26,7 @@ import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.NumericUtil;
 import pl.edu.pwsztar.util.StageUtil;
 import pl.edu.pwsztar.util.converter.CustomTaskConverter;
+import pl.edu.pwsztar.util.converter.SimpleTaskConverter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -346,6 +347,7 @@ public class JobManagementController implements Initializable {
         unfinishedTasks.setCellFactory(listView -> configureCustomCellFactoryForTasks());
 
         tasks.setCellFactory(listView -> configureCustomCellFactoryForTasks());
+        tasks.setConverter(new SimpleTaskConverter(tasks));
 
         tasksToFinish.getCheckModel().getCheckedIndices().addListener((ListChangeListener<? super Integer>) changed -> {
             while (changed.next()) {
