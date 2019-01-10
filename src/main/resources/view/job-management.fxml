@@ -88,7 +88,7 @@
                                 <Insets right="71.0" />
                             </VBox.margin>
                         </Spinner>
-                        <Label styleClass="label-small" text="Podaj cenę (za 1 sztukę)" />
+                        <Label styleClass="label-small" text="Podaj cenę (za sztukę)" />
                         <HBox spacing="10.0">
                             <VBox.margin>
                                 <Insets />
