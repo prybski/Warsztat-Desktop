@@ -102,7 +102,7 @@
                         </HBox>
                         <ListView fx:id="demands" VBox.vgrow="ALWAYS" />
                         <HBox alignment="TOP_RIGHT">
-                            <Button fx:id="deleteOneDemand" mnemonicParsing="false" onAction="#deleteChoosenDemand" text="Usuń wybrane z zadania" />
+                            <Button fx:id="deleteOneDemand" mnemonicParsing="false" onAction="#deleteChoosenDemand" text="Usuń wybraną z zadania" />
                         </HBox>
                         <Label styleClass="label-italic" text="(Kolumna aktywna, gdy potrzeba części)">
                             <font>
