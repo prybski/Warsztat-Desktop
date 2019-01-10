@@ -376,8 +376,6 @@ public class JobManagementController implements Initializable {
 
                             singleton.getTaskRepository().update(task);
 
-                            taskCost.clear();
-
                             refreshOrLoadFinishedTasks();
                         }
                     }
