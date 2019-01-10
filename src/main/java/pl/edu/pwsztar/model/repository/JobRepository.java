@@ -24,7 +24,7 @@ public class JobRepository implements JobDAO {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job j where j.startDate is not null and j.endDate is null", Job.class);
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job j where j.startDate is not null and j.endDate is null order by j.id desc", Job.class);
 
             jobsFromDb.set(jobQuery.getResultList());
         });
@@ -37,7 +37,7 @@ public class JobRepository implements JobDAO {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where client = :client and endDate is not null", Job.class);
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where client = :client and endDate is not null order by id desc", Job.class);
             jobQuery.setParameter("client", client);
 
             jobsFromDb.set(jobQuery.getResultList());
@@ -51,7 +51,7 @@ public class JobRepository implements JobDAO {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle = :vehicle and endDate is not null", Job.class);
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle = :vehicle and endDate is not null order by id desc", Job.class);
             jobQuery.setParameter("vehicle", vehicle);
 
             jobsFromDb.set(jobQuery.getResultList());
@@ -65,7 +65,7 @@ public class JobRepository implements JobDAO {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle.vinNumber = :vinNumber and endDate is not null", Job.class);
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where vehicle.vinNumber = :vinNumber and endDate is not null order by id desc", Job.class);
             jobQuery.setParameter("vinNumber", vinNumber);
 
             jobsFromDb.set(jobQuery.getResultList());
@@ -79,7 +79,7 @@ public class JobRepository implements JobDAO {
         AtomicReference<List<Job>> jobsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where fixedDate = :date and startDate is null and endDate is null", Job.class);
+            Query<Job> jobQuery = HibernateUtil.getSession().createQuery("from Job where fixedDate = :date and startDate is null and endDate is null order by id desc", Job.class);
             jobQuery.setParameter("date", date);
 
             jobsFromDb.set(jobQuery.getResultList());
@@ -93,7 +93,7 @@ public class JobRepository implements JobDAO {
         AtomicReference<List> datesFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
-            Query jobQuery = HibernateUtil.getSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is null");
+            Query jobQuery = HibernateUtil.getSession().createQuery("select distinct j.fixedDate from Job j where j.endDate is null and j.startDate is null order by j.id desc");
 
             datesFromDb.set(jobQuery.getResultList());
         });
