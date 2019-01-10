@@ -13,7 +13,7 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label styleClass="label-small" text="Zlecający naprawę" />
+            <Label styleClass="label-small" text="Zgłaszający zlecenie" />
             <Text fx:id="clientOfJob" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info" />
         </VBox>
         <Separator prefWidth="200.0" />

@@ -28,7 +28,7 @@
                     <Font name="System Italic" size="18.0" />
                 </font>
             </Text>
-            <Label styleClass="label-small" text="Zniżka" />
+            <Label styleClass="label-small" text="Rabat" />
             <Text fx:id="discount" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
                 <font>
                     <Font name="System Italic" size="18.0" />
