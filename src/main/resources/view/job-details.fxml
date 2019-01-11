@@ -75,7 +75,7 @@
             <Label styleClass="label-small" text="Końcowy koszt wykonania zlecenia" />
             <Text fx:id="finalCost" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info-bigger">
                 <font>
-                    <Font name="System Italic" size="18.0" />
+                    <Font size="18.0" />
                 </font>
             </Text>
         </VBox>
