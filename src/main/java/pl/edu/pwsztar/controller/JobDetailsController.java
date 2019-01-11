@@ -59,7 +59,7 @@ public class JobDetailsController implements Initializable {
         if (job.getDiscount() != null) {
             discount.setText(job.getDiscount().toString() + " zł");
         } else {
-            discount.setText("Brak zniżki");
+            discount.setText("Brak");
         }
 
         List<Task> tasks = singleton.getTaskRepository().findAllByJob(job);
