@@ -73,9 +73,9 @@
             <Label styleClass="label-small" text="Wymagane części" />
             <ListView fx:id="requiredDemands" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <Label styleClass="label-small" text="Końcowy koszt wykonania zlecenia" />
-            <Text fx:id="finalCost" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info-bigger">
+            <Text fx:id="finalCost" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info-bigger">
                 <font>
-                    <Font size="18.0" />
+                    <Font size="24.0" />
                 </font>
             </Text>
         </VBox>
