@@ -343,6 +343,6 @@ public class MainController implements Initializable {
     }
 
     private void removeContextMenu() {
-        ContextMenuUtil.remove(vinNumber, firstAndLastName);
+        ContextMenuUtil.remove(vinNumber, firstAndLastName, vehicleDetailsVinNumber);
     }
 }

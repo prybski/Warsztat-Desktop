@@ -72,7 +72,7 @@ public class ClientCreateController implements Initializable {
         } else {
             singleton.getClientRepository().add(client);
 
-            StageUtil.generateTextInputDialog("Informacja!", "Proszę zapisać hasło",
+            StageUtil.generateTextInputDialog("Informacja!", "Proszę zapisać/skopiować hasło",
                     generatedPassword);
         }
     }

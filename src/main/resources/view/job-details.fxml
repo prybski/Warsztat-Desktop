@@ -4,44 +4,52 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="435.0" prefWidth="770.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobDetailsController">
+<AnchorPane prefHeight="450.0" prefWidth="830.0" stylesheets="@../css/main-style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.pwsztar.controller.JobDetailsController">
     <HBox styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-            <Label styleClass="label-small" text="Data rozpoczęcia" />
-            <Text fx:id="startDate" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
-                <font>
-                    <Font name="System Italic" size="18.0" />
-                </font>
-            </Text>
-            <Label styleClass="label-small" text="Data zakończenia" />
-            <Text fx:id="endDate" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
-                <font>
-                    <Font name="System Italic" size="18.0" />
-                </font>
-            </Text>
-            <Label styleClass="label-small" text="Rabat" />
-            <Text fx:id="discount" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
-                <font>
-                    <Font name="System Italic" size="18.0" />
-                </font>
-            </Text>
+        <VBox>
+            <VBox spacing="10.0">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <Label styleClass="label-small" text="Numer VIN pojazdu" />
+                <TextField fx:id="vehicleVinNumber" editable="false" prefWidth="210.0" />
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <Label styleClass="label-small" text="Data rozpoczęcia" />
+                <Text fx:id="startDate" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
+                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font>
+                </Text>
+                <Label styleClass="label-small" text="Data zakończenia" />
+                <Text fx:id="endDate" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
+                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font>
+                </Text>
+                <Label styleClass="label-small" text="Rabat" />
+                <Text fx:id="discount" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
+                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font>
+                </Text>
+            </VBox>
         </VBox>
          <Separator orientation="VERTICAL" prefHeight="200.0">
              <HBox.margin>
                  <Insets />
              </HBox.margin>
-             <padding>
-                 <Insets left="3.0" />
-             </padding>
          </Separator>
         <VBox spacing="10.0" HBox.hgrow="ALWAYS">
             <padding>
@@ -65,7 +73,7 @@
             <Label styleClass="label-small" text="Wymagane części" />
             <ListView fx:id="requiredDemands" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <Label styleClass="label-small" text="Końcowa cena za zlecenie" />
-            <Text fx:id="finalCost" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info">
+            <Text fx:id="finalCost" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info-bigger">
                 <font>
                     <Font name="System Italic" size="18.0" />
                 </font>

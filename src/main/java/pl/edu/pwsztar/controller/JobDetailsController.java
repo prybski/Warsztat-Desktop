@@ -4,11 +4,13 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import pl.edu.pwsztar.entity.Demand;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Task;
 import pl.edu.pwsztar.singleton.Singleton;
+import pl.edu.pwsztar.util.ContextMenuUtil;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -38,6 +40,9 @@ public class JobDetailsController implements Initializable {
     @FXML
     private Text finalCost;
 
+    @FXML
+    private TextField vehicleVinNumber;
+
     {
         singleton = Singleton.getInstance();
     }
@@ -45,9 +50,13 @@ public class JobDetailsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(this::readJobData);
+
+        removeContextMenu();
     }
 
     private void readJobData() {
+        vehicleVinNumber.setText(job.getVehicle().getVinNumber());
+
         String startDateString = job.getStartDate().toString().substring(0, job.getStartDate().toString()
                 .lastIndexOf("."));
         String endDateString = job.getEndDate().toString().substring(0, job.getEndDate().toString()
@@ -92,6 +101,10 @@ public class JobDetailsController implements Initializable {
         }
 
         return finalCost;
+    }
+
+    private void removeContextMenu() {
+        ContextMenuUtil.remove(vehicleVinNumber);
     }
 
     public void setJob(Job job) {
