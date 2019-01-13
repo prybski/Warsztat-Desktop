@@ -10,5 +10,5 @@ public interface ClientDAO {
     List<Client> findAll();
     Client findOneByVehicleVinNumber(String vinNumber);
     List<Client> findAllWithVehicles();
-    Client findOneByFirstAndLastName(String firstAndLastName);
+    List<Client> findAllByFirstAndLastName(String firstAndLastName);
 }

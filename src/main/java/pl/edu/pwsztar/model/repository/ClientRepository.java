@@ -56,16 +56,16 @@ public class ClientRepository implements ClientDAO {
     }
 
     @Override
-    public Client findOneByFirstAndLastName(String firstAndLastName) {
-        AtomicReference<Client> clientFromDb = new AtomicReference<>();
+    public List<Client> findAllByFirstAndLastName(String firstAndLastName) {
+        AtomicReference<List<Client>> clientsFromDb = new AtomicReference<>();
 
         HibernateUtil.withinSession(() -> {
             Query<Client> clientQuery = HibernateUtil.getSession().createQuery("select c from Client c where concat(firstName, ' ', lastName) in (:firstAndLastName)", Client.class);
             clientQuery.setParameter("firstAndLastName", firstAndLastName);
 
-            clientFromDb.set(clientQuery.getSingleResult());
+            clientsFromDb.set(clientQuery.getResultList());
         });
 
-        return clientFromDb.get();
+        return clientsFromDb.get();
     }
 }

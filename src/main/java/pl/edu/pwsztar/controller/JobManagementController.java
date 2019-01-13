@@ -115,6 +115,9 @@ public class JobManagementController implements Initializable {
     @FXML
     private Label labelHeader;
 
+    @FXML
+    private TextField vehicleVinNumber;
+
     {
         singleton = Singleton.getInstance();
     }
@@ -307,9 +310,11 @@ public class JobManagementController implements Initializable {
     }
 
     private void configureForRunLater() {
-        String jobShortInfo = String.format("Zlecenie (%s, %s)", job.getVehicle().getVinNumber(), job.getDescription());
+        String jobShortInfo = String.format("Zlecenie (Opis: %s)", job.getDescription());
 
         labelHeader.setText(jobShortInfo);
+
+        vehicleVinNumber.setText(job.getVehicle().getVinNumber());
 
         if (job.getStartDate() != null) {
             start.setDisable(true);
@@ -433,7 +438,7 @@ public class JobManagementController implements Initializable {
     }
 
     private void removeContextMenu() {
-        ContextMenuUtil.remove(taskName, quantity, demandPrice, taskCost, discount);
+        ContextMenuUtil.remove(taskName, quantity, demandPrice, taskCost, discount, vehicleVinNumber);
     }
 
     public void setJob(Job job) {

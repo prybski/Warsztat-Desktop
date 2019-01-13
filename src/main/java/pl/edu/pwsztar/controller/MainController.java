@@ -162,11 +162,15 @@ public class MainController implements Initializable {
 
             Stage stage = new Stage();
 
-            Client clientFoundInDb = singleton.getClientRepository().findOneByFirstAndLastName(firstAndLastName
+            List<Client> clientsFoundInDb = singleton.getClientRepository().findAllByFirstAndLastName(firstAndLastName
                     .getText());
 
+            if (clientsFoundInDb.isEmpty()) {
+                throw new NoResultException();
+            }
+
             ClientDetailsController clientDetailsController = loader.getController();
-            clientDetailsController.setClient(clientFoundInDb);
+            clientDetailsController.setClients(clientsFoundInDb);
 
             StageUtil.stageConfiguration(anchorPane, stage, "Dane klienta");
         } catch (NoResultException ex) {
