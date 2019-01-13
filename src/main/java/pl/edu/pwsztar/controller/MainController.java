@@ -175,7 +175,7 @@ public class MainController implements Initializable {
             StageUtil.stageConfiguration(anchorPane, stage, "Dane klienta");
         } catch (NoResultException ex) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!",
-                    "Nie udało się odnaleźć klienta o podanym imieniu i nazwisku.");
+                    "Nie udało się odnaleźć klienta/klientów o podanym imieniu i nazwisku.");
         } catch (IOException e) {
             e.printStackTrace();
         }
