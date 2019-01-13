@@ -200,7 +200,7 @@ public class MainController implements Initializable {
             StageUtil.stageConfiguration(anchorPane, stage, "Dane pojazdu");
         } catch (NoResultException ex) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!",
-                    "Nie udało się odnaleźć danych dla pojazdu o podanym numerze VIN.");
+                    "Nie udało się odnaleźć danych pojazdu o podanym numerze VIN.");
         } catch (IOException e) {
             e.printStackTrace();
         }
