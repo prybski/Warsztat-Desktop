@@ -164,6 +164,6 @@ public class Job {
 
     @Override
     public String toString() {
-        return "Opis: " + description + ", data ustalona: " + fixedDate;
+        return "Opis: " + description;
     }
 }
