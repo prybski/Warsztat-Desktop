@@ -413,7 +413,7 @@
 
     /* noinspection CssInvalidFunction */
     -fx-border-style: segments(1, 2), solid;
-    -fx-border-insets: -3, 0;
+    -fx-border-insets: -2, 0;
 }
 
 /* z focusem - odznaczony */
