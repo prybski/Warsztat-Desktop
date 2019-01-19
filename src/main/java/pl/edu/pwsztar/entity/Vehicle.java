@@ -23,10 +23,10 @@ public class Vehicle {
     @Column(name = "production_year", nullable = false)
     private short productionYear;
 
-    @Column(name = "vin_number", length = 17)
+    @Column(name = "vin_number", nullable = false, length = 17)
     private String vinNumber;
 
-    @Column(name = "engine_capacity")
+    @Column(name = "engine_capacity", nullable = false)
     private float engineCapacity;
 
     // definicja relacji/mapowania (jednego Pojazdu do wielu Zleceń)
