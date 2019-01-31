@@ -19,7 +19,6 @@
     </properties>
 
     <dependencies>
-        <!-- Poniżej dodano potrzebne zależności do zastosowania techniki ORM (Object-to Relational Mapping) -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
