@@ -40,8 +40,8 @@ public class HibernateUtil {
 
         try {
             sessionCallback.doInSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
+        } catch (RuntimeException e) {
+            throw new HibernateException(e.getCause());
         } finally {
             if (session.isOpen()) {
                 closeSession();
@@ -57,12 +57,12 @@ public class HibernateUtil {
             transactionCallback.doInTransaction();
 
             transaction.commit();
-        } catch (HibernateException e) {
+        } catch (RuntimeException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
 
-            e.printStackTrace();
+            throw new HibernateException(e.getCause());
         } finally {
             if (session.isOpen()) {
                 closeSession();

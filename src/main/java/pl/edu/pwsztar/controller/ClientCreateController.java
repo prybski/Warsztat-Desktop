@@ -7,16 +7,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.hibernate.HibernateException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.singleton.Singleton;
-import pl.edu.pwsztar.util.ConstraintCheckUtil;
 import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.RandomPasswordUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ClientCreateController implements Initializable {
@@ -56,24 +55,24 @@ public class ClientCreateController implements Initializable {
     }
 
     public void addClient() {
-        List<Client> clientsToCheck = singleton.getClientRepository().findAll();
-
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String generatedPassword = RandomPasswordUtil.randomPassword(GENERATED_PASSWORD_LENGTH);
         String encodedPassword = bCryptPasswordEncoder.encode(generatedPassword);
 
         Client client = new Client(firstName.getText().trim(), lastName.getText().trim(),
-                email.getText(), encodedPassword, phoneNumber.getText());
+                email.getText().trim(), encodedPassword, phoneNumber.getText().trim());
 
-        if (ConstraintCheckUtil.checkForDuplicateEmail(clientsToCheck, email.getText())
-                || ConstraintCheckUtil.checkForDuplicatePhoneNumber(clientsToCheck, phoneNumber.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
-                    "intergralności dla kolumny 'email' lub 'phone_number'.");
-        } else {
+        try {
             singleton.getClientRepository().add(client);
 
             StageUtil.generateTextInputDialog("Informacja!", "Proszę zapisać/skopiować hasło",
                     generatedPassword);
+        } catch (HibernateException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                    "błąd dotyczy: \n" +
+                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                    "w bazie danych" +
+                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
         }
     }
 

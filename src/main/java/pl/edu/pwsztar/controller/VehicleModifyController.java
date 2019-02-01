@@ -6,10 +6,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import org.hibernate.HibernateException;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.singleton.Singleton;
-import pl.edu.pwsztar.util.*;
+import pl.edu.pwsztar.util.ContextMenuUtil;
+import pl.edu.pwsztar.util.DataFieldsUtil;
+import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
 import java.util.List;
@@ -63,17 +66,13 @@ public class VehicleModifyController implements Initializable {
 
     public void modifyVehicle() {
         Vehicle vehicle = clientVehicles.getSelectionModel().getSelectedItem();
-        vehicle.setBrand(brand.getText());
-        vehicle.setModel(model.getText());
+        vehicle.setBrand(brand.getText().trim());
+        vehicle.setModel(model.getText().trim());
         vehicle.setProductionYear(productionYear.getValue().shortValue());
-        vehicle.setVinNumber(vinNumber.getText());
+        vehicle.setVinNumber(vinNumber.getText().trim());
         vehicle.setEngineCapacity(engineCapacity.getValue().floatValue());
 
-        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber
-                .getText(), vehicle.getId())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
-                    "integralności dla kolumny 'vin_number'.");
-        } else {
+        try {
             singleton.getVehicleRepository().update(vehicle);
 
             StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Dane " +
@@ -84,6 +83,12 @@ public class VehicleModifyController implements Initializable {
 
             clientVehicles.getItems().clear();
             clientVehicles.getItems().setAll(updatedVehicles);
+        } catch (HibernateException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                    "błąd dotyczy: \n" +
+                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                    "w bazie danych" +
+                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
         }
     }
 

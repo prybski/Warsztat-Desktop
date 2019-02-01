@@ -7,14 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.hibernate.HibernateException;
 import pl.edu.pwsztar.entity.Part;
 import pl.edu.pwsztar.singleton.Singleton;
-import pl.edu.pwsztar.util.ConstraintCheckUtil;
 import pl.edu.pwsztar.util.ContextMenuUtil;
 import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class PartCreateController implements Initializable {
@@ -48,21 +47,22 @@ public class PartCreateController implements Initializable {
         Part part;
 
         if (details.getText().isEmpty()) {
-            part = new Part(name.getText(), null, developmentCode.getText());
+            part = new Part(name.getText().trim(), null, developmentCode.getText().trim());
         } else  {
-            part = new Part(name.getText(), details.getText(), developmentCode.getText());
+            part = new Part(name.getText().trim(), details.getText().trim(), developmentCode.getText().trim());
         }
 
-        List<Part> partsToCheck = singleton.getPartRepository().findAll();
-
-        if (ConstraintCheckUtil.checkForDuplicateDevelopmentCode(partsToCheck, developmentCode.getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
-                    "integralności dla kolumny 'development_code.'");
-        } else {
+        try {
             singleton.getPartRepository().add(part);
 
             StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało " +
                     "się dodać nową część.");
+        } catch (HibernateException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                    "błąd dotyczy: \n" +
+                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                    "w bazie danych" +
+                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
         }
     }
 

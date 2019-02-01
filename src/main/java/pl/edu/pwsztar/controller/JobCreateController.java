@@ -6,14 +6,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import org.hibernate.HibernateException;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
 import pl.edu.pwsztar.singleton.Singleton;
-import pl.edu.pwsztar.util.ConstraintCheckUtil;
 import pl.edu.pwsztar.util.ContextMenuUtil;
-import pl.edu.pwsztar.util.StageUtil;
 import pl.edu.pwsztar.util.DataFieldsUtil;
+import pl.edu.pwsztar.util.StageUtil;
 
 import java.net.URL;
 import java.sql.Date;
@@ -76,27 +76,31 @@ public class JobCreateController implements Initializable {
     }
 
     public void addJob() {
-        Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
+        Job job = new Job(description.getText().trim(), Date.valueOf(fixedDate.getValue()));
         job.setClient(clients.getSelectionModel().getSelectedItem());
         job.setVehicle(vehicles.getSelectionModel().getSelectedItem());
 
-        singleton.getJobRepository().addWithExistingVehicle(job);
+        try {
+            singleton.getJobRepository().addWithExistingVehicle(job);
 
-        StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać " +
-                "nowe zlecenie.");
+            StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się dodać " +
+                    "nowe zlecenie.");
+        } catch (HibernateException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                    "błąd dotyczy: \n" +
+                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                    "w bazie danych" +
+                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+        }
     }
 
     public void addJobAndVehicle() {
-        Job job = new Job(description.getText(), Date.valueOf(fixedDate.getValue()));
-        Vehicle vehicle = new Vehicle(brand.getText(), model.getText(), productionYear.getValue().shortValue(),
-                vinNumber.getText(), engineCapacity.getValue().floatValue());
+        Job job = new Job(description.getText().trim(), Date.valueOf(fixedDate.getValue()));
+        Vehicle vehicle = new Vehicle(brand.getText().trim(), model.getText().trim(), productionYear.getValue().shortValue(),
+                vinNumber.getText().trim(), engineCapacity.getValue().floatValue());
         vehicle.addJob(job, clients.getSelectionModel().getSelectedItem());
 
-        if (ConstraintCheckUtil.checkForDuplicateVinNumber(singleton.getVehicleRepository().findAll(), vinNumber
-                .getText())) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Złamano zasadę " +
-                    "integralności dla kolumny 'vin_number'.");
-        } else {
+        try {
             singleton.getVehicleRepository().addVehicleWithJob(vehicle);
 
             StageUtil.generateAlertDialog(Alert.AlertType.INFORMATION, "Informacja!", "Udało się " +
@@ -106,6 +110,12 @@ public class JobCreateController implements Initializable {
                     .getSelectedItem());
 
             refreshOrLoadVehicles(updatedVehicles);
+        } catch (HibernateException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                    "błąd dotyczy: \n" +
+                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                    "w bazie danych" +
+                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
         }
     }
 

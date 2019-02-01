@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.hibernate.HibernateException;
 import pl.edu.pwsztar.entity.Client;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Vehicle;
@@ -198,9 +199,10 @@ public class MainController implements Initializable {
             vehicleDetailsController.setClient(clientFoundInDB);
 
             StageUtil.stageConfiguration(anchorPane, stage, "Dane pojazdu");
-        } catch (NoResultException ex) {
+        } catch (HibernateException ex) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!",
-                    "Nie udało się odnaleźć pojazdu o podanym numerze VIN.");
+                    "Nie udało się odnaleźć pojazdu o podanym numerze VIN oraz imienia i nazwiska osoby " +
+                            "zgłaszającej dla niego zlecenie naprawy.");
         } catch (IOException e) {
             e.printStackTrace();
         }

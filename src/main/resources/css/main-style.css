@@ -148,6 +148,10 @@
     -fx-background-color: #000, #000;
 }
 
+.text-field:disabled .text {
+    -fx-opacity: 0.4;
+}
+
 .text-area {
     -fx-background-insets: 0;
     -fx-accent: #444;
@@ -455,6 +459,10 @@
     -fx-background-color: #000;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
+}
+
+.spinner > .text-field:disabled .text {
+    -fx-opacity: 1;
 }
 
 .spinner .increment-arrow-button,

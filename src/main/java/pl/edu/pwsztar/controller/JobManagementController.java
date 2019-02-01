@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.textfield.TextFields;
+import org.hibernate.HibernateException;
 import pl.edu.pwsztar.entity.Demand;
 import pl.edu.pwsztar.entity.Job;
 import pl.edu.pwsztar.entity.Part;
@@ -162,16 +163,24 @@ public class JobManagementController implements Initializable {
     }
 
     public void addTaskToJob() {
-        Task task = new Task(taskName.getText());
+        Task task = new Task(taskName.getText().trim());
         task.setJob(job);
 
-        singleton.getTaskRepository().add(task);
+        try {
+            singleton.getTaskRepository().add(task);
 
-        taskName.clear();
+            taskName.clear();
 
-        refreshOrLoadTasks();
-        refreshOrLoadFinishedTasks();
-        refreshOrLoadUnfinishedTasks();
+            refreshOrLoadTasks();
+            refreshOrLoadFinishedTasks();
+            refreshOrLoadUnfinishedTasks();
+        } catch (HibernateException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                    "błąd dotyczy: \n" +
+                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                    "w bazie danych" +
+                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+        }
     }
 
     public void deleteChoosenTask() {
@@ -184,16 +193,24 @@ public class JobManagementController implements Initializable {
     }
 
     public void addDemandToTask() {
-        BigDecimal singlePrice = new BigDecimal(demandPrice.getText());
+        BigDecimal singlePrice = new BigDecimal(demandPrice.getText().trim());
         BigDecimal singlePriceMultiplier = new BigDecimal(quantity.getValue());
 
         Demand demand = new Demand(quantity.getValue().byteValue(), singlePrice.multiply(singlePriceMultiplier));
         demand.setTask(tasks.getValue());
         demand.setPart(parts.getValue());
 
-        singleton.getDemandRepository().add(demand);
+        try {
+            singleton.getDemandRepository().add(demand);
 
-        refreshOrLoadDemands();
+            refreshOrLoadDemands();
+        } catch (HibernateException e) {
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                    "błąd dotyczy: \n" +
+                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                    "w bazie danych" +
+                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+        }
     }
 
     public void deleteChoosenDemand() {
@@ -207,21 +224,32 @@ public class JobManagementController implements Initializable {
 
         if (isDiscountIncluded.isSelected()) {
             job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
-            job.setDiscount(new BigDecimal(discount.getText()));
-            singleton.getJobRepository().update(job);
+            job.setDiscount(new BigDecimal(discount.getText().trim()));
 
-            finalCost = calculateFinalCost(finalCost);
+            try {
+                singleton.getJobRepository().update(job);
 
-            finalCost = finalCost.subtract(job.getDiscount());
+                finalCost = calculateFinalCost(finalCost);
+
+                finalCost = finalCost.subtract(job.getDiscount());
+
+                finalJobCost.setText(finalCost.toString() + " zł");
+            } catch (HibernateException e) {
+                StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                        "błąd dotyczy: \n" +
+                        "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                        "w bazie danych" +
+                        "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+            }
         } else {
             job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
             job.setDiscount(null);
             singleton.getJobRepository().update(job);
 
             finalCost = calculateFinalCost(finalCost);
-        }
 
-        finalJobCost.setText(finalCost.toString() + " zł");
+            finalJobCost.setText(finalCost.toString() + " zł");
+        }
     }
 
     public void backToMain() {
@@ -341,20 +369,13 @@ public class JobManagementController implements Initializable {
         }
     }
 
-    private TextFieldListCell<Task> configureCustomCellFactoryForTasks() {
-        TextFieldListCell<Task> taskCell = new TextFieldListCell<>();
-        taskCell.setConverter(new CustomTaskConverter(taskCell));
-
-        return taskCell;
-    }
-
     private void customListenersConfiguration() {
         unfinishedTasks.setCellFactory(listView -> configureCustomCellFactoryForTasks());
 
         tasks.setCellFactory(listView -> configureCustomCellFactoryForTasks());
         tasks.setConverter(new SimpleTaskConverter(tasks));
 
-        tasksToFinish.getCheckModel().getCheckedIndices().addListener((ListChangeListener<? super Integer>) changed -> {
+        ListChangeListener<Integer> tasksToFinishListener = changed -> {
             while (changed.next()) {
                 if (changed.wasAdded()) {
                     for (int i : changed.getAddedSubList()) {
@@ -362,11 +383,21 @@ public class JobManagementController implements Initializable {
 
                         if (!task.getIsFinished()) {
                             task.setIsFinished(true);
-                            task.setCost(new BigDecimal(taskCost.getText()));
+                            task.setCost(new BigDecimal(taskCost.getText().trim()));
 
-                            singleton.getTaskRepository().update(task);
+                            try {
+                                singleton.getTaskRepository().update(task);
 
-                            refreshOrLoadFinishedTasks();
+                                refreshOrLoadFinishedTasks();
+                            } catch (HibernateException e) {
+                                tasksToFinish.getCheckModel().clearCheck(i);
+
+                                StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
+                                        "błąd dotyczy: \n" +
+                                        "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                                        "w bazie danych" +
+                                        "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+                            }
                         }
                     }
                 }
@@ -386,7 +417,9 @@ public class JobManagementController implements Initializable {
                     }
                 }
             }
-        });
+        };
+
+        tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
     }
 
     private void propertyBindingsConfigurationForRunLater() {
@@ -435,6 +468,13 @@ public class JobManagementController implements Initializable {
         demandVBox.disableProperty().bind(partsRequiredNotChecked);
 
         tasksToFinish.disableProperty().bind(taskCostValid.not());
+    }
+
+    private TextFieldListCell<Task> configureCustomCellFactoryForTasks() {
+        TextFieldListCell<Task> taskCell = new TextFieldListCell<>();
+        taskCell.setConverter(new CustomTaskConverter(taskCell));
+
+        return taskCell;
     }
 
     private void removeContextMenu() {
