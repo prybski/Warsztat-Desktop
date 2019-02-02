@@ -46,6 +46,7 @@ public class JobManagementController implements Initializable {
 
     private Job job;
     private Singleton singleton;
+    private static final int MAX_TASK_COST_LENGTH;
 
     @FXML
     private BorderPane borderPane;
@@ -119,6 +120,10 @@ public class JobManagementController implements Initializable {
     @FXML
     private TextField vehicleVinNumber;
 
+    static {
+        MAX_TASK_COST_LENGTH = 8;
+    }
+
     {
         singleton = Singleton.getInstance();
     }
@@ -175,11 +180,11 @@ public class JobManagementController implements Initializable {
             refreshOrLoadFinishedTasks();
             refreshOrLoadUnfinishedTasks();
         } catch (HibernateException e) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
-                    "błąd dotyczy: \n" +
-                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Błąd prawdopodobnie " +
+                    "został spowodowany przez: \n" +
+                    "\n- wprowadzenie danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
                     "w bazie danych" +
-                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+                    "\n- wprowadzenie zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
         }
     }
 
@@ -205,11 +210,11 @@ public class JobManagementController implements Initializable {
 
             refreshOrLoadDemands();
         } catch (HibernateException e) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
-                    "błąd dotyczy: \n" +
-                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Błąd prawdopodobnie " +
+                    "został spowodowany przez: \n" +
+                    "\n- wprowadzenie danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
                     "w bazie danych" +
-                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+                    "\n- wprowadzenie zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
         }
     }
 
@@ -235,11 +240,11 @@ public class JobManagementController implements Initializable {
 
                 finalJobCost.setText(finalCost.toString() + " zł");
             } catch (HibernateException e) {
-                StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
-                        "błąd dotyczy: \n" +
-                        "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+                StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Błąd prawdopodobnie " +
+                        "został spowodowany przez: \n" +
+                        "\n- wprowadzenie danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
                         "w bazie danych" +
-                        "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+                        "\n- wprowadzenie zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
             }
         } else {
             job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
@@ -385,19 +390,9 @@ public class JobManagementController implements Initializable {
                             task.setIsFinished(true);
                             task.setCost(new BigDecimal(taskCost.getText().trim()));
 
-                            try {
-                                singleton.getTaskRepository().update(task);
+                            singleton.getTaskRepository().update(task);
 
-                                refreshOrLoadFinishedTasks();
-                            } catch (HibernateException e) {
-                                tasksToFinish.getCheckModel().clearCheck(i);
-
-                                StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
-                                        "błąd dotyczy: \n" +
-                                        "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
-                                        "w bazie danych" +
-                                        "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
-                            }
+                            refreshOrLoadFinishedTasks();
                         }
                     }
                 }
@@ -424,11 +419,11 @@ public class JobManagementController implements Initializable {
 
     private void propertyBindingsConfigurationForRunLater() {
         BooleanBinding taskNameValid = Bindings.createBooleanBinding(() -> !taskName.getText().isEmpty(),
-                        taskName.textProperty());
+                taskName.textProperty());
         BooleanBinding demandDataValid = Bindings.createBooleanBinding(() -> parts.getSelectionModel()
                         .getSelectedItem() != null && tasks.getSelectionModel().getSelectedItem() != null &&
                         (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
-                        parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty());
+                parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty());
         BooleanBinding unfinishedTasksEmpty = Bindings.isEmpty(unfinishedTasks.getItems());
         BooleanBinding allRequiredDataValid = Bindings.createBooleanBinding(() -> (!tasksToFinish.getCheckModel()
                         .getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size()
@@ -437,7 +432,7 @@ public class JobManagementController implements Initializable {
                         .getCheckedIndices().size() == tasksToFinish.getItems().size()) && (isDiscountIncluded
                         .isSelected() && (!discount.getText().isEmpty() && NumericUtil.isBigDecimal(discount
                         .getText())))), tasksToFinish.getCheckModel().getCheckedIndices(), discount.textProperty(),
-                        isDiscountIncluded.selectedProperty());
+                isDiscountIncluded.selectedProperty());
 
         addOneTask.disableProperty().bind(taskNameValid.not());
 
@@ -450,13 +445,13 @@ public class JobManagementController implements Initializable {
 
     private void propertyBindingsConfiguration() {
         BooleanBinding unfinishedTaskSelected = Bindings.createBooleanBinding(() -> !unfinishedTasks.getSelectionModel()
-                        .isEmpty(), unfinishedTasks.getSelectionModel().selectedIndexProperty());
+                .isEmpty(), unfinishedTasks.getSelectionModel().selectedIndexProperty());
         BooleanBinding demandIsSelected = Bindings.createBooleanBinding(() -> !demands.getSelectionModel().isEmpty(),
-                        demands.getSelectionModel().selectedIndexProperty());
+                demands.getSelectionModel().selectedIndexProperty());
         BooleanBinding partsRequiredNotChecked = arePartsRequired.selectedProperty().not();
         BooleanBinding taskCostValid = Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty()
                         && NumericUtil.isBigDecimal(taskCost.getText()),
-                        taskCost.textProperty());
+                taskCost.textProperty());
         BooleanBinding discountIncludedNotChecked = isDiscountIncluded.selectedProperty().not();
 
         deleteOneTask.disableProperty().bind(unfinishedTaskSelected.not());
@@ -467,7 +462,9 @@ public class JobManagementController implements Initializable {
 
         demandVBox.disableProperty().bind(partsRequiredNotChecked);
 
-        tasksToFinish.disableProperty().bind(taskCostValid.not());
+        tasksToFinish.disableProperty().bind(taskCostValid
+                .not()
+                .or(taskCost.lengthProperty().greaterThan(MAX_TASK_COST_LENGTH)));
     }
 
     private TextFieldListCell<Task> configureCustomCellFactoryForTasks() {

@@ -76,7 +76,7 @@ public class ClientDetailsController implements Initializable {
         phoneNumber.setText(client.getPhoneNumber());
     }
 
-    public void setClients(List<Client> clients) {
+    void setClients(List<Client> clients) {
         this.clients = clients;
     }
 }

@@ -84,11 +84,11 @@ public class VehicleModifyController implements Initializable {
             clientVehicles.getItems().clear();
             clientVehicles.getItems().setAll(updatedVehicles);
         } catch (HibernateException e) {
-            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Prawdopodobnie " +
-                    "błąd dotyczy: \n" +
-                    "\n- wprowadzenia danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
+            StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Błąd prawdopodobnie " +
+                    "został spowodowany przez: \n" +
+                    "\n- wprowadzenie danych, które przekraczają zakresy ustawione dla poszczególnych kolumn " +
                     "w bazie danych" +
-                    "\n- wprowadzenia zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
+                    "\n- wprowadzenie zduplikowanych wartości do kolumn podlegających ograniczeniu unikalności");
         }
     }
 
