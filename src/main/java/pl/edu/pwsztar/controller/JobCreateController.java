@@ -177,6 +177,7 @@ public class JobCreateController implements Initializable {
                     DataFieldsUtil.clearDatePicker(fixedDate);
                     DataFieldsUtil.clearTextArea(description);
 
+                    vehicles.getSelectionModel().clearSelection();
                     refreshOrLoadVehicles(updatedVehicles);
                 });
     }
