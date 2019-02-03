@@ -126,7 +126,6 @@ public class JobCreateController implements Initializable {
     }
 
     private void refreshOrLoadVehicles(List<Vehicle> vehiclesToLoad) {
-        vehicles.getItems().clear();
         vehicles.getItems().setAll(vehiclesToLoad);
     }
 

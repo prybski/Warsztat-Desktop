@@ -282,28 +282,24 @@ public class MainController implements Initializable {
     private void refreshOrLoadClients() {
         List<Client> foundClients = singleton.getClientRepository().findAll();
 
-        clients.getItems().clear();
         clients.getItems().setAll(foundClients);
     }
 
     private void refreshOrLoadFixedDates() {
         List<Date> foundFixedDates = singleton.getJobRepository().findNotStartedFixedDates();
 
-        fixedDates.getItems().clear();
         fixedDates.getItems().setAll(foundFixedDates);
     }
 
     private void refreshOrLoadStartedJobs() {
         List<Job> foundStartedJobs = singleton.getJobRepository().findAllStarted();
 
-        startedJobs.getItems().clear();
         startedJobs.getItems().setAll(foundStartedJobs);
     }
 
     private void refreshOrLoadVehicles() {
         List<Vehicle> foundVehicles = singleton.getVehicleRepository().findAll();
 
-        vehicles.getItems().clear();
         vehicles.getItems().setAll(foundVehicles);
     }
 

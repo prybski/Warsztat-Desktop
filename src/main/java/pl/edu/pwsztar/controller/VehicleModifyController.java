@@ -123,8 +123,8 @@ public class VehicleModifyController implements Initializable {
             List<Vehicle> vehiclesFromDb = singleton.getVehicleRepository().findByClient(newValue);
 
             DataFieldsUtil.resetFieldsToDefaults(productionYear, engineCapacity, brand, model, vinNumber);
-            clientVehicles.getSelectionModel().clearSelection();
 
+            clientVehicles.getSelectionModel().clearSelection();
             clientVehicles.getItems().setAll(vehiclesFromDb);
         });
 

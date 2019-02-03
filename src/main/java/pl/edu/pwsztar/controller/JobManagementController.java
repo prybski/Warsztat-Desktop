@@ -311,7 +311,6 @@ public class JobManagementController implements Initializable {
     private void refreshOrLoadParts() {
         List<Part> foundParts = singleton.getPartRepository().findAll();
 
-        parts.getItems().clear();
         parts.getItems().setAll(foundParts);
     }
 
