@@ -186,7 +186,6 @@ public class JobManagementController implements Initializable {
 
         start.setDisable(true);
         mainControlHBox.setDisable(false);
-        //isDiscountIncluded.setDisable(false);
     }
 
     public void showAddPart() {
@@ -413,13 +412,9 @@ public class JobManagementController implements Initializable {
         if (job.getStartDate() != null) {
             start.setDisable(true);
             mainControlHBox.setDisable(false);
-            isDiscountIncluded.setDisable(false);
-            end.setDisable(false);
         } else {
             start.setDisable(false);
             mainControlHBox.setDisable(true);
-            isDiscountIncluded.setDisable(true);
-            end.setDisable(true);
         }
 
         refreshOrLoadUnfinishedTasks();
