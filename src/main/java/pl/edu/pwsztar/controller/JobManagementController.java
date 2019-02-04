@@ -136,30 +136,24 @@ public class JobManagementController implements Initializable {
                 if (changed.wasAdded()) {
                     for (int i : changed.getAddedSubList()) {
                         Task task = tasksToFinish.getItems().get(i);
+                        task.setIsFinished(true);
+                        task.setCost(new BigDecimal(taskCost.getText().trim()));
 
-                        if (!task.getIsFinished()) {
-                            task.setIsFinished(true);
-                            task.setCost(new BigDecimal(taskCost.getText().trim()));
+                        singleton.getTaskRepository().update(task);
 
-                            singleton.getTaskRepository().update(task);
-
-                            refreshOrLoadFinishedTasks();
-                        }
+                        refreshOrLoadFinishedTasks();
                     }
                 }
 
                 if (changed.wasRemoved()) {
                     for (int i : changed.getRemoved()) {
                         Task task = tasksToFinish.getItems().get(i);
+                        task.setIsFinished(false);
+                        task.setCost(null);
 
-                        if (task.getIsFinished()) {
-                            task.setIsFinished(false);
-                            task.setCost(null);
+                        singleton.getTaskRepository().update(task);
 
-                            singleton.getTaskRepository().update(task);
-
-                            refreshOrLoadFinishedTasks();
-                        }
+                        refreshOrLoadFinishedTasks();
                     }
                 }
             }
@@ -229,7 +223,9 @@ public class JobManagementController implements Initializable {
         Task taskToDelete = unfinishedTasks.getSelectionModel().getSelectedItem();
 
         tasksToFinish.getCheckModel().getCheckedIndices().removeListener(tasksToFinishListener);
+
         tasksToFinish.getCheckModel().clearCheck(taskToDelete);
+
         tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
 
         singleton.getTaskRepository().delete(taskToDelete);
@@ -336,12 +332,13 @@ public class JobManagementController implements Initializable {
     private void refreshOrLoadFinishedTasks() {
         List<Task> foundTasks = singleton.getTaskRepository().findAllByJob(job);
 
-        if (foundTasks.isEmpty()) {
-            tasksToFinish.getCheckModel().getCheckedIndices().removeListener(tasksToFinishListener);
-            tasksToFinish.getCheckModel().clearChecks();
-            tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
+        tasksToFinish.getCheckModel().getCheckedIndices().removeListener(tasksToFinishListener);
 
+        if (foundTasks.isEmpty()) {
+            tasksToFinish.getCheckModel().clearChecks();
             tasksToFinish.getItems().clear();
+
+            tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
         } else {
             tasksToFinish.getItems().setAll(foundTasks);
 
@@ -352,6 +349,8 @@ public class JobManagementController implements Initializable {
                     tasksToFinish.getCheckModel().clearCheck(task);
                 }
             }
+
+            tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
         }
     }
 
@@ -443,6 +442,7 @@ public class JobManagementController implements Initializable {
                         (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
                         parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty());
         BooleanBinding unfinishedTasksEmpty = Bindings.isEmpty(unfinishedTasks.getItems());
+        BooleanBinding demandsEmpty = Bindings.isEmpty(demands.getItems());
         BooleanBinding allTasksFinished = Bindings.createBooleanBinding(() -> !tasksToFinish.getItems().isEmpty()
                         && (tasksToFinish.getCheckModel().getCheckedItems().stream().filter(Objects::nonNull)
                         .collect(Collectors.toList()).size() == tasksToFinish.getItems().size()), tasksToFinish
@@ -463,7 +463,8 @@ public class JobManagementController implements Initializable {
 
         taskCost.disableProperty().bind(unfinishedTasksEmpty);
 
-        arePartsRequired.disableProperty().bind(unfinishedTasksEmpty);
+        arePartsRequired.disableProperty().bind(unfinishedTasksEmpty.or(unfinishedTasksEmpty.not().and(demandsEmpty
+                .not())));
 
         isDiscountIncluded.disableProperty().bind(allTasksFinished.not());
 
