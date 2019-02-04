@@ -46,9 +46,11 @@ import java.util.stream.Collectors;
 
 public class JobManagementController implements Initializable {
 
+    private static final int MAX_TASK_COST_LENGTH;
+
     private Job job;
     private Singleton singleton;
-    private static final int MAX_TASK_COST_LENGTH;
+    private ListChangeListener<Integer> tasksToFinishListener;
 
     @FXML
     private BorderPane borderPane;
@@ -121,8 +123,6 @@ public class JobManagementController implements Initializable {
 
     @FXML
     private TextField vehicleVinNumber;
-
-    private ListChangeListener<Integer> tasksToFinishListener;
 
     static {
         MAX_TASK_COST_LENGTH = 8;
