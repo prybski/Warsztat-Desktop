@@ -56,22 +56,19 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Label styleClass="label-small" text="Wykonane zadania" />
-            <ListView fx:id="doneTasks" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="doneTasks" VBox.vgrow="ALWAYS" />
         </VBox>
          <Separator orientation="VERTICAL" prefHeight="200.0">
              <HBox.margin>
                  <Insets />
              </HBox.margin>
-             <padding>
-                 <Insets left="3.0" />
-             </padding>
          </Separator>
         <VBox spacing="10.0" HBox.hgrow="ALWAYS">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             <Label styleClass="label-small" text="Wykorzystane części" />
-            <ListView fx:id="requiredDemands" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="requiredDemands" VBox.vgrow="ALWAYS" />
             <Label styleClass="label-small" text="Końcowy koszt wykonania zlecenia" />
             <Text fx:id="finalCost" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-info-bigger">
                 <font>
