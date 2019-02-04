@@ -229,7 +229,9 @@ public class JobManagementController implements Initializable {
     public void deleteChoosenTask() {
         Task taskToDelete = unfinishedTasks.getSelectionModel().getSelectedItem();
 
+        tasksToFinish.getCheckModel().getCheckedIndices().removeListener(tasksToFinishListener);
         tasksToFinish.getCheckModel().clearCheck(taskToDelete);
+        tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
 
         singleton.getTaskRepository().delete(taskToDelete);
 
