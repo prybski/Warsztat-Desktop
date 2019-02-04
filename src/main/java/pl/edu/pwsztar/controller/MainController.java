@@ -288,6 +288,7 @@ public class MainController implements Initializable {
     private void refreshOrLoadFixedDates() {
         List<Date> foundFixedDates = singleton.getJobRepository().findNotStartedFixedDates();
 
+        fixedDates.getSelectionModel().clearSelection();
         fixedDates.getItems().setAll(foundFixedDates);
     }
 

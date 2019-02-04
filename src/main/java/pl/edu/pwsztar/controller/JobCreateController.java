@@ -109,6 +109,7 @@ public class JobCreateController implements Initializable {
             List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel()
                     .getSelectedItem());
 
+            vehicles.getSelectionModel().clearSelection();
             refreshOrLoadVehicles(updatedVehicles);
         } catch (HibernateException e) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Błąd prawdopodobnie " +

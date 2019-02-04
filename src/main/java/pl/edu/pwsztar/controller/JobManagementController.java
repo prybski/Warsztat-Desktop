@@ -186,7 +186,7 @@ public class JobManagementController implements Initializable {
 
         start.setDisable(true);
         mainControlHBox.setDisable(false);
-        isDiscountIncluded.setDisable(false);
+        //isDiscountIncluded.setDisable(false);
     }
 
     public void showAddPart() {
@@ -273,7 +273,7 @@ public class JobManagementController implements Initializable {
     public void endJob() {
         BigDecimal finalCost = new BigDecimal(0);
 
-        if (isDiscountIncluded.isSelected()) {
+        if (isDiscountIncluded.isSelected() && !isDiscountIncluded.isDisabled()) {
             job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
             job.setDiscount(new BigDecimal(discount.getText().trim()));
 
@@ -319,7 +319,7 @@ public class JobManagementController implements Initializable {
             costHolder = costHolder.add(task.getCost());
         }
 
-        if (arePartsRequired.isSelected()) {
+        if (arePartsRequired.isSelected() && !arePartsRequired.isDisabled()) {
             for (Demand demand : demands.getItems()) {
                 costHolder = costHolder.add(demand.getPrice());
             }
@@ -375,6 +375,12 @@ public class JobManagementController implements Initializable {
         List<Demand> foundDemands = singleton.getDemandRepository().findAllByTasks(foundTasks);
 
         demands.getItems().setAll(foundDemands);
+
+        if (demands.getItems().isEmpty()) {
+            arePartsRequired.setSelected(false);
+        } else {
+            arePartsRequired.setSelected(true);
+        }
     }
 
     private void readPredefinedTasks() {
@@ -423,10 +429,6 @@ public class JobManagementController implements Initializable {
         refreshOrLoadDemands();
 
         propertyBindingsConfigurationForRunLater();
-
-        if (!demands.getItems().isEmpty()) {
-            arePartsRequired.setSelected(true);
-        }
     }
 
     private void customListenersConfiguration() {
@@ -440,12 +442,16 @@ public class JobManagementController implements Initializable {
 
     private void propertyBindingsConfigurationForRunLater() {
         BooleanBinding taskNameValid = Bindings.createBooleanBinding(() -> !taskName.getText().isEmpty(),
-                taskName.textProperty());
+                        taskName.textProperty());
         BooleanBinding demandDataValid = Bindings.createBooleanBinding(() -> parts.getSelectionModel()
                         .getSelectedItem() != null && tasks.getSelectionModel().getSelectedItem() != null &&
                         (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
-                parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty());
+                        parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty());
         BooleanBinding unfinishedTasksEmpty = Bindings.isEmpty(unfinishedTasks.getItems());
+        BooleanBinding allTasksFinished = Bindings.createBooleanBinding(() -> !tasksToFinish.getItems().isEmpty()
+                        && (tasksToFinish.getCheckModel().getCheckedItems().stream().filter(Objects::nonNull)
+                        .collect(Collectors.toList()).size() == tasksToFinish.getItems().size()), tasksToFinish
+                        .getCheckModel().getCheckedItems());
         BooleanBinding allRequiredDataValid = Bindings.createBooleanBinding(() -> (!tasksToFinish.getItems().isEmpty()
                         && (tasksToFinish.getCheckModel().getCheckedItems().stream().filter(Objects::nonNull)
                         .collect(Collectors.toList()).size() == tasksToFinish.getItems().size()) && !isDiscountIncluded
@@ -462,23 +468,28 @@ public class JobManagementController implements Initializable {
 
         taskCost.disableProperty().bind(unfinishedTasksEmpty);
 
+        arePartsRequired.disableProperty().bind(unfinishedTasksEmpty);
+
+        isDiscountIncluded.disableProperty().bind(allTasksFinished.not());
+
         end.disableProperty().bind(allRequiredDataValid.not());
     }
 
     private void propertyBindingsConfiguration() {
         BooleanBinding unfinishedTaskSelected = Bindings.createBooleanBinding(() -> !unfinishedTasks.getSelectionModel()
-                .isEmpty(), unfinishedTasks.getSelectionModel().selectedIndexProperty());
+                        .isEmpty(), unfinishedTasks.getSelectionModel().selectedIndexProperty());
         BooleanBinding demandIsSelected = Bindings.createBooleanBinding(() -> !demands.getSelectionModel().isEmpty(),
-                demands.getSelectionModel().selectedIndexProperty());
+                        demands.getSelectionModel().selectedIndexProperty());
         BooleanBinding partsRequiredNotChecked = arePartsRequired.selectedProperty().not();
         BooleanBinding taskCostValid = Bindings.createBooleanBinding(() -> !taskCost.getText().isEmpty()
                         && NumericUtil.isBigDecimal(taskCost.getText()),
-                taskCost.textProperty());
+                        taskCost.textProperty());
         BooleanBinding discountIncludedNotChecked = isDiscountIncluded.selectedProperty().not();
 
         deleteOneTask.disableProperty().bind(unfinishedTaskSelected.not());
 
-        discount.disableProperty().bind(discountIncludedNotChecked);
+        discount.disableProperty().bind(discountIncludedNotChecked.or(discountIncludedNotChecked.not()
+                .and(isDiscountIncluded.disabledProperty())));
 
         deleteOneDemand.disableProperty().bind(demandIsSelected.not());
 
