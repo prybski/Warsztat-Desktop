@@ -266,7 +266,9 @@ public class JobManagementController implements Initializable {
     }
 
     public void endJob() {
-        BigDecimal finalCost = new BigDecimal(0);
+        BigDecimal finalCost;
+        BigDecimal tasksCost = calculateTasksCost(new BigDecimal(0));
+        BigDecimal demandsCost = calculateDemandsCost(new BigDecimal(0));
 
         if (isDiscountIncluded.isSelected()) {
             job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
@@ -275,7 +277,7 @@ public class JobManagementController implements Initializable {
             try {
                 singleton.getJobRepository().update(job);
 
-                finalCost = calculateFinalCost(finalCost);
+                finalCost = tasksCost.add(demandsCost);
 
                 finalCost = finalCost.subtract(job.getDiscount());
 
@@ -292,7 +294,7 @@ public class JobManagementController implements Initializable {
             job.setDiscount(null);
             singleton.getJobRepository().update(job);
 
-            finalCost = calculateFinalCost(finalCost);
+            finalCost = tasksCost.add(demandsCost);
 
             finalJobCost.setText(finalCost.toString() + " zł");
         }
@@ -309,13 +311,21 @@ public class JobManagementController implements Initializable {
         }
     }
 
-    private BigDecimal calculateFinalCost(BigDecimal costHolder) {
-        for (Task task : tasksToFinish.getItems()) {
+    private BigDecimal calculateTasksCost(BigDecimal costHolder) {
+        List<Task> tasksToCalculate = tasksToFinish.getItems();
+
+        for (Task task : tasksToCalculate) {
             costHolder = costHolder.add(task.getCost());
         }
 
-        if (arePartsRequired.isSelected()) {
-            for (Demand demand : demands.getItems()) {
+        return costHolder;
+    }
+
+    private BigDecimal calculateDemandsCost(BigDecimal costHolder) {
+        List<Demand> demandsToCalculate = demands.getItems();
+
+        if (arePartsRequired.isSelected() && !demandsToCalculate.isEmpty()) {
+            for (Demand demand : demandsToCalculate) {
                 costHolder = costHolder.add(demand.getPrice());
             }
         }
