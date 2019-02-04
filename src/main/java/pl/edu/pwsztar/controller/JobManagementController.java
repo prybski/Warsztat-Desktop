@@ -263,7 +263,9 @@ public class JobManagementController implements Initializable {
     }
 
     public void deleteChoosenDemand() {
-        singleton.getDemandRepository().delete(demands.getSelectionModel().getSelectedItem());
+        Demand demandToDelete = demands.getSelectionModel().getSelectedItem();
+
+        singleton.getDemandRepository().delete(demandToDelete);
 
         refreshOrLoadDemands();
     }
@@ -369,8 +371,8 @@ public class JobManagementController implements Initializable {
     }
 
     private void refreshOrLoadDemands() {
-        List<Demand> foundDemands = singleton.getDemandRepository().findAllByTasks(singleton.getTaskRepository()
-                .findAllByJob(job));
+        List<Task> foundTasks = singleton.getTaskRepository().findAllByJob(job);
+        List<Demand> foundDemands = singleton.getDemandRepository().findAllByTasks(foundTasks);
 
         demands.getItems().setAll(foundDemands);
     }
