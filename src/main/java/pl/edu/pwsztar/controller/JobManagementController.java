@@ -268,7 +268,7 @@ public class JobManagementController implements Initializable {
     public void endJob() {
         BigDecimal finalCost = new BigDecimal(0);
 
-        if (isDiscountIncluded.isSelected() && !isDiscountIncluded.isDisabled()) {
+        if (isDiscountIncluded.isSelected()) {
             job.setEndDate(Timestamp.valueOf(LocalDateTime.now()));
             job.setDiscount(new BigDecimal(discount.getText().trim()));
 
@@ -314,7 +314,7 @@ public class JobManagementController implements Initializable {
             costHolder = costHolder.add(task.getCost());
         }
 
-        if (arePartsRequired.isSelected() && !arePartsRequired.isDisabled()) {
+        if (arePartsRequired.isSelected()) {
             for (Demand demand : demands.getItems()) {
                 costHolder = costHolder.add(demand.getPrice());
             }
