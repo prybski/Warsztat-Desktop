@@ -81,7 +81,9 @@ public class VehicleModifyController implements Initializable {
             List<Vehicle> updatedVehicles = singleton.getVehicleRepository().findByClient(clients.getSelectionModel()
                     .getSelectedItem());
 
-            clientVehicles.getItems().clear();
+            DataFieldsUtil.resetFieldsToDefaults(productionYear, engineCapacity, brand, model, vinNumber);
+
+            clientVehicles.getSelectionModel().clearSelection();
             clientVehicles.getItems().setAll(updatedVehicles);
         } catch (HibernateException e) {
             StageUtil.generateAlertDialog(Alert.AlertType.ERROR, "Błąd!", "Błąd prawdopodobnie " +

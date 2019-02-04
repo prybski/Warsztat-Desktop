@@ -40,7 +40,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class JobManagementController implements Initializable {
 
@@ -120,12 +122,48 @@ public class JobManagementController implements Initializable {
     @FXML
     private TextField vehicleVinNumber;
 
+    private ListChangeListener<Integer> tasksToFinishListener;
+
     static {
         MAX_TASK_COST_LENGTH = 8;
     }
 
     {
         singleton = Singleton.getInstance();
+
+        tasksToFinishListener = changed -> {
+            while (changed.next()) {
+                if (changed.wasAdded()) {
+                    for (int i : changed.getAddedSubList()) {
+                        Task task = tasksToFinish.getItems().get(i);
+
+                        if (!task.getIsFinished()) {
+                            task.setIsFinished(true);
+                            task.setCost(new BigDecimal(taskCost.getText().trim()));
+
+                            singleton.getTaskRepository().update(task);
+
+                            refreshOrLoadFinishedTasks();
+                        }
+                    }
+                }
+
+                if (changed.wasRemoved()) {
+                    for (int i : changed.getRemoved()) {
+                        Task task = tasksToFinish.getItems().get(i);
+
+                        if (task.getIsFinished()) {
+                            task.setIsFinished(false);
+                            task.setCost(null);
+
+                            singleton.getTaskRepository().update(task);
+
+                            refreshOrLoadFinishedTasks();
+                        }
+                    }
+                }
+            }
+        };
     }
 
     @Override
@@ -189,7 +227,11 @@ public class JobManagementController implements Initializable {
     }
 
     public void deleteChoosenTask() {
-        singleton.getTaskRepository().delete(unfinishedTasks.getSelectionModel().getSelectedItem());
+        Task taskToDelete = unfinishedTasks.getSelectionModel().getSelectedItem();
+
+        tasksToFinish.getCheckModel().clearCheck(taskToDelete);
+
+        singleton.getTaskRepository().delete(taskToDelete);
 
         refreshOrLoadTasks();
         refreshOrLoadFinishedTasks();
@@ -291,13 +333,21 @@ public class JobManagementController implements Initializable {
     private void refreshOrLoadFinishedTasks() {
         List<Task> foundTasks = singleton.getTaskRepository().findAllByJob(job);
 
-        tasksToFinish.getItems().setAll(foundTasks);
+        if (foundTasks.isEmpty()) {
+            tasksToFinish.getCheckModel().getCheckedIndices().removeListener(tasksToFinishListener);
+            tasksToFinish.getCheckModel().clearChecks();
+            tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
 
-        for (Task task : foundTasks) {
-            if (task.getIsFinished()) {
-                tasksToFinish.getCheckModel().check(task);
-            } else {
-                tasksToFinish.getCheckModel().clearCheck(task);
+            tasksToFinish.getItems().clear();
+        } else {
+            tasksToFinish.getItems().setAll(foundTasks);
+
+            for (Task task : foundTasks) {
+                if (task.getIsFinished()) {
+                    tasksToFinish.getCheckModel().check(task);
+                } else {
+                    tasksToFinish.getCheckModel().clearCheck(task);
+                }
             }
         }
     }
@@ -305,12 +355,14 @@ public class JobManagementController implements Initializable {
     private void refreshOrLoadTasks() {
         List<Task> foundTasks = singleton.getTaskRepository().findAllByJob(job);
 
+        tasks.getSelectionModel().clearSelection();
         tasks.getItems().setAll(foundTasks);
     }
 
     private void refreshOrLoadParts() {
         List<Part> foundParts = singleton.getPartRepository().findAll();
 
+        parts.getSelectionModel().clearSelection();
         parts.getItems().setAll(foundParts);
     }
 
@@ -379,40 +431,6 @@ public class JobManagementController implements Initializable {
         tasks.setCellFactory(listView -> configureCustomCellFactoryForTasks());
         tasks.setConverter(new SimpleTaskConverter(tasks));
 
-        ListChangeListener<Integer> tasksToFinishListener = changed -> {
-            while (changed.next()) {
-                if (changed.wasAdded()) {
-                    for (int i : changed.getAddedSubList()) {
-                        Task task = tasksToFinish.getItems().get(i);
-
-                        if (!task.getIsFinished()) {
-                            task.setIsFinished(true);
-                            task.setCost(new BigDecimal(taskCost.getText().trim()));
-
-                            singleton.getTaskRepository().update(task);
-
-                            refreshOrLoadFinishedTasks();
-                        }
-                    }
-                }
-
-                if (changed.wasRemoved()) {
-                    for (int i : changed.getRemoved()) {
-                        Task task = tasksToFinish.getItems().get(i);
-
-                        if (task.getIsFinished()) {
-                            task.setIsFinished(false);
-                            task.setCost(null);
-
-                            singleton.getTaskRepository().update(task);
-
-                            refreshOrLoadFinishedTasks();
-                        }
-                    }
-                }
-            }
-        };
-
         tasksToFinish.getCheckModel().getCheckedIndices().addListener(tasksToFinishListener);
     }
 
@@ -424,14 +442,15 @@ public class JobManagementController implements Initializable {
                         (!demandPrice.getText().isEmpty() && NumericUtil.isBigDecimal(demandPrice.getText())),
                 parts.valueProperty(), tasks.valueProperty(), demandPrice.textProperty());
         BooleanBinding unfinishedTasksEmpty = Bindings.isEmpty(unfinishedTasks.getItems());
-        BooleanBinding allRequiredDataValid = Bindings.createBooleanBinding(() -> (!tasksToFinish.getCheckModel()
-                        .getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel().getCheckedIndices().size()
-                        == tasksToFinish.getItems().size()) && !isDiscountIncluded.isSelected()) || (!tasksToFinish
-                        .getCheckModel().getCheckedIndices().isEmpty() && (tasksToFinish.getCheckModel()
-                        .getCheckedIndices().size() == tasksToFinish.getItems().size()) && (isDiscountIncluded
-                        .isSelected() && (!discount.getText().isEmpty() && NumericUtil.isBigDecimal(discount
-                        .getText())))), tasksToFinish.getCheckModel().getCheckedIndices(), discount.textProperty(),
-                isDiscountIncluded.selectedProperty());
+        BooleanBinding allRequiredDataValid = Bindings.createBooleanBinding(() -> (!tasksToFinish.getItems().isEmpty()
+                        && (tasksToFinish.getCheckModel().getCheckedItems().stream().filter(Objects::nonNull)
+                        .collect(Collectors.toList()).size() == tasksToFinish.getItems().size()) && !isDiscountIncluded
+                        .isSelected()) || (!tasksToFinish.getItems().isEmpty() && (tasksToFinish.getCheckModel()
+                        .getCheckedItems().stream().filter(Objects::nonNull).collect(Collectors.toList()).size()
+                        == tasksToFinish.getItems().size()) && (isDiscountIncluded.isSelected() && (!discount
+                        .getText().isEmpty() && NumericUtil.isBigDecimal(discount.getText())))),
+                        tasksToFinish.getCheckModel().getCheckedItems(), discount.textProperty(), isDiscountIncluded
+                        .selectedProperty());
 
         addOneTask.disableProperty().bind(taskNameValid.not());
 
