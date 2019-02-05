@@ -3,6 +3,7 @@ package pl.edu.pwsztar.controller;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -465,7 +466,9 @@ public class JobManagementController implements Initializable {
                         == tasksToFinish.getItems().size()) && (isDiscountIncluded.isSelected() && (!discount
                         .getText().isEmpty() && NumericUtil.isBigDecimal(discount.getText())))),
                         tasksToFinish.getCheckModel().getCheckedItems(), discount.textProperty(), isDiscountIncluded
-                        .selectedProperty());
+                        .selectedProperty(), tasksToFinish.getItems());
+        BooleanBinding noDemandsOnListWhenPartsRequired = arePartsRequired
+                        .selectedProperty().and(Bindings.isEmpty(demands.getItems()));
 
         addOneTask.disableProperty().bind(taskNameValid.not());
 
@@ -476,9 +479,11 @@ public class JobManagementController implements Initializable {
         arePartsRequired.disableProperty().bind(unfinishedTasksEmpty.or(unfinishedTasksEmpty.not().and(demandsEmpty
                 .not())));
 
-        isDiscountIncluded.disableProperty().bind(allTasksFinished.not());
+        isDiscountIncluded.disableProperty().bind(allTasksFinished.not().or(allTasksFinished.and(allRequiredDataValid
+                .and(noDemandsOnListWhenPartsRequired))));
 
-        end.disableProperty().bind(allRequiredDataValid.not());
+        end.disableProperty().bind(allRequiredDataValid.not().or(allRequiredDataValid
+                .and(noDemandsOnListWhenPartsRequired)));
     }
 
     private void propertyBindingsConfiguration() {
@@ -491,11 +496,12 @@ public class JobManagementController implements Initializable {
                         && NumericUtil.isBigDecimal(taskCost.getText()),
                         taskCost.textProperty());
         BooleanBinding discountIncludedNotChecked = isDiscountIncluded.selectedProperty().not();
+        ReadOnlyBooleanProperty discountIncludedDisabled = isDiscountIncluded.disabledProperty();
 
         deleteOneTask.disableProperty().bind(unfinishedTaskSelected.not());
 
         discount.disableProperty().bind(discountIncludedNotChecked.or(discountIncludedNotChecked.not()
-                .and(isDiscountIncluded.disabledProperty())));
+                .and(discountIncludedDisabled)));
 
         deleteOneDemand.disableProperty().bind(demandIsSelected.not());
 
